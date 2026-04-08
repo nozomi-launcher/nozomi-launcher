@@ -118,6 +118,14 @@ Example profile:
 }
 ```
 
+## Documentation
+
+See the [docs/](docs/) folder for more detailed documentation:
+
+- [Building](docs/building.md) — Prerequisites, build commands, versioning
+- [Developing](docs/developing.md) — Dev setup, running tests, project structure
+- [GitHub Actions](docs/github-actions.md) — CI workflows, release process, artifacts
+
 ## License
 
 MIT

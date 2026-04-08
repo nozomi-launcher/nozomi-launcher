@@ -1,6 +1,6 @@
 [package]
 name = "nozomi-launcher"
-version = "0.1.0"
+version = "0.0.5"
 description = "A Steam compatibility tool with a modern UI"
 authors = ["Carlos Chulo"]
 license = "MIT"

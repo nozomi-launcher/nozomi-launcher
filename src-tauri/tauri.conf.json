@@ -1,7 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "nozomi-launcher",
-  "version": "0.1.0",
   "identifier": "com.nozomi-launcher.app",
   "build": {
     "frontendDist": "../dist",

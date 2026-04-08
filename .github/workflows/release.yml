@@ -29,7 +29,7 @@ jobs:
             libjavascriptcoregtk-4.1-dev
 
       - name: Install Rust stable
-        uses: dtolnay/rust-action/setup@v1
+        run: rustup update stable && rustup default stable
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4

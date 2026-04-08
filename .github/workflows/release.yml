@@ -60,3 +60,15 @@ jobs:
           releaseBody: "See the assets below to download and install this version."
           releaseDraft: false
           prerelease: false
+
+      - name: Package Steam compatibility tool tarball
+        run: |
+          mkdir -p nozomi-launcher
+          cp src-tauri/target/release/nozomi-launcher nozomi-launcher/
+          cp compat/* nozomi-launcher/
+          tar -czf nozomi-launcher-${{ github.ref_name }}.tar.gz nozomi-launcher
+
+      - name: Upload tarball to release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ github.ref_name }} nozomi-launcher-${{ github.ref_name }}.tar.gz --clobber

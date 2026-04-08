@@ -8,7 +8,7 @@ Triggered when a `v*` tag is pushed. Runs tests, builds the Tauri app, creates a
 
 ### Dispatch Release (`dispatch-release.yml`)
 
-Triggered manually via the GitHub Actions UI. Reads the version from `src-tauri/Cargo.toml`, checks if a `v*` tag already exists for that version, and creates one if not. This triggers the Build and Release workflow.
+Triggered manually via the GitHub Actions UI. Reads the version from `src-tauri/Cargo.toml`, checks if a `v*` tag already exists for that version, and creates one if not. Then directly calls the Build and Release workflow via `workflow_call` (tags created by `GITHUB_TOKEN` don't trigger other workflows, so the dispatch workflow invokes the release workflow explicitly).
 
 ## Release process
 

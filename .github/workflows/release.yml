@@ -4,6 +4,11 @@ on:
   push:
     tags:
       - "v*"
+  workflow_call:
+    inputs:
+      tag:
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -15,6 +20,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
 
       - name: Install system dependencies
         run: |
@@ -50,13 +57,17 @@ jobs:
         working-directory: src-tauri
         run: cargo test
 
+      - name: Resolve tag name
+        id: tag
+        run: echo "name=${{ inputs.tag || github.ref_name }}" >> "$GITHUB_OUTPUT"
+
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0.6.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: ${{ github.ref_name }}
-          releaseName: "Nozomi Launcher ${{ github.ref_name }}"
+          tagName: ${{ steps.tag.outputs.name }}
+          releaseName: "Nozomi Launcher ${{ steps.tag.outputs.name }}"
           releaseBody: "See the assets below to download and install this version."
           releaseDraft: false
           prerelease: false
@@ -66,9 +77,9 @@ jobs:
           mkdir -p nozomi-launcher
           cp src-tauri/target/release/nozomi-launcher nozomi-launcher/
           cp compat/* nozomi-launcher/
-          tar -czf nozomi-launcher-${{ github.ref_name }}.tar.gz nozomi-launcher
+          tar -czf nozomi-launcher-${{ steps.tag.outputs.name }}.tar.gz nozomi-launcher
 
       - name: Upload tarball to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ github.ref_name }} nozomi-launcher-${{ github.ref_name }}.tar.gz --clobber
+        run: gh release upload ${{ steps.tag.outputs.name }} nozomi-launcher-${{ steps.tag.outputs.name }}.tar.gz --clobber

@@ -1,0 +1,13 @@
+"compatibilitytools"
+{
+  "compat_tools"
+  {
+    "nozomi-launcher"
+    {
+      "install_path" "."
+      "display_name" "Nozomi Launcher"
+      "from_oslist"  "windows"
+      "to_oslist"    "linux"
+    }
+  }
+}

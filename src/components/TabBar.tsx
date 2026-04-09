@@ -11,18 +11,18 @@ export default function TabBar() {
   const setActiveTab = useAppStore((s) => s.setActiveTab);
 
   return (
-    <nav className="flex gap-1 bg-gray-800 p-2">
+    <nav className="flex bg-steam-darkest border-b border-steam-border">
       {tabs.map((tab) => (
         <button
           key={tab.id}
           data-focusable
           onClick={() => setActiveTab(tab.id)}
-          className={`px-6 py-2 rounded text-sm font-medium transition-colors
-            focus:outline-none focus:ring-2 focus:ring-blue-500
+          className={`px-6 py-3 text-sm font-medium uppercase tracking-wider transition-all
+            focus:outline-none focus:ring-2 focus:ring-steam-accent focus:ring-inset
             ${
               activeTab === tab.id
-                ? "bg-blue-600 text-white"
-                : "text-gray-400 hover:text-white hover:bg-gray-700"
+                ? "bg-steam-dark text-steam-accent border-t-2 border-steam-accent"
+                : "text-steam-text-dim hover:text-steam-text hover:bg-steam-dark/50 border-t-2 border-transparent"
             }`}
         >
           {tab.label}

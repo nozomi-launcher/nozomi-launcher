@@ -1,1 +1,57 @@
 @import "tailwindcss";
+
+@theme {
+  /* Steam-inspired color palette */
+  --color-steam-darkest: #171a21;
+  --color-steam-dark: #1b2838;
+  --color-steam-mid: #2a475e;
+  --color-steam-light: #3d6c8e;
+  --color-steam-accent: #66c0f4;
+  --color-steam-accent-dim: #4a9eca;
+  --color-steam-text: #c7d5e0;
+  --color-steam-text-dim: #8f98a0;
+  --color-steam-green: #5c7e10;
+  --color-steam-green-bright: #a4d007;
+  --color-steam-red: #b33b3b;
+  --color-steam-red-bright: #d94141;
+  --color-steam-border: #3d4f5f;
+}
+
+/* Base styles */
+body {
+  background-color: var(--color-steam-darkest);
+  color: var(--color-steam-text);
+  font-family: "Motiva Sans", Arial, Helvetica, sans-serif;
+}
+
+/* Custom scrollbar - Steam style */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-steam-darkest);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-steam-mid);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-steam-light);
+}
+
+/* Select dropdown styling */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2366c0f4' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+select option {
+  background-color: var(--color-steam-dark);
+  color: var(--color-steam-text);
+}

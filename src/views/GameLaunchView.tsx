@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useProfileStore } from "../stores/profileStore";
 import EnvVarEditor from "../components/EnvVarEditor";
 import GamepadSelect from "../components/GamepadSelect";
 import * as api from "../lib/tauri";
+import { useProfileStore } from "../stores/profileStore";
 import type { LaunchContext, ProtonVersion } from "../types/steam";
 
 export default function GameLaunchView() {
@@ -68,22 +68,16 @@ export default function GameLaunchView() {
         </h2>
         {isStandalone ? (
           <div>
-            <p className="text-sm text-steam-text-dim">
-              Standalone mode — no game selected
-            </p>
+            <p className="text-sm text-steam-text-dim">Standalone mode — no game selected</p>
             <p className="text-xs mt-1 text-steam-text-dim/60">
               Launch from Steam as a compatibility tool to select a game.
             </p>
           </div>
         ) : (
           <div>
-            <p className="text-sm text-steam-text font-mono break-all">
-              {gamePath}
-            </p>
+            <p className="text-sm text-steam-text font-mono break-all">{gamePath}</p>
             {launchContext?.steamAppId && (
-              <p className="text-xs text-steam-text-dim mt-1">
-                App ID: {launchContext.steamAppId}
-              </p>
+              <p className="text-xs text-steam-text-dim mt-1">App ID: {launchContext.steamAppId}</p>
             )}
           </div>
         )}

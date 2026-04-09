@@ -1,5 +1,5 @@
-import { useEffect, useRef, useCallback } from "react";
-import { BUTTON_MAP, getStickAction, detectControllerType } from "../lib/gamepad";
+import { useCallback, useEffect, useRef } from "react";
+import { BUTTON_MAP, detectControllerType, getStickAction } from "../lib/gamepad";
 import { useInputStore } from "../stores/inputStore";
 import type { GamepadAction } from "../types/input";
 

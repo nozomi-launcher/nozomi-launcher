@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
-import type { LaunchContext, ProtonVersion } from "../types/steam";
 import type { EnvVar, Profile } from "../types/profile";
+import type { LaunchContext, ProtonVersion } from "../types/steam";
 
 export async function getLaunchContext(): Promise<LaunchContext | null> {
   return invoke("get_launch_context");

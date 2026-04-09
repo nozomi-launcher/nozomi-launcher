@@ -1,4 +1,4 @@
-import { useEffect, type RefObject } from "react";
+import { type RefObject, useEffect } from "react";
 import type { GamepadAction } from "../types/input";
 
 export function useGamepadAction(
@@ -12,9 +12,7 @@ export function useGamepadAction(
     if (!el) return;
 
     const listener = (e: Event) => {
-      const action = (e as CustomEvent).detail?.action as
-        | GamepadAction
-        | undefined;
+      const action = (e as CustomEvent).detail?.action as GamepadAction | undefined;
       if (action) handler(action);
     };
 

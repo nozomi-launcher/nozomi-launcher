@@ -1,4 +1,4 @@
-import { useAppStore, type Tab } from "../stores/appStore";
+import { type Tab, useAppStore } from "../stores/appStore";
 import ButtonGlyph from "./ButtonGlyph";
 
 const tabs: { id: Tab; label: string }[] = [

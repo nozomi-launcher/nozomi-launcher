@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useProfileStore } from "../stores/profileStore";
 import * as api from "../lib/tauri";
+import { useProfileStore } from "../stores/profileStore";
 import type { Profile } from "../types/profile";
 
 export default function ProfilesView() {

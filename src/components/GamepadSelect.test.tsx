@@ -1,7 +1,7 @@
-import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import GamepadSelect from "./GamepadSelect";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
 import { useInputStore } from "../stores/inputStore";
+import GamepadSelect from "./GamepadSelect";
 
 const options = [
   { value: "", label: "None" },
@@ -35,16 +35,12 @@ describe("GamepadSelect", () => {
   });
 
   it("renders selected option label", () => {
-    render(
-      <GamepadSelect options={options} value="a" onChange={() => {}} />,
-    );
+    render(<GamepadSelect options={options} value="a" onChange={() => {}} />);
     expect(screen.getByText("Option A")).toBeInTheDocument();
   });
 
   it("opens dropdown on click and shows options", () => {
-    render(
-      <GamepadSelect options={options} value="" onChange={() => {}} />,
-    );
+    render(<GamepadSelect options={options} value="" onChange={() => {}} />);
     fireEvent.click(screen.getByRole("button"));
     expect(screen.getByRole("listbox")).toBeInTheDocument();
     expect(screen.getAllByRole("option")).toHaveLength(3);
@@ -67,9 +63,7 @@ describe("GamepadSelect", () => {
   });
 
   it("closes on Escape", () => {
-    render(
-      <GamepadSelect options={options} value="" onChange={() => {}} />,
-    );
+    render(<GamepadSelect options={options} value="" onChange={() => {}} />);
     fireEvent.click(screen.getByRole("button"));
     expect(screen.getByRole("listbox")).toBeInTheDocument();
     fireEvent.keyDown(window, { key: "Escape" });
@@ -77,26 +71,20 @@ describe("GamepadSelect", () => {
   });
 
   it("sets navigation lock when opened", () => {
-    render(
-      <GamepadSelect options={options} value="" onChange={() => {}} />,
-    );
+    render(<GamepadSelect options={options} value="" onChange={() => {}} />);
     fireEvent.click(screen.getByRole("button"));
     expect(useInputStore.getState().navigationLock).toBe(true);
   });
 
   it("clears navigation lock when closed", () => {
-    render(
-      <GamepadSelect options={options} value="" onChange={() => {}} />,
-    );
+    render(<GamepadSelect options={options} value="" onChange={() => {}} />);
     fireEvent.click(screen.getByRole("button"));
     fireEvent.keyDown(window, { key: "Escape" });
     expect(useInputStore.getState().navigationLock).toBe(false);
   });
 
   it("has data-focusable on trigger button", () => {
-    render(
-      <GamepadSelect options={options} value="" onChange={() => {}} />,
-    );
+    render(<GamepadSelect options={options} value="" onChange={() => {}} />);
     expect(screen.getByRole("button")).toHaveAttribute("data-focusable");
   });
 });

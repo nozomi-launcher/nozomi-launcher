@@ -6,7 +6,7 @@ on:
 
 jobs:
   frontend:
-    name: Frontend (lint + test)
+    name: Frontend (format + lint + test + audit)
     runs-on: ubuntu-latest
 
     steps:
@@ -25,14 +25,28 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Check formatting
+        run: pnpm format:check
+
       - name: Type check
         run: pnpm exec tsc --noEmit
 
       - name: Run tests
         run: pnpm test
 
+      - name: Dependency audit
+        run: pnpm audit --prod
+
+      - name: Bundle size report
+        run: |
+          pnpm exec vite build 2>&1 | tee /tmp/build-output.txt
+          echo "## Bundle Size" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          grep -E '(dist/|\.js|\.css)' /tmp/build-output.txt >> "$GITHUB_STEP_SUMMARY" || echo "See build output above" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
   rust:
-    name: Rust (clippy + test)
+    name: Rust (format + clippy + test + audit)
     runs-on: ubuntu-latest
 
     steps:
@@ -52,7 +66,11 @@ jobs:
             libjavascriptcoregtk-4.1-dev
 
       - name: Install Rust stable
-        run: rustup update stable && rustup default stable && rustup component add clippy
+        run: rustup update stable && rustup default stable && rustup component add clippy rustfmt
+
+      - name: Check formatting
+        working-directory: src-tauri
+        run: cargo fmt --check
 
       - name: Clippy
         working-directory: src-tauri
@@ -61,3 +79,10 @@ jobs:
       - name: Run tests
         working-directory: src-tauri
         run: cargo test
+
+      - name: Install cargo-audit
+        run: cargo install cargo-audit
+
+      - name: Dependency audit
+        working-directory: src-tauri
+        run: cargo audit

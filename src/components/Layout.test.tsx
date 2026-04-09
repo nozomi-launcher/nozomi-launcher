@@ -1,7 +1,7 @@
-import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
-import Layout from "./Layout";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
 import { useAppStore } from "../stores/appStore";
+import Layout from "./Layout";
 
 describe("Layout", () => {
   afterEach(() => {

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { InputMode, ControllerType } from "../types/input";
+import type { ControllerType, InputMode } from "../types/input";
 
 interface InputStore {
   inputMode: InputMode;

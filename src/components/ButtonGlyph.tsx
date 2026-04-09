@@ -1,5 +1,5 @@
-import { useInputStore } from "../stores/inputStore";
 import { getGlyph } from "../lib/glyphs";
+import { useInputStore } from "../stores/inputStore";
 import type { GamepadAction } from "../types/input";
 
 interface ButtonGlyphProps {

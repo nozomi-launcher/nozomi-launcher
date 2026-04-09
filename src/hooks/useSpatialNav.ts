@@ -1,14 +1,14 @@
 import { useCallback } from "react";
-import type { GamepadAction } from "../types/input";
-import { useAppStore, type Tab } from "../stores/appStore";
+import { type Tab, useAppStore } from "../stores/appStore";
 import { useInputStore } from "../stores/inputStore";
+import type { GamepadAction } from "../types/input";
 
 const TABS: Tab[] = ["launch", "modding", "profiles"];
 
 function getFocusableElements(): HTMLElement[] {
-  return Array.from(
-    document.querySelectorAll<HTMLElement>("[data-focusable]"),
-  ).filter((el) => !el.closest('[data-tab-active="false"]'));
+  return Array.from(document.querySelectorAll<HTMLElement>("[data-focusable]")).filter(
+    (el) => !el.closest('[data-tab-active="false"]'),
+  );
 }
 
 function getRect(el: HTMLElement) {
@@ -25,10 +25,7 @@ function getRect(el: HTMLElement) {
 
 type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
 
-function findNearest(
-  current: HTMLElement,
-  direction: Direction,
-): HTMLElement | null {
+function findNearest(current: HTMLElement, direction: Direction): HTMLElement | null {
   const elements = getFocusableElements().filter((el) => el !== current);
   if (elements.length === 0) return null;
 
@@ -84,9 +81,7 @@ export function useSpatialNav() {
         setActiveTab(next);
         // Focus the newly active tab button after render
         requestAnimationFrame(() => {
-          const tabButton = document.querySelector<HTMLElement>(
-            `[data-tab-id="${next}"]`,
-          );
+          const tabButton = document.querySelector<HTMLElement>(`[data-tab-id="${next}"]`);
           tabButton?.focus();
         });
         return;

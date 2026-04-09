@@ -1,7 +1,7 @@
-import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
-import ButtonGlyph from "./ButtonGlyph";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
 import { useInputStore } from "../stores/inputStore";
+import ButtonGlyph from "./ButtonGlyph";
 
 describe("ButtonGlyph", () => {
   afterEach(() => {

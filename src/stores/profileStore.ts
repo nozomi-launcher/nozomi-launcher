@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import type { EnvVar, Profile } from "../types/profile";
 import * as api from "../lib/tauri";
+import type { EnvVar, Profile } from "../types/profile";
 
 interface ProfileStore {
   profiles: Profile[];

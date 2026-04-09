@@ -1,4 +1,4 @@
-import type { GamepadAction, ControllerType, InputMode } from "../types/input";
+import type { ControllerType, GamepadAction, InputMode } from "../types/input";
 
 export interface GlyphInfo {
   label: string;
@@ -62,7 +62,6 @@ export function getGlyph(
   controllerType: ControllerType | null,
   action: GamepadAction,
 ): GlyphInfo {
-  const key =
-    inputMode === "keyboard" ? "keyboard" : (controllerType ?? "generic");
+  const key = inputMode === "keyboard" ? "keyboard" : (controllerType ?? "generic");
   return GLYPH_MAP[key]?.[action] ?? { label: action };
 }

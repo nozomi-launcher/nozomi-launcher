@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { BUTTON_MAP, getStickAction, detectControllerType } from "./gamepad";
+import { describe, expect, it } from "vitest";
+import { BUTTON_MAP, detectControllerType, getStickAction } from "./gamepad";
 
 describe("gamepad button mapping", () => {
   it("maps A button to CONFIRM", () => {

@@ -1,12 +1,12 @@
 import Layout from "./components/Layout";
 import TabPanel from "./components/TabPanel";
+import { useGamepad } from "./hooks/useGamepad";
+import { useSpatialNav } from "./hooks/useSpatialNav";
+import { useAppStore } from "./stores/appStore";
+import { useInputStore } from "./stores/inputStore";
 import GameLaunchView from "./views/GameLaunchView";
 import ModdingView from "./views/ModdingView";
 import ProfilesView from "./views/ProfilesView";
-import { useAppStore } from "./stores/appStore";
-import { useInputStore } from "./stores/inputStore";
-import { useGamepad } from "./hooks/useGamepad";
-import { useSpatialNav } from "./hooks/useSpatialNav";
 
 function App() {
   const activeTab = useAppStore((s) => s.activeTab);

@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect, useCallback } from "react";
-import { useInputStore } from "../stores/inputStore";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useGamepadAction } from "../hooks/useGamepadAction";
-import ButtonPrompt from "./ButtonPrompt";
+import { useInputStore } from "../stores/inputStore";
 import type { GamepadAction } from "../types/input";
+import ButtonPrompt from "./ButtonPrompt";
 
 export interface GamepadSelectOption {
   value: string;
@@ -55,10 +55,7 @@ export default function GamepadSelect({
   useEffect(() => {
     if (!isOpen) return;
     const handleClick = (e: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         close();
       }
     };
@@ -149,11 +146,7 @@ export default function GamepadSelect({
       {/* Dropdown */}
       {isOpen && (
         <div className="absolute z-50 w-full mt-1 bg-steam-dark border border-steam-border rounded shadow-lg shadow-black/40 overflow-hidden">
-          <ul
-            ref={listRef}
-            className="max-h-48 overflow-y-auto"
-            role="listbox"
-          >
+          <ul ref={listRef} className="max-h-48 overflow-y-auto" role="listbox">
             {options.map((option, index) => (
               <li
                 key={option.value}

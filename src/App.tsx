@@ -6,6 +6,7 @@ import { useAppStore } from "./stores/appStore";
 import { useInputStore } from "./stores/inputStore";
 import GameLaunchView from "./views/GameLaunchView";
 import ModdingView from "./views/ModdingView";
+import ProtonView from "./views/ProtonView";
 import ProfilesView from "./views/ProfilesView";
 
 function App() {
@@ -23,6 +24,9 @@ function App() {
         </TabPanel>
         <TabPanel active={activeTab === "modding"}>
           <ModdingView />
+        </TabPanel>
+        <TabPanel active={activeTab === "compat"}>
+          <ProtonView />
         </TabPanel>
         <TabPanel active={activeTab === "profiles"}>
           <ProfilesView />

@@ -10,4 +10,5 @@ export type GamepadAction =
   | "CONFIRM"
   | "CANCEL"
   | "TAB_LEFT"
-  | "TAB_RIGHT";
+  | "TAB_RIGHT"
+  | "REFRESH";

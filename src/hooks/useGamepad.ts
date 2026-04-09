@@ -123,6 +123,7 @@ export function useGamepad(onAction: (action: GamepadAction) => void) {
       ArrowDown: "DOWN",
       ArrowLeft: "LEFT",
       ArrowRight: "RIGHT",
+      r: "REFRESH",
     };
 
     const handleMouseMove = () => setInputMode("keyboard");

@@ -9,6 +9,7 @@ A Steam compatibility tool with a modern UI, inspired by [luxtorpeda](https://gi
 - **Gamepad Navigation** — Full gamepad support with spatial navigation (D-pad, sticks, shoulder buttons for tab switching)
 - **Steam Integration** — Works as a Steam compatibility tool or standalone for testing
 - **Proton Discovery** — Automatically detects installed Proton versions (official and GE-Proton)
+- **Proton-GE Browser** — View available Proton-GE releases from GitHub with installed/selected status
 
 ## Tech Stack
 
@@ -58,14 +59,14 @@ pnpm exec tsc --noEmit
 ```
 src/                          React frontend
   components/                 Shared UI components (GamepadSelect, TabPanel, ButtonGlyph, etc.)
-  views/                      Page-level views (Game Launch, Modding, Profiles)
+  views/                      Page-level views (Game Launch, Modding, Proton, Profiles)
   hooks/                      Custom hooks (gamepad polling, spatial nav, gamepad action events)
   stores/                     Zustand state stores (app, profile, input)
   lib/                        Utilities (Tauri invoke wrappers, gamepad mappings, glyph system)
   types/                      TypeScript type definitions
 src-tauri/src/                Rust backend
   commands/                   Tauri command handlers
-  models/                     Data models (Profile, LaunchContext)
+  models/                     Data models (Profile, LaunchContext, ProtonGeRelease, AppSettings)
   steam/                      Steam integration (env detection, compat tool parsing)
 compat/                       Steam compatibility tool files (VDF manifests, launcher script)
 ```

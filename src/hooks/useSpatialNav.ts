@@ -1,9 +1,10 @@
 import { useCallback } from "react";
 import { type Tab, useAppStore } from "../stores/appStore";
 import { useInputStore } from "../stores/inputStore";
+import { useProtonGeStore } from "../stores/protonGeStore";
 import type { GamepadAction } from "../types/input";
 
-const TABS: Tab[] = ["launch", "modding", "profiles"];
+const TABS: Tab[] = ["launch", "modding", "compat", "profiles"];
 
 function getFocusableElements(): HTMLElement[] {
   return Array.from(document.querySelectorAll<HTMLElement>("[data-focusable]")).filter(
@@ -69,6 +70,8 @@ export function useSpatialNav() {
   const activeTab = useAppStore((s) => s.activeTab);
   const setActiveTab = useAppStore((s) => s.setActiveTab);
   const navigationLock = useInputStore((s) => s.navigationLock);
+  const fetchReleases = useProtonGeStore((s) => s.fetchReleases);
+  const fetchInstalled = useProtonGeStore((s) => s.fetchInstalled);
 
   const handleAction = useCallback(
     (action: GamepadAction) => {
@@ -93,11 +96,25 @@ export function useSpatialNav() {
             ? TABS[(idx + 1) % TABS.length]
             : TABS[(idx - 1 + TABS.length) % TABS.length];
         setActiveTab(next);
-        // Focus the newly active tab button after render
+        // Focus the first focusable element in the new tab after render
         requestAnimationFrame(() => {
-          const tabButton = document.querySelector<HTMLElement>(`[data-tab-id="${next}"]`);
-          tabButton?.focus();
+          const panel = document.querySelector<HTMLElement>(`[data-tab-active="true"]`);
+          const firstFocusable = panel?.querySelector<HTMLElement>("[data-focusable]");
+          if (firstFocusable) {
+            firstFocusable.focus();
+          } else {
+            const tabButton = document.querySelector<HTMLElement>(`[data-tab-id="${next}"]`);
+            tabButton?.focus();
+          }
         });
+        return;
+      }
+
+      if (action === "REFRESH") {
+        if (activeTab === "compat") {
+          fetchReleases();
+          fetchInstalled();
+        }
         return;
       }
 
@@ -124,7 +141,7 @@ export function useSpatialNav() {
       const next = findNearest(active, action as Direction);
       next?.focus();
     },
-    [activeTab, setActiveTab, navigationLock],
+    [activeTab, setActiveTab, navigationLock, fetchReleases, fetchInstalled],
   );
 
   return handleAction;

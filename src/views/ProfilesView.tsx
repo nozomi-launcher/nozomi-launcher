@@ -9,6 +9,7 @@ export default function ProfilesView() {
   const protonVersion = useProfileStore((s) => s.protonVersion);
   const fetchProfiles = useProfileStore((s) => s.fetchProfiles);
   const [newName, setNewName] = useState("");
+  const [isEditingName, setIsEditingName] = useState(false);
 
   useEffect(() => {
     fetchProfiles();
@@ -29,6 +30,7 @@ export default function ProfilesView() {
 
     await api.saveProfile(profile);
     setNewName("");
+    setIsEditingName(false);
     await fetchProfiles();
   };
 
@@ -45,29 +47,62 @@ export default function ProfilesView() {
           Save Current Configuration
         </h2>
         <div className="flex gap-2">
-          <input
-            type="text"
-            data-focusable
-            placeholder="Profile name..."
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSave()}
-            className="flex-1 bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
-              placeholder:text-steam-text-dim/50
-              focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
-              hover:border-steam-accent/50 transition-colors"
-          />
-          <button
-            data-focusable
-            onClick={handleSave}
-            disabled={!newName.trim()}
-            className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
-              hover:bg-steam-accent/30 hover:border-steam-accent transition-all
-              focus:outline-none focus:ring-2 focus:ring-steam-accent
-              disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
-          >
-            Save
-          </button>
+          {isEditingName ? (
+            <>
+              <input
+                type="text"
+                data-focusable
+                autoFocus
+                placeholder="Profile name..."
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSave();
+                  if (e.key === "Escape") {
+                    setNewName("");
+                    setIsEditingName(false);
+                  }
+                }}
+                className="flex-1 bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
+                  placeholder:text-steam-text-dim/50
+                  focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
+                  hover:border-steam-accent/50 transition-colors"
+              />
+              <button
+                data-focusable
+                onClick={handleSave}
+                disabled={!newName.trim()}
+                className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
+                  hover:bg-steam-accent/30 hover:border-steam-accent transition-all
+                  focus:outline-none focus:ring-2 focus:ring-steam-accent
+                  disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
+              >
+                Save
+              </button>
+              <button
+                data-focusable
+                onClick={() => {
+                  setNewName("");
+                  setIsEditingName(false);
+                }}
+                className="px-4 py-2 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-sm font-medium uppercase tracking-wider
+                  hover:bg-steam-mid/50 hover:border-steam-accent/50 transition-all
+                  focus:outline-none focus:ring-2 focus:ring-steam-accent"
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <button
+              data-focusable
+              onClick={() => setIsEditingName(true)}
+              className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
+                hover:bg-steam-accent/30 hover:border-steam-accent transition-all
+                focus:outline-none focus:ring-2 focus:ring-steam-accent"
+            >
+              New Profile
+            </button>
+          )}
         </div>
         <p className="text-xs text-steam-text-dim/60 mt-2">
           Saves the current environment variables and Proton version as a reusable profile.

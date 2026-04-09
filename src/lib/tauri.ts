@@ -1,5 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import type { EnvVar, Profile } from "../types/profile";
+import type { ProtonGeRelease } from "../types/protonGe";
+import type { AppSettings } from "../types/settings";
 import type { LaunchContext, ProtonVersion } from "../types/steam";
 
 export async function getLaunchContext(): Promise<LaunchContext | null> {
@@ -24,6 +26,18 @@ export async function deleteProfile(id: string): Promise<void> {
 
 export async function loadProfile(id: string): Promise<Profile> {
   return invoke("load_profile", { id });
+}
+
+export async function getSettings(): Promise<AppSettings> {
+  return invoke("get_settings");
+}
+
+export async function saveSettings(settings: AppSettings): Promise<void> {
+  return invoke("save_settings", { settings });
+}
+
+export async function fetchProtonGeReleases(): Promise<ProtonGeRelease[]> {
+  return invoke("fetch_proton_ge_releases");
 }
 
 export async function launchGame(options: {

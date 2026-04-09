@@ -32,11 +32,11 @@ pnpm exec tsc --noEmit
 | Directory | Purpose |
 |---|---|
 | `src/components/` | Shared UI components (GamepadSelect, TabPanel, ButtonGlyph, ButtonPrompt, TabBar, EnvVarEditor, Layout) |
-| `src/views/` | Page-level views (GameLaunchView, ModdingView, ProfilesView) |
+| `src/views/` | Page-level views (GameLaunchView, ModdingView, ProtonView, ProfilesView) |
 | `src/hooks/` | Custom React hooks (useGamepad, useSpatialNav, useGamepadAction) |
-| `src/stores/` | Zustand state stores (appStore, profileStore, inputStore) |
+| `src/stores/` | Zustand state stores (appStore, compatStore, profileStore, protonGeStore, inputStore) |
 | `src/lib/` | Utilities (tauri.ts invoke wrappers, gamepad.ts mappings, glyphs.ts glyph system) |
-| `src/types/` | TypeScript type definitions (input.ts, profile.ts, steam.ts) |
+| `src/types/` | TypeScript type definitions (input.ts, profile.ts, protonGe.ts, settings.ts, steam.ts) |
 | `src-tauri/src/` | Rust backend (Tauri commands, models, Steam integration) |
 | `compat/` | Steam compatibility tool VDF manifests and launcher script |
 

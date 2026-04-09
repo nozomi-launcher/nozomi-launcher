@@ -5,10 +5,7 @@ use std::path::PathBuf;
 pub fn steam_root() -> Option<PathBuf> {
     let home = dirs::home_dir()?;
 
-    let candidates = [
-        home.join(".steam/root"),
-        home.join(".local/share/Steam"),
-    ];
+    let candidates = [home.join(".steam/root"), home.join(".local/share/Steam")];
 
     candidates.into_iter().find(|p| p.exists())
 }
@@ -17,7 +14,11 @@ pub fn steam_root() -> Option<PathBuf> {
 pub fn compat_tools_dir() -> Option<PathBuf> {
     let root = steam_root()?;
     let dir = root.join("compatibilitytools.d");
-    if dir.exists() { Some(dir) } else { None }
+    if dir.exists() {
+        Some(dir)
+    } else {
+        None
+    }
 }
 
 /// Get Steam library folder paths from libraryfolders.vdf.

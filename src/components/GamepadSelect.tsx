@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useGamepadAction } from "../hooks/useGamepadAction";
 import { useInputStore } from "../stores/inputStore";
 import type { GamepadAction } from "../types/input";
@@ -28,6 +28,7 @@ export default function GamepadSelect({
   const listRef = useRef<HTMLUListElement>(null);
   const setNavigationLock = useInputStore((s) => s.setNavigationLock);
   const inputMode = useInputStore((s) => s.inputMode);
+  const listboxId = useId();
 
   const selectedOption = options.find((o) => o.value === value);
 
@@ -51,6 +52,13 @@ export default function GamepadSelect({
     [onChange, close],
   );
 
+  // Ensure navigationLock is cleared on unmount
+  useEffect(() => {
+    return () => {
+      setNavigationLock(false);
+    };
+  }, [setNavigationLock]);
+
   // Close on click outside
   useEffect(() => {
     if (!isOpen) return;
@@ -61,6 +69,20 @@ export default function GamepadSelect({
     };
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
+  }, [isOpen, close]);
+
+  // Close when focus leaves the container
+  useEffect(() => {
+    if (!isOpen) return;
+    const container = containerRef.current;
+    if (!container) return;
+    const handleFocusOut = (e: FocusEvent) => {
+      if (!container.contains(e.relatedTarget as Node)) {
+        close();
+      }
+    };
+    container.addEventListener("focusout", handleFocusOut);
+    return () => container.removeEventListener("focusout", handleFocusOut);
   }, [isOpen, close]);
 
   // Scroll highlighted item into view
@@ -130,6 +152,9 @@ export default function GamepadSelect({
       <button
         data-focusable
         type="button"
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-controls={isOpen ? listboxId : undefined}
         onClick={() => (isOpen ? close() : open())}
         className="w-full flex items-center justify-between bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text text-left
           focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
@@ -150,7 +175,7 @@ export default function GamepadSelect({
       {/* Dropdown */}
       {isOpen && (
         <div className="absolute z-50 w-full mt-1 bg-steam-dark border border-steam-border rounded shadow-lg shadow-black/40 overflow-hidden">
-          <ul ref={listRef} className="max-h-48 overflow-y-auto" role="listbox">
+          <ul ref={listRef} id={listboxId} className="max-h-48 overflow-y-auto" role="listbox">
             {options.map((option, index) => (
               <li
                 key={option.value}

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { BUTTON_MAP, detectControllerType, getStickAction } from "../lib/gamepad";
 import { useInputStore } from "../stores/inputStore";
-import type { GamepadAction } from "../types/input";
+import type { ControllerType, GamepadAction } from "../types/input";
 
 const REPEAT_DELAY = 300;
 const REPEAT_RATE = 120;
@@ -10,7 +10,7 @@ export function useGamepad(onAction: (action: GamepadAction) => void) {
   const setInputMode = useInputStore((s) => s.setInputMode);
   const setControllerType = useInputStore((s) => s.setControllerType);
   const prevButtons = useRef<Record<number, boolean>>({});
-  const prevControllerType = useRef<string | null>(null);
+  const prevControllerType = useRef<ControllerType | null>(null);
   const prevStickAction = useRef<GamepadAction | null>(null);
   const repeatTimers = useRef<Record<string, number>>({});
   const rafId = useRef<number>(0);
@@ -133,7 +133,8 @@ export function useGamepad(onAction: (action: GamepadAction) => void) {
       const tag = (ev.target as HTMLElement)?.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA") return;
 
-      const action = KEY_MAP[ev.key];
+      const key = ev.key.length === 1 ? ev.key.toLowerCase() : ev.key;
+      const action = KEY_MAP[key];
       if (action) {
         ev.preventDefault();
         onActionRef.current(action);

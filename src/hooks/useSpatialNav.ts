@@ -72,6 +72,20 @@ export function useSpatialNav() {
 
   const handleAction = useCallback(
     (action: GamepadAction) => {
+      // When navigation is locked, dispatch a custom event instead of navigating
+      if (navigationLock) {
+        const active = document.activeElement as HTMLElement;
+        if (active) {
+          active.dispatchEvent(
+            new CustomEvent("gamepad-action", {
+              detail: { action },
+              bubbles: true,
+            }),
+          );
+        }
+        return;
+      }
+
       if (action === "TAB_LEFT" || action === "TAB_RIGHT") {
         const idx = TABS.indexOf(activeTab);
         const next =
@@ -84,20 +98,6 @@ export function useSpatialNav() {
           const tabButton = document.querySelector<HTMLElement>(`[data-tab-id="${next}"]`);
           tabButton?.focus();
         });
-        return;
-      }
-
-      // When navigation is locked, dispatch a custom event instead of navigating
-      if (navigationLock) {
-        const active = document.activeElement as HTMLElement;
-        if (active) {
-          active.dispatchEvent(
-            new CustomEvent("gamepad-action", {
-              detail: { action },
-              bubbles: true,
-            }),
-          );
-        }
         return;
       }
 

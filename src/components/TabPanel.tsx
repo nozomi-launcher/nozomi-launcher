@@ -9,6 +9,8 @@ export default function TabPanel({ active, children }: TabPanelProps) {
   return (
     <div
       data-tab-active={active ? "true" : "false"}
+      aria-hidden={!active}
+      inert={!active ? true : undefined}
       className={`transition-opacity duration-200 ease-in-out
         ${
           active

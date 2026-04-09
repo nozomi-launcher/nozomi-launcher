@@ -53,4 +53,26 @@ describe("TabPanel", () => {
     const panel = screen.getByText("Visible").parentElement;
     expect(panel?.className).toContain("pointer-events-auto");
   });
+
+  it("sets aria-hidden and inert when inactive", () => {
+    render(
+      <TabPanel active={false}>
+        <p>Hidden</p>
+      </TabPanel>,
+    );
+    const panel = screen.getByText("Hidden").parentElement;
+    expect(panel).toHaveAttribute("aria-hidden", "true");
+    expect(panel).toHaveAttribute("inert");
+  });
+
+  it("does not set aria-hidden or inert when active", () => {
+    render(
+      <TabPanel active={true}>
+        <p>Visible</p>
+      </TabPanel>,
+    );
+    const panel = screen.getByText("Visible").parentElement;
+    expect(panel).toHaveAttribute("aria-hidden", "false");
+    expect(panel).not.toHaveAttribute("inert");
+  });
 });

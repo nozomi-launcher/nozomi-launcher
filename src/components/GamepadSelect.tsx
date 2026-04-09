@@ -77,24 +77,28 @@ export default function GamepadSelect({
       switch (e.key) {
         case "ArrowDown":
           e.preventDefault();
+          e.stopImmediatePropagation();
           setHighlightedIndex((i) => Math.min(i + 1, options.length - 1));
           break;
         case "ArrowUp":
           e.preventDefault();
+          e.stopImmediatePropagation();
           setHighlightedIndex((i) => Math.max(i - 1, 0));
           break;
         case "Enter":
           e.preventDefault();
+          e.stopImmediatePropagation();
           select(options[highlightedIndex].value);
           break;
         case "Escape":
           e.preventDefault();
+          e.stopImmediatePropagation();
           close();
           break;
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown, { capture: true });
+    return () => window.removeEventListener("keydown", handleKeyDown, { capture: true });
   }, [isOpen, highlightedIndex, options, select, close]);
 
   // Handle gamepad actions when open

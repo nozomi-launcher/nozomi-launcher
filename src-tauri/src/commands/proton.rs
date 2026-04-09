@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use std::path::PathBuf;
 
 use crate::steam::env;
 
@@ -55,6 +54,6 @@ pub fn list_proton_versions() -> Vec<ProtonVersion> {
     versions
 }
 
-fn has_proton_executable(dir: &PathBuf) -> bool {
+fn has_proton_executable(dir: &std::path::Path) -> bool {
     dir.join("proton").exists()
 }

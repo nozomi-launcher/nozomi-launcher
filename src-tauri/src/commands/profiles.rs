@@ -1,5 +1,5 @@
 use crate::models::profile::Profile;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 fn profiles_dir() -> PathBuf {
     let config = dirs::config_dir().unwrap_or_else(|| dirs::home_dir().unwrap().join(".config"));
@@ -8,7 +8,7 @@ fn profiles_dir() -> PathBuf {
     dir
 }
 
-pub fn list_profiles_in(dir: &PathBuf) -> Result<Vec<Profile>, String> {
+pub fn list_profiles_in(dir: &Path) -> Result<Vec<Profile>, String> {
     let mut profiles = Vec::new();
 
     let entries = std::fs::read_dir(dir).map_err(|e| e.to_string())?;
@@ -27,14 +27,14 @@ pub fn list_profiles_in(dir: &PathBuf) -> Result<Vec<Profile>, String> {
     Ok(profiles)
 }
 
-pub fn save_profile_in(dir: &PathBuf, profile: &Profile) -> Result<(), String> {
+pub fn save_profile_in(dir: &Path, profile: &Profile) -> Result<(), String> {
     std::fs::create_dir_all(dir).map_err(|e| e.to_string())?;
     let path = dir.join(format!("{}.json", profile.id));
     let content = serde_json::to_string_pretty(profile).map_err(|e| e.to_string())?;
     std::fs::write(&path, content).map_err(|e| e.to_string())
 }
 
-pub fn delete_profile_in(dir: &PathBuf, id: &str) -> Result<(), String> {
+pub fn delete_profile_in(dir: &Path, id: &str) -> Result<(), String> {
     let path = dir.join(format!("{id}.json"));
     if path.exists() {
         std::fs::remove_file(&path).map_err(|e| e.to_string())?;
@@ -42,7 +42,7 @@ pub fn delete_profile_in(dir: &PathBuf, id: &str) -> Result<(), String> {
     Ok(())
 }
 
-pub fn load_profile_in(dir: &PathBuf, id: &str) -> Result<Profile, String> {
+pub fn load_profile_in(dir: &Path, id: &str) -> Result<Profile, String> {
     let path = dir.join(format!("{id}.json"));
     let content = std::fs::read_to_string(&path).map_err(|e| e.to_string())?;
     serde_json::from_str(&content).map_err(|e| e.to_string())

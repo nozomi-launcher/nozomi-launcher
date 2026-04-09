@@ -1,11 +1,14 @@
 import { useCallback } from "react";
 import type { GamepadAction } from "../types/input";
 import { useAppStore, type Tab } from "../stores/appStore";
+import { useInputStore } from "../stores/inputStore";
 
 const TABS: Tab[] = ["launch", "modding", "profiles"];
 
 function getFocusableElements(): HTMLElement[] {
-  return Array.from(document.querySelectorAll<HTMLElement>("[data-focusable]"));
+  return Array.from(
+    document.querySelectorAll<HTMLElement>("[data-focusable]"),
+  ).filter((el) => !el.closest('[data-tab-active="false"]'));
 }
 
 function getRect(el: HTMLElement) {
@@ -68,6 +71,7 @@ function findNearest(
 export function useSpatialNav() {
   const activeTab = useAppStore((s) => s.activeTab);
   const setActiveTab = useAppStore((s) => s.setActiveTab);
+  const navigationLock = useInputStore((s) => s.navigationLock);
 
   const handleAction = useCallback(
     (action: GamepadAction) => {
@@ -78,11 +82,27 @@ export function useSpatialNav() {
             ? TABS[(idx + 1) % TABS.length]
             : TABS[(idx - 1 + TABS.length) % TABS.length];
         setActiveTab(next);
-        // Focus first focusable element in new view after render
+        // Focus the newly active tab button after render
         requestAnimationFrame(() => {
-          const elements = getFocusableElements();
-          elements[0]?.focus();
+          const tabButton = document.querySelector<HTMLElement>(
+            `[data-tab-id="${next}"]`,
+          );
+          tabButton?.focus();
         });
+        return;
+      }
+
+      // When navigation is locked, dispatch a custom event instead of navigating
+      if (navigationLock) {
+        const active = document.activeElement as HTMLElement;
+        if (active) {
+          active.dispatchEvent(
+            new CustomEvent("gamepad-action", {
+              detail: { action },
+              bubbles: true,
+            }),
+          );
+        }
         return;
       }
 
@@ -109,7 +129,7 @@ export function useSpatialNav() {
       const next = findNearest(active, action as Direction);
       next?.focus();
     },
-    [activeTab, setActiveTab],
+    [activeTab, setActiveTab, navigationLock],
   );
 
   return handleAction;

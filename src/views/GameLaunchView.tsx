@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useProfileStore } from "../stores/profileStore";
 import EnvVarEditor from "../components/EnvVarEditor";
+import GamepadSelect from "../components/GamepadSelect";
 import * as api from "../lib/tauri";
 import type { LaunchContext, ProtonVersion } from "../types/steam";
 
@@ -16,6 +17,7 @@ export default function GameLaunchView() {
   const profiles = useProfileStore((s) => s.profiles);
   const applyProfile = useProfileStore((s) => s.applyProfile);
   const fetchProfiles = useProfileStore((s) => s.fetchProfiles);
+  const [selectedProfileId, setSelectedProfileId] = useState("");
 
   useEffect(() => {
     api.getLaunchContext().then(setLaunchContext);
@@ -49,6 +51,12 @@ export default function GameLaunchView() {
       const version = protonVersions.find((v) => v.name === value);
       setProtonVersion(value, version?.path ?? null);
     }
+  };
+
+  const handleProfileChange = (value: string) => {
+    setSelectedProfileId(value);
+    const profile = profiles.find((p) => p.id === value);
+    if (profile) applyProfile(profile);
   };
 
   return (
@@ -86,24 +94,15 @@ export default function GameLaunchView() {
         <h3 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-2">
           Profile
         </h3>
-        <select
-          data-focusable
-          onChange={(e) => {
-            const profile = profiles.find((p) => p.id === e.target.value);
-            if (profile) applyProfile(profile);
-          }}
-          className="w-full bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
-            focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
-            hover:border-steam-accent/50 transition-colors"
-          defaultValue=""
-        >
-          <option value="">No profile</option>
-          {profiles.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.name}
-            </option>
-          ))}
-        </select>
+        <GamepadSelect
+          options={[
+            { value: "", label: "No profile" },
+            ...profiles.map((p) => ({ value: p.id, label: p.name })),
+          ]}
+          value={selectedProfileId}
+          onChange={handleProfileChange}
+          placeholder="No profile"
+        />
       </section>
 
       {/* Proton / Compatibility */}
@@ -111,21 +110,15 @@ export default function GameLaunchView() {
         <h3 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-2">
           Compatibility
         </h3>
-        <select
-          data-focusable
+        <GamepadSelect
+          options={[
+            { value: "", label: "Native (no Proton)" },
+            ...protonVersions.map((v) => ({ value: v.name, label: v.name })),
+          ]}
           value={protonVersion ?? ""}
-          onChange={(e) => handleProtonChange(e.target.value)}
-          className="w-full bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
-            focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
-            hover:border-steam-accent/50 transition-colors"
-        >
-          <option value="">Native (no Proton)</option>
-          {protonVersions.map((v) => (
-            <option key={v.name} value={v.name}>
-              {v.name}
-            </option>
-          ))}
-        </select>
+          onChange={handleProtonChange}
+          placeholder="Native (no Proton)"
+        />
       </section>
 
       {/* Environment Variables */}

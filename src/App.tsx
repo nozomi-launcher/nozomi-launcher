@@ -1,4 +1,5 @@
 import Layout from "./components/Layout";
+import TabPanel from "./components/TabPanel";
 import GameLaunchView from "./views/GameLaunchView";
 import ModdingView from "./views/ModdingView";
 import ProfilesView from "./views/ProfilesView";
@@ -17,9 +18,15 @@ function App() {
   return (
     <div className={inputMode === "gamepad" ? "cursor-none" : ""}>
       <Layout>
-        {activeTab === "launch" && <GameLaunchView />}
-        {activeTab === "modding" && <ModdingView />}
-        {activeTab === "profiles" && <ProfilesView />}
+        <TabPanel active={activeTab === "launch"}>
+          <GameLaunchView />
+        </TabPanel>
+        <TabPanel active={activeTab === "modding"}>
+          <ModdingView />
+        </TabPanel>
+        <TabPanel active={activeTab === "profiles"}>
+          <ProfilesView />
+        </TabPanel>
       </Layout>
     </div>
   );

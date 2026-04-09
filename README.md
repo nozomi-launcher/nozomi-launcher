@@ -22,7 +22,7 @@ A Steam compatibility tool with a modern UI, inspired by [luxtorpeda](https://gi
 
 ## Prerequisites
 
-- [Rust](https://rustup.rs/) (1.77.2+)
+- [Rust](https://rustup.rs/) (stable)
 - [Node.js](https://nodejs.org/) (20+)
 - [pnpm](https://pnpm.io/) (10+)
 - Tauri v2 system dependencies — see [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/)
@@ -57,11 +57,11 @@ pnpm exec tsc --noEmit
 
 ```
 src/                          React frontend
-  components/                 Shared UI components
+  components/                 Shared UI components (GamepadSelect, TabPanel, ButtonGlyph, etc.)
   views/                      Page-level views (Game Launch, Modding, Profiles)
-  hooks/                      Custom hooks (gamepad, spatial nav)
-  stores/                     Zustand state stores
-  lib/                        Utilities (Tauri invoke wrappers, gamepad mappings)
+  hooks/                      Custom hooks (gamepad polling, spatial nav, gamepad action events)
+  stores/                     Zustand state stores (app, profile, input)
+  lib/                        Utilities (Tauri invoke wrappers, gamepad mappings, glyph system)
   types/                      TypeScript type definitions
 src-tauri/src/                Rust backend
   commands/                   Tauri command handlers
@@ -86,7 +86,9 @@ cp src-tauri/target/release/nozomi-launcher ~/.steam/root/compatibilitytools.d/n
 
 Then restart Steam. Nozomi Launcher will appear as a compatibility tool option in game properties.
 
-## Gamepad Controls
+## Controls
+
+### Gamepad
 
 | Input          | Action                    |
 |----------------|---------------------------|
@@ -96,7 +98,17 @@ Then restart Steam. Nozomi Launcher will appear as a compatibility tool option i
 | LB             | Previous tab              |
 | RB             | Next tab                  |
 
-The UI automatically detects input mode — cursor hides on gamepad input and reappears on mouse movement.
+### Keyboard
+
+| Input          | Action                    |
+|----------------|---------------------------|
+| Arrow keys     | Navigate between elements |
+| Enter          | Confirm / Click           |
+| Esc            | Cancel / Unfocus          |
+| Q              | Previous tab              |
+| E              | Next tab                  |
+
+The UI automatically detects the input device. Cursor hides on gamepad input and reappears on mouse movement. Button glyphs update dynamically to match the connected controller (Xbox, PlayStation, Nintendo, or keyboard labels).
 
 ## Profiles
 

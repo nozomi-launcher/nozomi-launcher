@@ -45,7 +45,22 @@ pnpm exec tsc --noEmit  # TypeScript type check
 - Tauri invoke wrappers go in `src/lib/tauri.ts`
 - Types go in `src/types/`
 - All interactive elements must have `data-focusable` attribute for gamepad navigation
-- Use Tailwind CSS classes; include `focus:ring-2 focus:ring-blue-500` on focusable elements
+- Custom hooks go in `src/hooks/`
+- Use Tailwind CSS classes with the custom Steam theme (`steam-*` colors); include `focus:ring-2 focus:ring-steam-accent` on focusable elements
+- Use `GamepadSelect` instead of native `<select>` elements for gamepad compatibility
+- Use `ButtonGlyph` / `ButtonPrompt` components to show input-device-aware button labels
+
+### Testing
+- Every new feature or component must include unit tests
+- Test files live alongside source files with `.test.ts` / `.test.tsx` suffix
+- Use Vitest + React Testing Library for frontend tests
+- Use `#[cfg(test)] mod tests` for Rust tests
+- Run `pnpm test` and `pnpm exec tsc --noEmit` before considering work complete
+
+### Documentation
+- Update relevant docs in `docs/` and `README.md` when adding features or refactoring
+- Keep the Gamepad Controls table in README.md in sync with actual keybindings
+- Keep `docs/developing.md` project structure section current when adding new directories or files
 
 ### General
 - Profiles are JSON files stored in `~/.config/nozomi-launcher/profiles/`

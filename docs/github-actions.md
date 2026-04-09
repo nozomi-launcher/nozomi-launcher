@@ -19,6 +19,12 @@ Triggered manually via the GitHub Actions UI. Reads the version from `src-tauri/
 
 ## Release artifacts
 
+### Dependabot (`dependabot.yml`)
+
+Configured in `.github/dependabot.yml`. Scans weekly for vulnerable or outdated dependencies in both npm (`/`) and Cargo (`/src-tauri`) ecosystems. Opens PRs automatically when updates are available.
+
+## Release artifacts
+
 Each release includes:
 
 - `nozomi-launcher_<version>_amd64.deb` - Debian package

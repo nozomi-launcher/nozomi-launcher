@@ -3,8 +3,8 @@
 ## Prerequisites
 
 - [Rust](https://rustup.rs/) (stable)
-- [Node.js](https://nodejs.org/) 24+
-- [pnpm](https://pnpm.io/) 10.33+
+- [Node.js](https://nodejs.org/) 20+
+- [pnpm](https://pnpm.io/) 10+
 - Linux system dependencies:
 
 ```bash

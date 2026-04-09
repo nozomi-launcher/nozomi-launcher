@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { useProfileStore } from "./profileStore";
+import { beforeEach, describe, expect, it } from "vitest";
 import type { Profile } from "../types/profile";
+import { useProfileStore } from "./profileStore";
 
 describe("profileStore", () => {
   beforeEach(() => {

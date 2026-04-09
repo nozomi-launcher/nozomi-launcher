@@ -7,9 +7,11 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+    <div className="min-h-screen bg-steam-darkest text-steam-text flex flex-col">
       <TabBar />
-      <main className="flex-1 p-6 overflow-auto">{children}</main>
+      <main className="flex-1 p-6 overflow-auto relative bg-gradient-to-b from-steam-dark to-steam-darkest">
+        {children}
+      </main>
     </div>
   );
 }

@@ -4,7 +4,7 @@
 
 - [Rust](https://rustup.rs/) (stable)
 - [Node.js](https://nodejs.org/) 24+
-- [pnpm](https://pnpm.io/) 10.33+
+- [pnpm](https://pnpm.io/) 10+
 - Linux system dependencies:
 
 ```bash

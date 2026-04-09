@@ -44,7 +44,10 @@ mod tests {
         ];
         let ctx = parse_launch_context_from_args(&args).unwrap();
         assert_eq!(ctx.verb, "waitforexitandrun");
-        assert_eq!(ctx.game_path, "/home/user/.steam/steamapps/common/Game/game.exe");
+        assert_eq!(
+            ctx.game_path,
+            "/home/user/.steam/steamapps/common/Game/game.exe"
+        );
     }
 
     #[test]

@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import TabBar from "./TabBar";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { useAppStore } from "../stores/appStore";
+import TabBar from "./TabBar";
 
 describe("TabBar", () => {
   beforeEach(() => {

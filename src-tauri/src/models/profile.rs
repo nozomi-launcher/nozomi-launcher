@@ -27,13 +27,11 @@ mod tests {
         Profile {
             id: "test-id".to_string(),
             name: "My Profile".to_string(),
-            env_vars: vec![
-                EnvVar {
-                    key: "DXVK_HUD".to_string(),
-                    value: "fps".to_string(),
-                    enabled: true,
-                },
-            ],
+            env_vars: vec![EnvVar {
+                key: "DXVK_HUD".to_string(),
+                value: "fps".to_string(),
+                enabled: true,
+            }],
             proton_version: Some("GE-Proton9-1".to_string()),
             created_at: "2026-01-01T00:00:00Z".to_string(),
             updated_at: "2026-01-01T00:00:00Z".to_string(),

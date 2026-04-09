@@ -1,14 +1,16 @@
-import { useEffect, useRef, useCallback } from "react";
-import { BUTTON_MAP, getStickAction } from "../lib/gamepad";
+import { useCallback, useEffect, useRef } from "react";
+import { BUTTON_MAP, detectControllerType, getStickAction } from "../lib/gamepad";
 import { useInputStore } from "../stores/inputStore";
-import type { GamepadAction } from "../types/input";
+import type { ControllerType, GamepadAction } from "../types/input";
 
 const REPEAT_DELAY = 300;
 const REPEAT_RATE = 120;
 
 export function useGamepad(onAction: (action: GamepadAction) => void) {
   const setInputMode = useInputStore((s) => s.setInputMode);
+  const setControllerType = useInputStore((s) => s.setControllerType);
   const prevButtons = useRef<Record<number, boolean>>({});
+  const prevControllerType = useRef<ControllerType | null>(null);
   const prevStickAction = useRef<GamepadAction | null>(null);
   const repeatTimers = useRef<Record<string, number>>({});
   const rafId = useRef<number>(0);
@@ -47,8 +49,17 @@ export function useGamepad(onAction: (action: GamepadAction) => void) {
     const poll = () => {
       const gamepads = navigator.getGamepads();
 
+      let foundGamepad = false;
       for (const gp of gamepads) {
         if (!gp) continue;
+        foundGamepad = true;
+
+        // Detect controller type
+        const detected = detectControllerType(gp.id);
+        if (detected !== prevControllerType.current) {
+          prevControllerType.current = detected;
+          setControllerType(detected);
+        }
 
         // Check buttons
         for (const [btnIdx, action] of Object.entries(BUTTON_MAP)) {
@@ -82,6 +93,11 @@ export function useGamepad(onAction: (action: GamepadAction) => void) {
         break; // Only use first connected gamepad
       }
 
+      if (!foundGamepad && prevControllerType.current !== null) {
+        prevControllerType.current = null;
+        setControllerType(null);
+      }
+
       rafId.current = requestAnimationFrame(poll);
     };
 
@@ -93,12 +109,37 @@ export function useGamepad(onAction: (action: GamepadAction) => void) {
         stopRepeat(key);
       }
     };
-  }, [fireAction, startRepeat, stopRepeat]);
+  }, [fireAction, startRepeat, stopRepeat, setControllerType]);
 
   // Detect mouse movement to switch back to keyboard mode
+  // and handle keyboard shortcuts that mirror gamepad actions
   useEffect(() => {
+    const KEY_MAP: Record<string, GamepadAction> = {
+      q: "TAB_LEFT",
+      e: "TAB_RIGHT",
+      Enter: "CONFIRM",
+      Escape: "CANCEL",
+      ArrowUp: "UP",
+      ArrowDown: "DOWN",
+      ArrowLeft: "LEFT",
+      ArrowRight: "RIGHT",
+    };
+
     const handleMouseMove = () => setInputMode("keyboard");
-    const handleKeyDown = () => setInputMode("keyboard");
+    const handleKeyDown = (ev: KeyboardEvent) => {
+      setInputMode("keyboard");
+
+      // Don't fire shortcuts when typing in an input/textarea
+      const tag = (ev.target as HTMLElement)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+
+      const key = ev.key.length === 1 ? ev.key.toLowerCase() : ev.key;
+      const action = KEY_MAP[key];
+      if (action) {
+        ev.preventDefault();
+        onActionRef.current(action);
+      }
+    };
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("keydown", handleKeyDown);

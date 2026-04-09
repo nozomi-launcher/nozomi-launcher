@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useProfileStore } from "../stores/profileStore";
 import EnvVarEditor from "../components/EnvVarEditor";
+import GamepadSelect from "../components/GamepadSelect";
 import * as api from "../lib/tauri";
+import { useProfileStore } from "../stores/profileStore";
 import type { LaunchContext, ProtonVersion } from "../types/steam";
 
 export default function GameLaunchView() {
@@ -16,6 +17,7 @@ export default function GameLaunchView() {
   const profiles = useProfileStore((s) => s.profiles);
   const applyProfile = useProfileStore((s) => s.applyProfile);
   const fetchProfiles = useProfileStore((s) => s.fetchProfiles);
+  const [selectedProfileId, setSelectedProfileId] = useState("");
 
   useEffect(() => {
     api.getLaunchContext().then(setLaunchContext);
@@ -51,73 +53,70 @@ export default function GameLaunchView() {
     }
   };
 
+  const handleProfileChange = (value: string) => {
+    setSelectedProfileId(value);
+    const profile = profiles.find((p) => p.id === value);
+    if (profile) applyProfile(profile);
+  };
+
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto space-y-4">
       {/* Game Info */}
-      <section className="bg-gray-800 rounded-lg p-4">
-        <h2 className="text-xl font-bold mb-2">Game</h2>
+      <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
+        <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-2">
+          Game
+        </h2>
         {isStandalone ? (
-          <div className="text-gray-400">
-            <p className="text-sm">Standalone mode — no game selected</p>
-            <p className="text-xs mt-1 text-gray-500">
+          <div>
+            <p className="text-sm text-steam-text-dim">Standalone mode — no game selected</p>
+            <p className="text-xs mt-1 text-steam-text-dim/60">
               Launch from Steam as a compatibility tool to select a game.
             </p>
           </div>
         ) : (
           <div>
-            <p className="text-sm text-gray-300 font-mono break-all">{gamePath}</p>
+            <p className="text-sm text-steam-text font-mono break-all">{gamePath}</p>
             {launchContext?.steamAppId && (
-              <p className="text-xs text-gray-500 mt-1">
-                App ID: {launchContext.steamAppId}
-              </p>
+              <p className="text-xs text-steam-text-dim mt-1">App ID: {launchContext.steamAppId}</p>
             )}
           </div>
         )}
       </section>
 
       {/* Profile Selector */}
-      <section className="bg-gray-800 rounded-lg p-4">
-        <h3 className="text-lg font-semibold mb-2">Profile</h3>
-        <select
-          data-focusable
-          onChange={(e) => {
-            const profile = profiles.find((p) => p.id === e.target.value);
-            if (profile) applyProfile(profile);
-          }}
-          className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm
-            focus:outline-none focus:ring-2 focus:ring-blue-500"
-          defaultValue=""
-        >
-          <option value="">No profile</option>
-          {profiles.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.name}
-            </option>
-          ))}
-        </select>
+      <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
+        <h3 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-2">
+          Profile
+        </h3>
+        <GamepadSelect
+          options={[
+            { value: "", label: "No profile" },
+            ...profiles.map((p) => ({ value: p.id, label: p.name })),
+          ]}
+          value={selectedProfileId}
+          onChange={handleProfileChange}
+          placeholder="No profile"
+        />
       </section>
 
       {/* Proton / Compatibility */}
-      <section className="bg-gray-800 rounded-lg p-4">
-        <h3 className="text-lg font-semibold mb-2">Compatibility</h3>
-        <select
-          data-focusable
+      <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
+        <h3 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-2">
+          Compatibility
+        </h3>
+        <GamepadSelect
+          options={[
+            { value: "", label: "Native (no Proton)" },
+            ...protonVersions.map((v) => ({ value: v.name, label: v.name })),
+          ]}
           value={protonVersion ?? ""}
-          onChange={(e) => handleProtonChange(e.target.value)}
-          className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm
-            focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Native (no Proton)</option>
-          {protonVersions.map((v) => (
-            <option key={v.name} value={v.name}>
-              {v.name}
-            </option>
-          ))}
-        </select>
+          onChange={handleProtonChange}
+          placeholder="Native (no Proton)"
+        />
       </section>
 
       {/* Environment Variables */}
-      <section className="bg-gray-800 rounded-lg p-4">
+      <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
         <EnvVarEditor />
       </section>
 
@@ -126,12 +125,12 @@ export default function GameLaunchView() {
         data-focusable
         onClick={handleLaunch}
         disabled={!gamePath || launching}
-        className={`w-full py-3 rounded-lg text-lg font-bold transition-colors
-          focus:outline-none focus:ring-2 focus:ring-blue-400
+        className={`w-full py-3 rounded text-lg font-bold uppercase tracking-wider transition-all
+          focus:outline-none focus:ring-2 focus:ring-steam-green-bright
           ${
             gamePath && !launching
-              ? "bg-blue-600 hover:bg-blue-700 text-white"
-              : "bg-gray-700 text-gray-500 cursor-not-allowed"
+              ? "bg-gradient-to-r from-steam-green to-steam-green-bright text-white shadow-lg shadow-steam-green/20 hover:shadow-steam-green-bright/30 hover:brightness-110"
+              : "bg-steam-mid/40 text-steam-text-dim cursor-not-allowed border border-steam-border"
           }`}
       >
         {launching ? "Launching..." : "Launch Game"}

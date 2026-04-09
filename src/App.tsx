@@ -1,11 +1,12 @@
 import Layout from "./components/Layout";
+import TabPanel from "./components/TabPanel";
+import { useGamepad } from "./hooks/useGamepad";
+import { useSpatialNav } from "./hooks/useSpatialNav";
+import { useAppStore } from "./stores/appStore";
+import { useInputStore } from "./stores/inputStore";
 import GameLaunchView from "./views/GameLaunchView";
 import ModdingView from "./views/ModdingView";
 import ProfilesView from "./views/ProfilesView";
-import { useAppStore } from "./stores/appStore";
-import { useInputStore } from "./stores/inputStore";
-import { useGamepad } from "./hooks/useGamepad";
-import { useSpatialNav } from "./hooks/useSpatialNav";
 
 function App() {
   const activeTab = useAppStore((s) => s.activeTab);
@@ -17,9 +18,15 @@ function App() {
   return (
     <div className={inputMode === "gamepad" ? "cursor-none" : ""}>
       <Layout>
-        {activeTab === "launch" && <GameLaunchView />}
-        {activeTab === "modding" && <ModdingView />}
-        {activeTab === "profiles" && <ProfilesView />}
+        <TabPanel active={activeTab === "launch"}>
+          <GameLaunchView />
+        </TabPanel>
+        <TabPanel active={activeTab === "modding"}>
+          <ModdingView />
+        </TabPanel>
+        <TabPanel active={activeTab === "profiles"}>
+          <ProfilesView />
+        </TabPanel>
       </Layout>
     </div>
   );

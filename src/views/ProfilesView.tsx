@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import * as api from "../lib/tauri";
-import { useCompatStore } from "../stores/compatStore";
 import { useProfileStore } from "../stores/profileStore";
 import type { Profile } from "../types/profile";
 
 export default function ProfilesView() {
   const profiles = useProfileStore((s) => s.profiles);
   const envVars = useProfileStore((s) => s.envVars);
-  const globalCompatTool = useCompatStore((s) => s.globalCompatTool);
   const fetchProfiles = useProfileStore((s) => s.fetchProfiles);
   const [newName, setNewName] = useState("");
   const [isEditingName, setIsEditingName] = useState(false);
@@ -20,11 +18,15 @@ export default function ProfilesView() {
     const name = newName.trim();
     if (!name) return;
 
+    // New profiles inherit from the global profile by default — null fields
+    // mean "fall back to global". The user can later associate the profile
+    // with a game from the Launch view.
     const profile: Profile = {
       id: crypto.randomUUID(),
       name,
       envVars: envVars.map((ev) => ({ ...ev })),
-      protonVersion: globalCompatTool,
+      protonVersion: null,
+      steamAppId: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -106,7 +108,8 @@ export default function ProfilesView() {
           )}
         </div>
         <p className="text-xs text-steam-text-dim/60 mt-2">
-          Saves the current environment variables and Proton version as a reusable profile.
+          Saves the current environment variables as a reusable profile. Unset fields fall back to
+          global defaults.
         </p>
       </section>
 
@@ -130,6 +133,7 @@ export default function ProfilesView() {
                   <p className="text-xs text-steam-text-dim">
                     {profile.envVars.length} env var{profile.envVars.length !== 1 && "s"}
                     {profile.protonVersion && ` · ${profile.protonVersion}`}
+                    {profile.steamAppId && ` · App ${profile.steamAppId}`}
                   </p>
                 </div>
                 <button

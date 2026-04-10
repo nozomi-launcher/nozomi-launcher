@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EnvVarEditor from "../components/EnvVarEditor";
 import GamepadSelect from "../components/GamepadSelect";
 import * as api from "../lib/tauri";
 import { useAppStore } from "../stores/appStore";
 import { resolveCompatTool, useCompatStore } from "../stores/compatStore";
 import { useProfileStore } from "../stores/profileStore";
+import type { Profile } from "../types/profile";
 import type { LaunchContext, ProtonVersion } from "../types/steam";
 
 export default function GameLaunchView() {
@@ -18,6 +19,9 @@ export default function GameLaunchView() {
   const applyProfile = useProfileStore((s) => s.applyProfile);
   const fetchProfiles = useProfileStore((s) => s.fetchProfiles);
   const [selectedProfileId, setSelectedProfileId] = useState("");
+  const [isNamingGameProfile, setIsNamingGameProfile] = useState(false);
+  const [newGameProfileName, setNewGameProfileName] = useState("");
+  const autoMatchAttempted = useRef(false);
 
   const globalCompatTool = useCompatStore((s) => s.globalCompatTool);
   const initialized = useCompatStore((s) => s.initialized);
@@ -40,6 +44,25 @@ export default function GameLaunchView() {
       autoSelectLatest(protonVersions);
     }
   }, [initialized, protonVersions, autoSelectLatest]);
+
+  // Auto-apply a profile matching the current game's Steam app ID. Runs once
+  // per view mount to avoid clobbering manual profile choices.
+  const gameProfile =
+    profiles.find((p) => p.steamAppId && p.steamAppId === launchContext?.steamAppId) ?? null;
+  useEffect(() => {
+    if (autoMatchAttempted.current) return;
+    if (!launchContext || profiles.length === 0) return;
+    autoMatchAttempted.current = true;
+
+    const appId = launchContext.steamAppId;
+    if (!appId) return;
+
+    const match = profiles.find((p) => p.steamAppId === appId);
+    if (match) {
+      setSelectedProfileId(match.id);
+      applyProfile(match);
+    }
+  }, [launchContext, profiles, applyProfile]);
 
   const gamePath = launchContext?.gamePath ?? null;
   const isStandalone = !launchContext;
@@ -81,6 +104,42 @@ export default function GameLaunchView() {
     if (profile) applyProfile(profile);
   };
 
+  const handleSaveGameProfile = async () => {
+    const appId = launchContext?.steamAppId;
+    if (!appId) return;
+
+    // If a profile is already associated with this game, update it in place;
+    // otherwise require a name and create a new one.
+    const now = new Date().toISOString();
+    let profile: Profile;
+    if (gameProfile) {
+      profile = {
+        ...gameProfile,
+        envVars: envVars.map((ev) => ({ ...ev })),
+        protonVersion: effectiveCompatTool,
+        updatedAt: now,
+      };
+    } else {
+      const name = newGameProfileName.trim();
+      if (!name) return;
+      profile = {
+        id: crypto.randomUUID(),
+        name,
+        envVars: envVars.map((ev) => ({ ...ev })),
+        protonVersion: effectiveCompatTool,
+        steamAppId: appId,
+        createdAt: now,
+        updatedAt: now,
+      };
+    }
+
+    await api.saveProfile(profile);
+    await fetchProfiles();
+    setSelectedProfileId(profile.id);
+    setNewGameProfileName("");
+    setIsNamingGameProfile(false);
+  };
+
   return (
     <div className="max-w-3xl mx-auto space-y-4">
       {/* Game Info */}
@@ -119,6 +178,84 @@ export default function GameLaunchView() {
           onChange={handleProfileChange}
           placeholder="No profile"
         />
+
+        {/* Per-game profile association */}
+        {launchContext?.steamAppId && (
+          <div className="mt-3 pt-3 border-t border-steam-border/50">
+            {gameProfile ? (
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-steam-text-dim">
+                  Profile for this game:{" "}
+                  <span className="text-steam-accent">{gameProfile.name}</span>
+                </p>
+                <button
+                  data-focusable
+                  onClick={handleSaveGameProfile}
+                  className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
+                    hover:bg-steam-accent/30 hover:border-steam-accent transition-all
+                    focus:outline-none focus:ring-2 focus:ring-steam-accent"
+                >
+                  Update
+                </button>
+              </div>
+            ) : isNamingGameProfile ? (
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  data-focusable
+                  autoFocus
+                  placeholder="Profile name..."
+                  value={newGameProfileName}
+                  onChange={(e) => setNewGameProfileName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleSaveGameProfile();
+                    if (e.key === "Escape") {
+                      setNewGameProfileName("");
+                      setIsNamingGameProfile(false);
+                    }
+                  }}
+                  className="flex-1 bg-steam-mid/50 border border-steam-border rounded px-3 py-1.5 text-sm text-steam-text
+                    placeholder:text-steam-text-dim/50
+                    focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
+                    hover:border-steam-accent/50 transition-colors"
+                />
+                <button
+                  data-focusable
+                  onClick={handleSaveGameProfile}
+                  disabled={!newGameProfileName.trim()}
+                  className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
+                    hover:bg-steam-accent/30 hover:border-steam-accent transition-all
+                    focus:outline-none focus:ring-2 focus:ring-steam-accent
+                    disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
+                >
+                  Save
+                </button>
+                <button
+                  data-focusable
+                  onClick={() => {
+                    setNewGameProfileName("");
+                    setIsNamingGameProfile(false);
+                  }}
+                  className="px-3 py-1 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-xs font-medium uppercase tracking-wider
+                    hover:bg-steam-mid/50 hover:border-steam-accent/50 transition-all
+                    focus:outline-none focus:ring-2 focus:ring-steam-accent"
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <button
+                data-focusable
+                onClick={() => setIsNamingGameProfile(true)}
+                className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
+                  hover:bg-steam-accent/30 hover:border-steam-accent transition-all
+                  focus:outline-none focus:ring-2 focus:ring-steam-accent"
+              >
+                Save for this game
+              </button>
+            )}
+          </div>
+        )}
       </section>
 
       {/* Compatibility Tool */}

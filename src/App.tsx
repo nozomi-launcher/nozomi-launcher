@@ -6,8 +6,8 @@ import { useAppStore } from "./stores/appStore";
 import { useInputStore } from "./stores/inputStore";
 import GameLaunchView from "./views/GameLaunchView";
 import ModdingView from "./views/ModdingView";
-import ProtonView from "./views/ProtonView";
 import ProfilesView from "./views/ProfilesView";
+import ProtonView from "./views/ProtonView";
 
 function App() {
   const activeTab = useAppStore((s) => s.activeTab);

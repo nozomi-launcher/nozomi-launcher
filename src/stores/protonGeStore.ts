@@ -34,8 +34,12 @@ export const useProtonGeStore = create<ProtonGeStore>((set) => ({
   },
 
   fetchInstalled: async () => {
-    const installedVersions = await api.listProtonVersions();
-    set({ installedVersions });
+    try {
+      const installedVersions = await api.listProtonVersions();
+      set({ installedVersions });
+    } catch (e) {
+      set({ error: String(e) });
+    }
   },
 }));
 

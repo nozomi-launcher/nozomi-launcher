@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import * as api from "../lib/tauri";
+import { useCompatStore } from "../stores/compatStore";
 import { useProfileStore } from "../stores/profileStore";
 import type { Profile } from "../types/profile";
 
 export default function ProfilesView() {
   const profiles = useProfileStore((s) => s.profiles);
   const envVars = useProfileStore((s) => s.envVars);
-  const protonVersion = useProfileStore((s) => s.protonVersion);
+  const globalCompatTool = useCompatStore((s) => s.globalCompatTool);
   const fetchProfiles = useProfileStore((s) => s.fetchProfiles);
   const [newName, setNewName] = useState("");
   const [isEditingName, setIsEditingName] = useState(false);
@@ -23,7 +24,7 @@ export default function ProfilesView() {
       id: crypto.randomUUID(),
       name,
       envVars: envVars.map((ev) => ({ ...ev })),
-      protonVersion,
+      protonVersion: globalCompatTool,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

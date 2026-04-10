@@ -1,23 +1,33 @@
 use crate::models::proton_ge::ProtonGeRelease;
+use std::time::Duration;
 
 const RELEASES_URL: &str =
     "https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases?per_page=100";
+const REQUEST_TIMEOUT_SECS: u64 = 30;
 
 #[tauri::command]
 pub async fn fetch_proton_ge_releases() -> Result<Vec<ProtonGeRelease>, String> {
-    let client = reqwest::Client::new();
+    let client = reqwest::Client::builder()
+        .timeout(Duration::from_secs(REQUEST_TIMEOUT_SECS))
+        .build()
+        .map_err(|e| format!("Failed to create HTTP client: {e}"))?;
     let response = client
         .get(RELEASES_URL)
         .header("User-Agent", "nozomi-launcher")
         .send()
         .await
-        .map_err(|e| format!("Failed to fetch releases: {e}"))?;
+        .map_err(|e| {
+            if e.is_timeout() {
+                format!(
+                    "Request to GitHub timed out after {REQUEST_TIMEOUT_SECS} seconds. Please try again."
+                )
+            } else {
+                format!("Failed to fetch releases: {e}")
+            }
+        })?;
 
     if !response.status().is_success() {
-        return Err(format!(
-            "GitHub API returned status {}",
-            response.status()
-        ));
+        return Err(format!("GitHub API returned status {}", response.status()));
     }
 
     let json: Vec<serde_json::Value> = response
@@ -42,10 +52,7 @@ pub fn parse_releases(releases: &[serde_json::Value]) -> Vec<ProtonGeRelease> {
                     .is_some_and(|n| n.ends_with(".tar.gz"))
             })?;
 
-            let download_url = tar_asset
-                .get("browser_download_url")?
-                .as_str()?
-                .to_string();
+            let download_url = tar_asset.get("browser_download_url")?.as_str()?.to_string();
             let asset_size = tar_asset.get("size")?.as_u64()?;
 
             Some(ProtonGeRelease {

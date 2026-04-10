@@ -48,7 +48,7 @@ export default function GameLaunchView() {
   const resolvedProtonPath =
     protonVersions.find((v) => v.name === effectiveCompatTool)?.path ?? null;
 
-  const canLaunch = gamePath && effectiveCompatTool && resolvedProtonPath && !launching;
+  const canLaunch = Boolean(gamePath && effectiveCompatTool && resolvedProtonPath && !launching);
 
   const handleLaunch = async () => {
     if (!gamePath || !resolvedProtonPath) return;
@@ -138,9 +138,7 @@ export default function GameLaunchView() {
                 )}
               </div>
             ) : (
-              <p className="text-sm text-steam-red-bright">
-                No compatibility tool selected
-              </p>
+              <p className="text-sm text-steam-red-bright">No compatibility tool selected</p>
             )}
           </div>
           <button

@@ -1,22 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ButtonGlyph from "../components/ButtonGlyph";
 import { useAppStore } from "../stores/appStore";
 import { useCompatStore } from "../stores/compatStore";
-import {
-  groupVersions,
-  mergeVersions,
-  useProtonGeStore,
-} from "../stores/protonGeStore";
+import { groupVersions, mergeVersions, useProtonGeStore } from "../stores/protonGeStore";
 import type { ProtonGeStatus } from "../types/protonGe";
 
 function StatusBadge({ status }: { status: ProtonGeStatus }) {
   const styles = {
-    available:
-      "bg-steam-mid/30 text-steam-text-dim border border-steam-border/50",
-    installed:
-      "bg-steam-green/20 text-steam-green-bright border border-steam-green/40",
-    selected:
-      "bg-steam-accent/20 text-steam-accent border border-steam-accent/40",
+    available: "bg-steam-mid/30 text-steam-text-dim border border-steam-border/50",
+    installed: "bg-steam-green/20 text-steam-green-bright border border-steam-green/40",
+    selected: "bg-steam-accent/20 text-steam-accent border border-steam-accent/40",
   };
 
   const labels = {
@@ -58,14 +51,18 @@ export default function ProtonView() {
   const setGlobalCompatTool = useCompatStore((s) => s.setGlobalCompatTool);
   const setActiveTab = useAppStore((s) => s.setActiveTab);
 
-  const versions = mergeVersions(releases, installedVersions, globalCompatTool);
-  const groups = groupVersions(versions);
+  const versions = useMemo(
+    () => mergeVersions(releases, installedVersions, globalCompatTool),
+    [releases, installedVersions, globalCompatTool],
+  );
+  const groups = useMemo(() => groupVersions(versions), [versions]);
 
   const [activeMajor, setActiveMajor] = useState<string | null>(null);
 
-  // Auto-select first group when groups load
+  // Auto-select first group when groups load, or reset if active group no longer exists
   useEffect(() => {
-    if (groups.length > 0 && !activeMajor) {
+    if (groups.length === 0) return;
+    if (!activeMajor || !groups.some((g) => g.majorVersion === activeMajor)) {
       setActiveMajor(groups[0].majorVersion);
     }
   }, [groups, activeMajor]);
@@ -131,7 +128,10 @@ export default function ProtonView() {
           <p className="text-steam-text-dim text-sm">No versions found.</p>
         </div>
       ) : (
-        <div className="flex mx-4 mb-4 border border-steam-border rounded overflow-hidden" style={{ height: "calc(100vh - 10rem)" }}>
+        <div
+          className="flex mx-4 mb-4 border border-steam-border rounded overflow-hidden"
+          style={{ height: "calc(100vh - 10rem)" }}
+        >
           {/* Sidebar: major versions */}
           <nav className="w-48 flex-shrink-0 bg-steam-darkest border-r border-steam-border overflow-y-auto">
             {groups.map((group) => {
@@ -197,9 +197,7 @@ export default function ProtonView() {
                 ))}
               </div>
             ) : (
-              <p className="p-4 text-steam-text-dim text-sm">
-                Select a version group.
-              </p>
+              <p className="p-4 text-steam-text-dim text-sm">Select a version group.</p>
             )}
           </div>
         </div>

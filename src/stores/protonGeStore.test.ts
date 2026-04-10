@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import type { ProtonGeRelease } from "../types/protonGe";
+import type { ProtonVersion } from "../types/steam";
 import {
   compareVersions,
   getMajorVersion,
@@ -6,8 +8,6 @@ import {
   mergeVersions,
   parseVersion,
 } from "./protonGeStore";
-import type { ProtonGeRelease } from "../types/protonGe";
-import type { ProtonVersion } from "../types/steam";
 
 const mockReleases: ProtonGeRelease[] = [
   {

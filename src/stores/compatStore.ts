@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import * as api from "../lib/tauri";
-import { compareVersions } from "./protonGeStore";
 import type { ProtonVersion } from "../types/steam";
+import { compareVersions } from "./protonGeStore";
 
 interface CompatStore {
   /** The globally persisted active compat tool name */
@@ -21,8 +21,13 @@ export const useCompatStore = create<CompatStore>((set, get) => ({
   initialized: false,
 
   loadSettings: async () => {
-    const settings = await api.getSettings();
-    set({ globalCompatTool: settings.activeCompatTool, initialized: true });
+    try {
+      const settings = await api.getSettings();
+      set({ globalCompatTool: settings.activeCompatTool, initialized: true });
+    } catch (e) {
+      console.error("Failed to load settings:", e);
+      set({ initialized: true });
+    }
   },
 
   setGlobalCompatTool: async (name) => {

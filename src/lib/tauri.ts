@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import type { EnvVar, Profile } from "../types/profile";
-import type { ProtonGeRelease } from "../types/protonGe";
+import type { FetchReleasesResult } from "../types/protonGe";
 import type { AppSettings } from "../types/settings";
 import type { LaunchContext, ProtonVersion } from "../types/steam";
 
@@ -36,7 +36,19 @@ export async function saveSettings(settings: AppSettings): Promise<void> {
   return invoke("save_settings", { settings });
 }
 
-export async function fetchProtonGeReleases(): Promise<ProtonGeRelease[]> {
+/**
+ * Merge-and-save helper. Reads the current settings from disk, applies the
+ * patch on top, and writes the result back. Prevents two stores that each
+ * own a different slice of AppSettings from clobbering each other.
+ */
+export async function updateSettings(patch: Partial<AppSettings>): Promise<AppSettings> {
+  const current = await getSettings();
+  const merged = { ...current, ...patch };
+  await saveSettings(merged);
+  return merged;
+}
+
+export async function fetchProtonGeReleases(): Promise<FetchReleasesResult> {
   return invoke("fetch_proton_ge_releases");
 }
 

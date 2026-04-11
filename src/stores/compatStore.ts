@@ -32,7 +32,7 @@ export const useCompatStore = create<CompatStore>((set, get) => ({
 
   setGlobalCompatTool: async (name) => {
     set({ globalCompatTool: name });
-    await api.saveSettings({ activeCompatTool: name });
+    await api.updateSettings({ activeCompatTool: name });
   },
 
   autoSelectLatest: async (installed) => {
@@ -52,7 +52,7 @@ export const useCompatStore = create<CompatStore>((set, get) => ({
     if (geVersions.length > 0) {
       const latest = geVersions[0].name;
       set({ globalCompatTool: latest });
-      await api.saveSettings({ activeCompatTool: latest });
+      await api.updateSettings({ activeCompatTool: latest });
     }
   },
 }));

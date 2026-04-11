@@ -3,6 +3,7 @@ import ButtonGlyph from "../components/ButtonGlyph";
 import { useAppStore } from "../stores/appStore";
 import { useCompatStore } from "../stores/compatStore";
 import { groupVersions, mergeVersions, useProtonGeStore } from "../stores/protonGeStore";
+import { useSettingsStore } from "../stores/settingsStore";
 import type { ProtonGeStatus } from "../types/protonGe";
 
 function StatusBadge({ status }: { status: ProtonGeStatus }) {
@@ -50,6 +51,11 @@ export default function ProtonView() {
   const globalCompatTool = useCompatStore((s) => s.globalCompatTool);
   const setGlobalCompatTool = useCompatStore((s) => s.setGlobalCompatTool);
   const setActiveTab = useAppStore((s) => s.setActiveTab);
+  const extraSources = useSettingsStore((s) => s.sources);
+  const settingsInitialized = useSettingsStore((s) => s.initialized);
+  const loadSources = useSettingsStore((s) => s.loadSources);
+  // Default source is always present, so "multiple" means at least one enabled extra.
+  const hasMultipleSources = extraSources.some((s) => s.enabled);
 
   const versions = useMemo(
     () => mergeVersions(releases, installedVersions, globalCompatTool),
@@ -71,6 +77,12 @@ export default function ProtonView() {
     fetchReleases();
     fetchInstalled();
   }, [fetchReleases, fetchInstalled]);
+
+  useEffect(() => {
+    if (!settingsInitialized) {
+      loadSources();
+    }
+  }, [settingsInitialized, loadSources]);
 
   const handleRefresh = () => {
     fetchReleases();
@@ -172,7 +184,14 @@ export default function ProtonView() {
                       hover:bg-steam-mid/20 transition-colors"
                   >
                     <div>
-                      <p className="text-sm text-steam-text">{version.tagName}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm text-steam-text">{version.tagName}</p>
+                        {hasMultipleSources && version.sourceName && (
+                          <span className="text-[10px] px-1.5 py-0.5 bg-steam-mid/30 border border-steam-border/50 rounded text-steam-text-dim uppercase tracking-wider">
+                            {version.sourceName}
+                          </span>
+                        )}
+                      </div>
                       {version.publishedAt && (
                         <p className="text-xs text-steam-text-dim">
                           {formatDate(version.publishedAt)}

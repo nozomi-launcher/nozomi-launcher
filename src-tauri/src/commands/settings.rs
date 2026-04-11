@@ -59,6 +59,7 @@ mod tests {
 
         let settings = AppSettings {
             active_compat_tool: Some("GE-Proton10-34".to_string()),
+            proton_manifest_sources: vec![],
         };
         save_settings_to(&path, &settings).unwrap();
         let loaded = get_settings_from(&path).unwrap();
@@ -75,6 +76,7 @@ mod tests {
 
         let settings = AppSettings {
             active_compat_tool: None,
+            proton_manifest_sources: vec![],
         };
         save_settings_to(&path, &settings).unwrap();
         assert!(path.exists());

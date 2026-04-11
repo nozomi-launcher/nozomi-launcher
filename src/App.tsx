@@ -8,6 +8,7 @@ import GameLaunchView from "./views/GameLaunchView";
 import ModdingView from "./views/ModdingView";
 import ProfilesView from "./views/ProfilesView";
 import ProtonView from "./views/ProtonView";
+import SettingsView from "./views/SettingsView";
 
 function App() {
   const activeTab = useAppStore((s) => s.activeTab);
@@ -30,6 +31,9 @@ function App() {
         </TabPanel>
         <TabPanel active={activeTab === "profiles"}>
           <ProfilesView />
+        </TabPanel>
+        <TabPanel active={activeTab === "settings"}>
+          <SettingsView />
         </TabPanel>
       </Layout>
     </div>

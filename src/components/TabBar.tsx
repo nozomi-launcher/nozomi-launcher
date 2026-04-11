@@ -6,6 +6,7 @@ const tabs: { id: Tab; label: string }[] = [
   { id: "modding", label: "Modding" },
   { id: "compat", label: "Compatibility Tools" },
   { id: "profiles", label: "Profiles" },
+  { id: "settings", label: "Settings" },
 ];
 
 export default function TabBar() {

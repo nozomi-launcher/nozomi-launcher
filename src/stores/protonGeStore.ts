@@ -5,11 +5,13 @@ import type {
   ProtonGeRelease,
   ProtonGeStatus,
   ProtonGeVersion,
+  SourceStatus,
 } from "../types/protonGe";
 import type { ProtonVersion } from "../types/steam";
 
 interface ProtonGeStore {
   releases: ProtonGeRelease[];
+  sourceStatus: SourceStatus[];
   installedVersions: ProtonVersion[];
   isLoading: boolean;
   error: string | null;
@@ -19,6 +21,7 @@ interface ProtonGeStore {
 
 export const useProtonGeStore = create<ProtonGeStore>((set) => ({
   releases: [],
+  sourceStatus: [],
   installedVersions: [],
   isLoading: false,
   error: null,
@@ -26,8 +29,12 @@ export const useProtonGeStore = create<ProtonGeStore>((set) => ({
   fetchReleases: async () => {
     set({ isLoading: true, error: null });
     try {
-      const releases = await api.fetchProtonGeReleases();
-      set({ releases, isLoading: false });
+      const result = await api.fetchProtonGeReleases();
+      set({
+        releases: result.releases,
+        sourceStatus: result.sourceStatus,
+        isLoading: false,
+      });
     } catch (e) {
       set({ error: String(e), isLoading: false });
     }
@@ -85,6 +92,7 @@ export function mergeVersions(
       tagName: r.tagName,
       publishedAt: r.publishedAt,
       status,
+      sourceName: r.sourceName ?? null,
     };
   });
 

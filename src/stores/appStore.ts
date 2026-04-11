@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type Tab = "launch" | "modding" | "profiles";
+export type Tab = "launch" | "modding" | "compat" | "profiles" | "settings";
 
 interface AppStore {
   activeTab: Tab;

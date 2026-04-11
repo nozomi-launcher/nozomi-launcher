@@ -4,7 +4,9 @@ import ButtonGlyph from "./ButtonGlyph";
 const tabs: { id: Tab; label: string }[] = [
   { id: "launch", label: "Game Launch" },
   { id: "modding", label: "Modding" },
+  { id: "compat", label: "Compatibility Tools" },
   { id: "profiles", label: "Profiles" },
+  { id: "settings", label: "Settings" },
 ];
 
 export default function TabBar() {

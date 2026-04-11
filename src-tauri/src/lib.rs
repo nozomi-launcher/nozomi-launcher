@@ -30,6 +30,9 @@ pub fn run() {
             commands::profiles::delete_profile,
             commands::profiles::load_profile,
             commands::proton::list_proton_versions,
+            commands::proton_ge::fetch_proton_ge_releases,
+            commands::settings::get_settings,
+            commands::settings::save_settings,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

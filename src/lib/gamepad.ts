@@ -11,6 +11,7 @@ export const BUTTON_MAP: Record<number, GamepadAction> = {
   13: "DOWN", // D-pad down
   14: "LEFT", // D-pad left
   15: "RIGHT", // D-pad right
+  3: "REFRESH", // Y (Xbox) / Triangle (PS) / X (Nintendo)
 };
 
 // Left stick axis thresholds

@@ -73,6 +73,7 @@ describe("profileStore", () => {
       name: "Test",
       envVars: [{ key: "FOO", value: "bar", enabled: true }],
       protonVersion: "Proton 9.0",
+      steamAppId: null,
       createdAt: "",
       updatedAt: "",
     };
@@ -92,6 +93,7 @@ describe("profileStore", () => {
       name: "Test",
       envVars: [{ key: "A", value: "1", enabled: true }],
       protonVersion: null,
+      steamAppId: null,
       createdAt: "",
       updatedAt: "",
     };

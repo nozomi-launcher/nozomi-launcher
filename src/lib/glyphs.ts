@@ -14,6 +14,7 @@ const GLYPH_MAP: Record<string, Record<GamepadAction, GlyphInfo>> = {
     DOWN: { label: "D-Down" },
     LEFT: { label: "D-Left" },
     RIGHT: { label: "D-Right" },
+    REFRESH: { label: "Y" },
   },
   playstation: {
     CONFIRM: { label: "Cross" },
@@ -24,6 +25,7 @@ const GLYPH_MAP: Record<string, Record<GamepadAction, GlyphInfo>> = {
     DOWN: { label: "D-Down" },
     LEFT: { label: "D-Left" },
     RIGHT: { label: "D-Right" },
+    REFRESH: { label: "Triangle" },
   },
   nintendo: {
     CONFIRM: { label: "B" },
@@ -34,6 +36,7 @@ const GLYPH_MAP: Record<string, Record<GamepadAction, GlyphInfo>> = {
     DOWN: { label: "D-Down" },
     LEFT: { label: "D-Left" },
     RIGHT: { label: "D-Right" },
+    REFRESH: { label: "X" },
   },
   generic: {
     CONFIRM: { label: "A" },
@@ -44,6 +47,7 @@ const GLYPH_MAP: Record<string, Record<GamepadAction, GlyphInfo>> = {
     DOWN: { label: "D-Down" },
     LEFT: { label: "D-Left" },
     RIGHT: { label: "D-Right" },
+    REFRESH: { label: "Y" },
   },
   keyboard: {
     CONFIRM: { label: "Enter" },
@@ -54,6 +58,7 @@ const GLYPH_MAP: Record<string, Record<GamepadAction, GlyphInfo>> = {
     DOWN: { label: "Down" },
     LEFT: { label: "Left" },
     RIGHT: { label: "Right" },
+    REFRESH: { label: "R" },
   },
 };
 

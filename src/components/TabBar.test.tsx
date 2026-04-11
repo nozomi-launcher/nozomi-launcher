@@ -10,10 +10,11 @@ describe("TabBar", () => {
 
   afterEach(cleanup);
 
-  it("renders all three tabs", () => {
+  it("renders all tabs", () => {
     render(<TabBar />);
     expect(screen.getByText("Game Launch")).toBeInTheDocument();
     expect(screen.getByText("Modding")).toBeInTheDocument();
+    expect(screen.getByText("Compatibility Tools")).toBeInTheDocument();
     expect(screen.getByText("Profiles")).toBeInTheDocument();
   });
 

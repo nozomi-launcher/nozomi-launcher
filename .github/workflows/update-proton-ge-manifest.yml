@@ -1,0 +1,60 @@
+name: Update Proton-GE Manifest
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    name: Regenerate manifest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate manifest from upstream releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p manifests
+          gh api "repos/GloriousEggroll/proton-ge-custom/releases?per_page=100" --paginate \
+            | jq -s 'add' \
+            | jq --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '{
+                schemaVersion: 1,
+                generatedAt: $ts,
+                source: "https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases",
+                releases: [
+                  .[]
+                  | . as $r
+                  | ($r.assets[]? | select(.name | endswith(".tar.gz")))
+                  | {
+                      tagName: $r.tag_name,
+                      publishedAt: $r.published_at,
+                      downloadUrl: .browser_download_url,
+                      assetSize: .size
+                    }
+                ]
+              }' > manifests/proton-ge.json
+
+      - name: Validate manifest
+        run: |
+          jq -e '.schemaVersion == 1
+                 and (.releases | length > 0)
+                 and all(.releases[]; .tagName and .downloadUrl and .assetSize > 0)' \
+             manifests/proton-ge.json > /dev/null
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -I '"generatedAt"' manifests/proton-ge.json; then
+            echo "No upstream changes; skipping commit."
+            exit 0
+          fi
+          git add manifests/proton-ge.json
+          git commit -m "chore: update proton-ge manifest"
+          git push

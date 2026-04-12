@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ButtonGlyph from "../components/ButtonGlyph";
 import { useAppStore } from "../stores/appStore";
 import { useCompatStore } from "../stores/compatStore";
@@ -69,6 +69,7 @@ export default function CompatToolsView() {
   const groups = useMemo(() => groupVersions(versions), [versions]);
 
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const versionPanelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (groups.length === 0) return;
@@ -76,6 +77,12 @@ export default function CompatToolsView() {
       setActiveCategory(groups[0].category);
     }
   }, [groups, activeCategory]);
+
+  useEffect(() => {
+    if (versionPanelRef.current) {
+      versionPanelRef.current.scrollTop = 0;
+    }
+  }, [activeCategory]);
 
   useEffect(() => {
     fetchReleases();
@@ -198,15 +205,24 @@ export default function CompatToolsView() {
           </nav>
 
           {/* Right panel: versions */}
-          <div className="flex-1 overflow-y-auto bg-steam-dark/50">
+          <div ref={versionPanelRef} className="flex-1 overflow-y-auto bg-steam-dark/50">
             {activeGroup ? (
               <div>
                 {activeGroup.versions.map((version) => (
                   <div
                     key={version.tagName}
-                    className="flex items-center justify-between px-4 py-2.5
+                    data-focusable
+                    tabIndex={0}
+                    onClick={
+                      version.status === "installed"
+                        ? () => handleActivate(version.tagName)
+                        : undefined
+                    }
+                    className={`flex items-center justify-between px-4 py-2.5
                       border-b border-steam-border/20 last:border-b-0
-                      hover:bg-steam-mid/20 transition-colors"
+                      hover:bg-steam-mid/20 transition-colors
+                      focus:outline-none focus:ring-2 focus:ring-inset focus:ring-steam-accent focus:bg-steam-mid/30
+                      ${version.status === "installed" ? "cursor-pointer" : ""}`}
                   >
                     <div>
                       <div className="flex items-center gap-2">
@@ -227,11 +243,9 @@ export default function CompatToolsView() {
                       <StatusBadge status={version.status} />
                       {version.status === "installed" && (
                         <button
-                          data-focusable
-                          onClick={() => handleActivate(version.tagName)}
+                          tabIndex={-1}
                           className="px-2.5 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
-                            hover:bg-steam-accent/30 hover:border-steam-accent transition-all
-                            focus:outline-none focus:ring-2 focus:ring-steam-accent"
+                            hover:bg-steam-accent/30 hover:border-steam-accent transition-all"
                         >
                           Activate
                         </button>

@@ -37,7 +37,6 @@ function findNearest(current: HTMLElement, direction: Direction): HTMLElement | 
   for (const el of elements) {
     const to = getRect(el);
 
-    // Filter by direction
     const inDirection =
       (direction === "UP" && to.y < from.y) ||
       (direction === "DOWN" && to.y > from.y) ||
@@ -46,7 +45,6 @@ function findNearest(current: HTMLElement, direction: Direction): HTMLElement | 
 
     if (!inDirection) continue;
 
-    // Score: prefer elements along the primary axis
     const dx = to.x - from.x;
     const dy = to.y - from.y;
 
@@ -54,8 +52,12 @@ function findNearest(current: HTMLElement, direction: Direction): HTMLElement | 
     const primary = isVertical ? Math.abs(dy) : Math.abs(dx);
     const secondary = isVertical ? Math.abs(dx) : Math.abs(dy);
 
-    // Weight secondary axis more heavily to prefer aligned elements
-    const score = primary + secondary * 3;
+    // Skip elements outside a ~70° cone from the navigation direction.
+    // This prevents sideways jumps while still allowing natural vertical
+    // flow through form elements at different horizontal offsets.
+    if (secondary > primary * 2.75) continue;
+
+    const score = primary + secondary * 0.1;
 
     if (score < bestScore) {
       bestScore = score;
@@ -132,14 +134,19 @@ export function useSpatialNav() {
       // Directional navigation
       const active = document.activeElement as HTMLElement;
       if (!active || !active.hasAttribute("data-focusable")) {
-        // No focus yet — focus first element
         const elements = getFocusableElements();
-        elements[0]?.focus();
+        if (elements[0]) {
+          elements[0].focus();
+          elements[0].scrollIntoView({ block: "nearest" });
+        }
         return;
       }
 
       const next = findNearest(active, action as Direction);
-      next?.focus();
+      if (next) {
+        next.focus();
+        next.scrollIntoView({ block: "nearest" });
+      }
     },
     [activeTab, setActiveTab, navigationLock, fetchReleases, fetchInstalled],
   );

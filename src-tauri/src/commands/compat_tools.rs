@@ -88,8 +88,7 @@ fn save_cache(path: &Path, cache: &CachedManifest) -> Result<(), String> {
     if let Some(parent) = path.parent() {
         std::fs::create_dir_all(parent).map_err(|e| format!("create cache dir: {e}"))?;
     }
-    let json =
-        serde_json::to_string_pretty(cache).map_err(|e| format!("serialize cache: {e}"))?;
+    let json = serde_json::to_string_pretty(cache).map_err(|e| format!("serialize cache: {e}"))?;
     std::fs::write(path, json).map_err(|e| format!("write cache: {e}"))?;
     Ok(())
 }
@@ -278,9 +277,7 @@ fn merge_sources(results: Vec<(CompatToolSource, SourceFetchResult)>) -> FetchCo
 }
 
 #[tauri::command]
-pub async fn fetch_compat_tools(
-    force: Option<bool>,
-) -> Result<FetchCompatToolsResult, String> {
+pub async fn fetch_compat_tools(force: Option<bool>) -> Result<FetchCompatToolsResult, String> {
     let force = force.unwrap_or(false);
     let settings = get_settings()?;
 
@@ -517,8 +514,7 @@ mod tests {
     fn merge_ok_newer_than_cache_replaces() {
         let cached = make_cache("2026-04-01T00:00:00Z", &["GE-Proton9-1"], 1_000_000);
         let fresh = make_manifest("2026-04-10T00:00:00Z", &["GE-Proton10-1"]);
-        let (result, new_cache) =
-            merge_fetched_with_cache(Some(cached), Ok(fresh), 1_500_000);
+        let (result, new_cache) = merge_fetched_with_cache(Some(cached), Ok(fresh), 1_500_000);
 
         assert_eq!(
             result.manifest.as_ref().unwrap().releases[0].tag_name,
@@ -537,8 +533,7 @@ mod tests {
         // Upstream is OLDER than what we have cached (shouldn't happen in practice
         // but we should handle it defensively).
         let older = make_manifest("2026-04-01T00:00:00Z", &["GE-Proton9-1"]);
-        let (result, new_cache) =
-            merge_fetched_with_cache(Some(cached), Ok(older), 1_500_000);
+        let (result, new_cache) = merge_fetched_with_cache(Some(cached), Ok(older), 1_500_000);
 
         // We keep the cached (newer) manifest
         assert_eq!(
@@ -619,7 +614,10 @@ mod tests {
 
     #[test]
     fn sanitize_source_id_blocks_path_traversal() {
-        assert_eq!(sanitize_source_id("../../../etc/passwd"), "_________etc_passwd");
+        assert_eq!(
+            sanitize_source_id("../../../etc/passwd"),
+            "_________etc_passwd"
+        );
         assert_eq!(sanitize_source_id("default"), "default");
         assert_eq!(
             sanitize_source_id("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
@@ -740,7 +738,10 @@ mod tests {
         let b = make_source("b", "B");
 
         let results = vec![
-            (a, make_fetch_result(None, None, false, Some("network down"))),
+            (
+                a,
+                make_fetch_result(None, None, false, Some("network down")),
+            ),
             (b, make_fetch_result(None, None, false, Some("HTTP 500"))),
         ];
 

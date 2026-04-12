@@ -163,20 +163,12 @@ export default function GamepadSelect({
     return () => container.removeEventListener("gamepad-action", handleGamepadAction);
   }, [isOpen, options, highlightedIndex, select, close]);
 
-  // Merge the focusable ref with our container ref
-  const setRefs = useCallback(
-    (node: HTMLDivElement | null) => {
-      containerRef.current = node;
-      (focusRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
-    },
-    [focusRef],
-  );
-
   return (
     <FocusContext.Provider value={focusKey}>
-      <div ref={setRefs} className="relative">
+      <div ref={containerRef} className="relative">
         {/* Trigger button */}
         <button
+          ref={focusRef}
           type="button"
           aria-haspopup="listbox"
           aria-expanded={isOpen}

@@ -23,7 +23,7 @@ export function useSpatialNav() {
             : TABS[(idx - 1 + TABS.length) % TABS.length];
         setActiveTab(next);
         requestAnimationFrame(() => {
-          setFocus(`tab-${next}`);
+          setFocus(`view-${next}`);
         });
         return;
       }

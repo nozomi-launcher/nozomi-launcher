@@ -209,11 +209,11 @@ export default function CompatToolsView() {
     await setGlobalCompatTool(tagName);
     setActiveTab("launch");
     requestAnimationFrame(() => {
-      setFocus("tab-launch");
+      setFocus("view-launch");
     });
   };
 
-  const { ref: viewRef, focusKey } = useFocusable({ focusKey: "tab-compat" });
+  const { ref: viewRef, focusKey } = useFocusable({ focusKey: "view-compat" });
 
   const activeGroup = groups.find((g) => g.category === activeCategory);
 

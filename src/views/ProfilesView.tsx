@@ -44,7 +44,7 @@ export default function ProfilesView() {
     await fetchProfiles();
   };
 
-  const { ref: viewRef, focusKey } = useFocusable({ focusKey: "tab-profiles" });
+  const { ref: viewRef, focusKey } = useFocusable({ focusKey: "view-profiles" });
 
   return (
     <FocusContext.Provider value={focusKey}>

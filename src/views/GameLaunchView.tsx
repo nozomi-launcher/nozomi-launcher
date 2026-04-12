@@ -94,7 +94,7 @@ export default function GameLaunchView() {
   const handleChangeCompatTool = () => {
     setActiveTab("compat");
     requestAnimationFrame(() => {
-      setFocus("tab-compat");
+      setFocus("view-compat");
     });
   };
 
@@ -140,7 +140,7 @@ export default function GameLaunchView() {
     setIsNamingGameProfile(false);
   };
 
-  const { ref: viewRef, focusKey } = useFocusable({ focusKey: "tab-launch" });
+  const { ref: viewRef, focusKey } = useFocusable({ focusKey: "view-launch" });
 
   return (
     <FocusContext.Provider value={focusKey}>

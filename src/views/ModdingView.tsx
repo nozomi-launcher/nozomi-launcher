@@ -1,7 +1,7 @@
 import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 
 export default function ModdingView() {
-  const { ref, focusKey } = useFocusable({ focusKey: "tab-modding" });
+  const { ref, focusKey } = useFocusable({ focusKey: "view-modding" });
 
   return (
     <FocusContext.Provider value={focusKey}>

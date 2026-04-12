@@ -1,4 +1,5 @@
-import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
+import { FocusContext, setFocus, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
+import { useEffect } from "react";
 import Layout from "./components/Layout";
 import TabPanel from "./components/TabPanel";
 import { useGamepad } from "./hooks/useGamepad";
@@ -18,6 +19,12 @@ function App() {
 
   const handleAction = useSpatialNav();
   useGamepad(handleAction);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      setFocus(`view-${activeTab}`);
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <FocusContext.Provider value={focusKey}>

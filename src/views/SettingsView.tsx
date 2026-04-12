@@ -137,7 +137,7 @@ export default function SettingsView() {
     await fetchReleases();
   };
 
-  const { ref: viewRef, focusKey } = useFocusable({ focusKey: "tab-settings" });
+  const { ref: viewRef, focusKey } = useFocusable({ focusKey: "view-settings" });
 
   return (
     <FocusContext.Provider value={focusKey}>

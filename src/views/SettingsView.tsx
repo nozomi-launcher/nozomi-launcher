@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
-import { useProtonGeStore } from "../stores/protonGeStore";
+import { useCompatToolsStore } from "../stores/compatToolsStore";
 import { useSettingsStore } from "../stores/settingsStore";
-import type { SourceStatus } from "../types/protonGe";
+import type { SourceStatus } from "../types/compatTools";
 
-// Mirror of the constants in src-tauri/src/commands/proton_ge.rs —
-// kept in sync manually. The default source is NOT stored in settings.json;
-// it is always prepended by the backend.
 const DEFAULT_MANIFEST_NAME = "Proton-GE Official";
 const DEFAULT_MANIFEST_URL =
   "https://raw.githubusercontent.com/nozomi-launcher/nozomi-launcher/main/manifests/proton-ge.json";
@@ -31,8 +28,8 @@ export default function SettingsView() {
   const addSource = useSettingsStore((s) => s.addSource);
   const removeSource = useSettingsStore((s) => s.removeSource);
   const toggleSource = useSettingsStore((s) => s.toggleSource);
-  const sourceStatus = useProtonGeStore((s) => s.sourceStatus);
-  const fetchReleases = useProtonGeStore((s) => s.fetchReleases);
+  const sourceStatus = useCompatToolsStore((s) => s.sourceStatus);
+  const fetchReleases = useCompatToolsStore((s) => s.fetchReleases);
 
   const [isAdding, setIsAdding] = useState(false);
   const [newName, setNewName] = useState("");
@@ -77,11 +74,11 @@ export default function SettingsView() {
     <div className="max-w-3xl mx-auto space-y-4">
       <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
         <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-3">
-          Proton Manifest Sources
+          Compatibility Tool Sources
         </h2>
         <p className="text-xs text-steam-text-dim/60 mb-4">
-          The launcher fetches Proton-GE releases from a pre-processed manifest instead of the
-          GitHub API. You can add additional sources to support custom Proton builds.
+          The launcher fetches compatibility tool releases from pre-processed manifests. You can add
+          additional sources to support custom builds.
         </p>
 
         {/* Default source — locked */}

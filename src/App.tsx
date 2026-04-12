@@ -4,10 +4,10 @@ import { useGamepad } from "./hooks/useGamepad";
 import { useSpatialNav } from "./hooks/useSpatialNav";
 import { useAppStore } from "./stores/appStore";
 import { useInputStore } from "./stores/inputStore";
+import CompatToolsView from "./views/CompatToolsView";
 import GameLaunchView from "./views/GameLaunchView";
 import ModdingView from "./views/ModdingView";
 import ProfilesView from "./views/ProfilesView";
-import ProtonView from "./views/ProtonView";
 import SettingsView from "./views/SettingsView";
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
           <ModdingView />
         </TabPanel>
         <TabPanel active={activeTab === "compat"}>
-          <ProtonView />
+          <CompatToolsView />
         </TabPanel>
         <TabPanel active={activeTab === "profiles"}>
           <ProfilesView />

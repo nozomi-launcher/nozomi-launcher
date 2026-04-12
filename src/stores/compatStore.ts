@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import * as api from "../lib/tauri";
 import type { ProtonVersion } from "../types/steam";
-import { compareVersions } from "./protonGeStore";
+import { compareVersions } from "./compatToolsStore";
 
 interface CompatStore {
   /** The globally persisted active compat tool name */

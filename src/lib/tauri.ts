@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
+import type { FetchCompatToolsResult } from "../types/compatTools";
 import type { EnvVar, Profile } from "../types/profile";
-import type { FetchReleasesResult } from "../types/protonGe";
 import type { AppSettings } from "../types/settings";
 import type { LaunchContext, ProtonVersion } from "../types/steam";
 
@@ -48,8 +48,8 @@ export async function updateSettings(patch: Partial<AppSettings>): Promise<AppSe
   return merged;
 }
 
-export async function fetchProtonGeReleases(): Promise<FetchReleasesResult> {
-  return invoke("fetch_proton_ge_releases");
+export async function fetchCompatTools(force?: boolean): Promise<FetchCompatToolsResult> {
+  return invoke("fetch_compat_tools", { force: force ?? null });
 }
 
 export async function launchGame(options: {

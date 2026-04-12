@@ -1,38 +1,41 @@
 import { create } from "zustand";
 import * as api from "../lib/tauri";
 import type {
-  ProtonGeGroup,
-  ProtonGeRelease,
-  ProtonGeStatus,
-  ProtonGeVersion,
+  CompatToolGroup,
+  CompatToolRelease,
+  CompatToolStatus,
+  CompatToolVersion,
   SourceStatus,
-} from "../types/protonGe";
+} from "../types/compatTools";
 import type { ProtonVersion } from "../types/steam";
 
-interface ProtonGeStore {
-  releases: ProtonGeRelease[];
+interface CompatToolsStore {
+  releases: CompatToolRelease[];
   sourceStatus: SourceStatus[];
   installedVersions: ProtonVersion[];
+  lastCheckedEpochSecs: number | null;
   isLoading: boolean;
   error: string | null;
-  fetchReleases: () => Promise<void>;
+  fetchReleases: (force?: boolean) => Promise<void>;
   fetchInstalled: () => Promise<void>;
 }
 
-export const useProtonGeStore = create<ProtonGeStore>((set) => ({
+export const useCompatToolsStore = create<CompatToolsStore>((set) => ({
   releases: [],
   sourceStatus: [],
   installedVersions: [],
+  lastCheckedEpochSecs: null,
   isLoading: false,
   error: null,
 
-  fetchReleases: async () => {
+  fetchReleases: async (force?: boolean) => {
     set({ isLoading: true, error: null });
     try {
-      const result = await api.fetchProtonGeReleases();
+      const result = await api.fetchCompatTools(force);
       set({
         releases: result.releases,
         sourceStatus: result.sourceStatus,
+        lastCheckedEpochSecs: result.lastCheckedEpochSecs ?? null,
         isLoading: false,
       });
     } catch (e) {
@@ -50,20 +53,17 @@ export const useProtonGeStore = create<ProtonGeStore>((set) => ({
   },
 }));
 
-/** Parse "GE-Proton9-27" into { major: 9, minor: 27 }, or null if unparseable */
 export function parseVersion(tagName: string): { major: number; minor: number } | null {
   const match = tagName.match(/GE-Proton(\d+)-(\d+)/);
   if (!match) return null;
   return { major: Number(match[1]), minor: Number(match[2]) };
 }
 
-/** Extract major version label from tag name, e.g. "GE-Proton9-27" -> "GE-Proton9" */
 export function getMajorVersion(tagName: string): string {
   const match = tagName.match(/(GE-Proton\d+)/);
   return match ? match[1] : tagName;
 }
 
-/** Sort versions numerically descending (major desc, minor desc). Unparseable go last. */
 export function compareVersions(a: string, b: string): number {
   const av = parseVersion(a);
   const bv = parseVersion(b);
@@ -75,14 +75,14 @@ export function compareVersions(a: string, b: string): number {
 }
 
 export function mergeVersions(
-  releases: ProtonGeRelease[],
+  releases: CompatToolRelease[],
   installedVersions: ProtonVersion[],
   selectedVersion: string | null,
-): ProtonGeVersion[] {
+): CompatToolVersion[] {
   const installedNames = new Set(installedVersions.map((v) => v.name));
 
-  const versions: ProtonGeVersion[] = releases.map((r) => {
-    let status: ProtonGeStatus = "available";
+  const versions: CompatToolVersion[] = releases.map((r) => {
+    let status: CompatToolStatus = "available";
     if (r.tagName === selectedVersion) {
       status = "selected";
     } else if (installedNames.has(r.tagName)) {
@@ -93,6 +93,7 @@ export function mergeVersions(
       publishedAt: r.publishedAt,
       status,
       sourceName: r.sourceName ?? null,
+      category: r.category ?? null,
     };
   });
 
@@ -111,8 +112,8 @@ export function mergeVersions(
   return versions;
 }
 
-export function groupVersions(versions: ProtonGeVersion[]): ProtonGeGroup[] {
-  const groupMap = new Map<string, ProtonGeVersion[]>();
+export function groupVersions(versions: CompatToolVersion[]): CompatToolGroup[] {
+  const groupMap = new Map<string, CompatToolVersion[]>();
 
   for (const v of versions) {
     const major = getMajorVersion(v.tagName);
@@ -124,15 +125,14 @@ export function groupVersions(versions: ProtonGeVersion[]): ProtonGeGroup[] {
     }
   }
 
-  const groups: ProtonGeGroup[] = [];
-  for (const [majorVersion, groupVersions] of groupMap) {
-    groups.push({ majorVersion, versions: groupVersions });
+  const groups: CompatToolGroup[] = [];
+  for (const [category, groupVersions] of groupMap) {
+    groups.push({ category, versions: groupVersions });
   }
 
-  // Sort groups by major version number descending
   groups.sort((a, b) => {
-    const aNum = Number(a.majorVersion.match(/\d+/)?.[0] ?? 0);
-    const bNum = Number(b.majorVersion.match(/\d+/)?.[0] ?? 0);
+    const aNum = Number(a.category.match(/\d+/)?.[0] ?? 0);
+    const bNum = Number(b.category.match(/\d+/)?.[0] ?? 0);
     return bNum - aNum;
   });
 

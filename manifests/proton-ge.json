@@ -1,5 +1,6 @@
 {
   "schemaVersion": 1,
+  "category": "GE-Proton",
   "generatedAt": "2026-04-11T04:18:44Z",
   "source": "https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases",
   "releases": [

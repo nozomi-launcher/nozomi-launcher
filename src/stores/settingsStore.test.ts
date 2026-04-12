@@ -1,16 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as api from "../lib/tauri";
-import type { AppSettings, ProtonManifestSource } from "../types/settings";
+import type { AppSettings, CompatToolSource } from "../types/settings";
 import { useSettingsStore } from "./settingsStore";
 
 vi.mock("../lib/tauri");
 
 const mockedApi = vi.mocked(api);
 
-function baseSettings(sources: ProtonManifestSource[] = []): AppSettings {
+function baseSettings(sources: CompatToolSource[] = []): AppSettings {
   return {
     activeCompatTool: null,
-    protonManifestSources: sources,
+    compatToolSources: sources,
   };
 }
 
@@ -27,7 +27,7 @@ describe("settingsStore", () => {
 
   describe("loadSources", () => {
     it("loads sources from settings", async () => {
-      const source: ProtonManifestSource = {
+      const source: CompatToolSource = {
         id: "cachy",
         name: "CachyOS Proton",
         url: "https://example.com/cachy.json",
@@ -73,7 +73,7 @@ describe("settingsStore", () => {
       });
       expect(state.sources[0].id).toBeTruthy();
       expect(mockedApi.updateSettings).toHaveBeenCalledWith({
-        protonManifestSources: state.sources,
+        compatToolSources: state.sources,
       });
     });
 
@@ -110,7 +110,7 @@ describe("settingsStore", () => {
       expect(state.sources).toHaveLength(1);
       expect(state.sources[0].id).toBe("b");
       expect(mockedApi.updateSettings).toHaveBeenCalledWith({
-        protonManifestSources: state.sources,
+        compatToolSources: state.sources,
       });
     });
   });

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { type Tab, useAppStore } from "../stores/appStore";
+import { useCompatToolsStore } from "../stores/compatToolsStore";
 import { useInputStore } from "../stores/inputStore";
-import { useProtonGeStore } from "../stores/protonGeStore";
 import type { GamepadAction } from "../types/input";
 
 const TABS: Tab[] = ["launch", "modding", "compat", "profiles"];
@@ -70,8 +70,8 @@ export function useSpatialNav() {
   const activeTab = useAppStore((s) => s.activeTab);
   const setActiveTab = useAppStore((s) => s.setActiveTab);
   const navigationLock = useInputStore((s) => s.navigationLock);
-  const fetchReleases = useProtonGeStore((s) => s.fetchReleases);
-  const fetchInstalled = useProtonGeStore((s) => s.fetchInstalled);
+  const fetchReleases = useCompatToolsStore((s) => s.fetchReleases);
+  const fetchInstalled = useCompatToolsStore((s) => s.fetchInstalled);
 
   const handleAction = useCallback(
     (action: GamepadAction) => {

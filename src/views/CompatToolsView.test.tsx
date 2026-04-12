@@ -1,12 +1,12 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { useCompatStore } from "../stores/compatStore";
-import { useProtonGeStore } from "../stores/protonGeStore";
-import ProtonView from "./ProtonView";
+import { useCompatToolsStore } from "../stores/compatToolsStore";
+import CompatToolsView from "./CompatToolsView";
 
-describe("ProtonView", () => {
+describe("CompatToolsView", () => {
   beforeEach(() => {
-    useProtonGeStore.setState({
+    useCompatToolsStore.setState({
       releases: [
         {
           tagName: "GE-Proton10-1",
@@ -33,6 +33,7 @@ describe("ProtonView", () => {
           path: "/home/user/.steam/root/compatibilitytools.d/GE-Proton9-27",
         },
       ],
+      lastCheckedEpochSecs: null,
       isLoading: false,
       error: null,
       fetchReleases: async () => {},
@@ -48,86 +49,96 @@ describe("ProtonView", () => {
   afterEach(cleanup);
 
   it("renders the heading", () => {
-    render(<ProtonView />);
-    expect(screen.getByText("Proton-GE Versions")).toBeInTheDocument();
+    render(<CompatToolsView />);
+    expect(screen.getByText("Compatibility Tools")).toBeInTheDocument();
   });
 
   it("renders major version sidebar items", () => {
-    render(<ProtonView />);
+    render(<CompatToolsView />);
     expect(screen.getByText("GE-Proton10")).toBeInTheDocument();
     expect(screen.getByText("GE-Proton9")).toBeInTheDocument();
   });
 
   it("auto-selects first major version and shows its versions", () => {
-    render(<ProtonView />);
+    render(<CompatToolsView />);
     expect(screen.getByText("GE-Proton10-1")).toBeInTheDocument();
   });
 
   it("clicking a sidebar item shows that group's versions", () => {
-    render(<ProtonView />);
+    render(<CompatToolsView />);
     fireEvent.click(screen.getByText("GE-Proton9"));
     expect(screen.getByText("GE-Proton9-27")).toBeInTheDocument();
     expect(screen.getByText("GE-Proton9-26")).toBeInTheDocument();
   });
 
   it("shows Active badge for the globally active version", () => {
-    render(<ProtonView />);
+    render(<CompatToolsView />);
     fireEvent.click(screen.getByText("GE-Proton9"));
     expect(screen.getByText("Active")).toBeInTheDocument();
   });
 
   it("shows Activate button for installed but non-active versions", () => {
-    // Set a different version as active so GE-Proton9-27 shows as "installed"
     useCompatStore.setState({ globalCompatTool: "GE-Proton10-1" });
-    useProtonGeStore.setState({
+    useCompatToolsStore.setState({
       installedVersions: [
         { name: "GE-Proton9-27", path: "/path/GE-Proton9-27" },
         { name: "GE-Proton10-1", path: "/path/GE-Proton10-1" },
       ],
     });
-    render(<ProtonView />);
+    render(<CompatToolsView />);
     fireEvent.click(screen.getByText("GE-Proton9"));
     expect(screen.getByText("Activate")).toBeInTheDocument();
   });
 
   it("refresh button has data-focusable", () => {
-    render(<ProtonView />);
+    render(<CompatToolsView />);
     const refreshBtn = screen.getByText("Refresh");
     expect(refreshBtn).toHaveAttribute("data-focusable");
   });
 
+  it("force check button has data-focusable", () => {
+    render(<CompatToolsView />);
+    const forceBtn = screen.getByText("Force Check");
+    expect(forceBtn).toHaveAttribute("data-focusable");
+  });
+
+  it("shows last checked timestamp", () => {
+    render(<CompatToolsView />);
+    expect(screen.getByText(/Last checked:/)).toBeInTheDocument();
+  });
+
   it("shows loading state", () => {
-    useProtonGeStore.setState({
+    useCompatToolsStore.setState({
       releases: [],
       installedVersions: [],
       isLoading: true,
       fetchReleases: async () => {},
       fetchInstalled: async () => {},
     });
-    render(<ProtonView />);
+    render(<CompatToolsView />);
     expect(screen.getByText("Loading releases...")).toBeInTheDocument();
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("shows error message", () => {
-    useProtonGeStore.setState({
+    useCompatToolsStore.setState({
       error: "Network error",
       fetchReleases: async () => {},
       fetchInstalled: async () => {},
     });
-    render(<ProtonView />);
+    render(<CompatToolsView />);
     expect(screen.getByText("Network error")).toBeInTheDocument();
   });
 
   it("shows empty state when no versions", () => {
-    useProtonGeStore.setState({
+    useCompatToolsStore.setState({
       releases: [],
       installedVersions: [],
       isLoading: false,
       fetchReleases: async () => {},
       fetchInstalled: async () => {},
     });
-    render(<ProtonView />);
+    render(<CompatToolsView />);
     expect(screen.getByText("No versions found.")).toBeInTheDocument();
   });
 });

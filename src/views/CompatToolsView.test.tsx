@@ -90,10 +90,10 @@ describe("CompatToolsView", () => {
     expect(screen.getByText("Activate")).toBeInTheDocument();
   });
 
-  it("refresh button has data-focusable", () => {
+  it("refresh button is rendered", () => {
     render(<CompatToolsView />);
     const refreshBtn = screen.getByText("Refresh");
-    expect(refreshBtn).toHaveAttribute("data-focusable");
+    expect(refreshBtn).toBeInTheDocument();
   });
 
   it("shows last checked timestamp", () => {

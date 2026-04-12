@@ -1,5 +1,10 @@
+import {
+  FocusContext,
+  pause,
+  resume,
+  useFocusable,
+} from "@noriginmedia/norigin-spatial-navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { useGamepadAction } from "../hooks/useGamepadAction";
 import { useInputStore } from "../stores/inputStore";
 import type { GamepadAction } from "../types/input";
 import ButtonPrompt from "./ButtonPrompt";
@@ -26,9 +31,14 @@ export default function GamepadSelect({
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
-  const setNavigationLock = useInputStore((s) => s.setNavigationLock);
   const inputMode = useInputStore((s) => s.inputMode);
   const listboxId = useId();
+
+  const { ref: focusRef, focusKey, focused } = useFocusable({
+    onEnterPress: () => {
+      if (!isOpen) open();
+    },
+  });
 
   const selectedOption = options.find((o) => o.value === value);
 
@@ -36,13 +46,13 @@ export default function GamepadSelect({
     const selectedIdx = options.findIndex((o) => o.value === value);
     setHighlightedIndex(selectedIdx >= 0 ? selectedIdx : 0);
     setIsOpen(true);
-    setNavigationLock(true);
-  }, [options, value, setNavigationLock]);
+    pause();
+  }, [options, value]);
 
   const close = useCallback(() => {
     setIsOpen(false);
-    setNavigationLock(false);
-  }, [setNavigationLock]);
+    resume();
+  }, []);
 
   const select = useCallback(
     (optionValue: string) => {
@@ -52,12 +62,12 @@ export default function GamepadSelect({
     [onChange, close],
   );
 
-  // Ensure navigationLock is cleared on unmount
+  // Ensure library is resumed on unmount
   useEffect(() => {
     return () => {
-      setNavigationLock(false);
+      resume();
     };
-  }, [setNavigationLock]);
+  }, []);
 
   // Close on click outside
   useEffect(() => {
@@ -123,9 +133,16 @@ export default function GamepadSelect({
     return () => window.removeEventListener("keydown", handleKeyDown, { capture: true });
   }, [isOpen, highlightedIndex, options, select, close]);
 
-  // Handle gamepad actions when open
-  const handleGamepadAction = useCallback(
-    (action: GamepadAction) => {
+  // Handle gamepad actions when open (dispatched by useSpatialNav as custom events)
+  useEffect(() => {
+    if (!isOpen) return;
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleGamepadAction = (e: Event) => {
+      const action = (e as CustomEvent).detail?.action as GamepadAction | undefined;
+      if (!action) return;
+      e.preventDefault();
       switch (action) {
         case "DOWN":
           setHighlightedIndex((i) => Math.min(i + 1, options.length - 1));
@@ -140,72 +157,82 @@ export default function GamepadSelect({
           close();
           break;
       }
+    };
+
+    container.addEventListener("gamepad-action", handleGamepadAction);
+    return () => container.removeEventListener("gamepad-action", handleGamepadAction);
+  }, [isOpen, options, highlightedIndex, select, close]);
+
+  // Merge the focusable ref with our container ref
+  const setRefs = useCallback(
+    (node: HTMLDivElement | null) => {
+      containerRef.current = node;
+      (focusRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
     },
-    [options, highlightedIndex, select, close],
+    [focusRef],
   );
 
-  useGamepadAction(containerRef, handleGamepadAction, isOpen);
-
   return (
-    <div ref={containerRef} className="relative">
-      {/* Trigger button */}
-      <button
-        data-focusable
-        type="button"
-        aria-haspopup="listbox"
-        aria-expanded={isOpen}
-        aria-controls={isOpen ? listboxId : undefined}
-        onClick={() => (isOpen ? close() : open())}
-        className="w-full flex items-center justify-between bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text text-left
-          focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
-          hover:border-steam-accent/50 transition-colors"
-      >
-        <span className={selectedOption ? "" : "text-steam-text-dim/50"}>
-          {selectedOption?.label ?? placeholder}
-        </span>
-        <svg
-          className={`w-3 h-3 ml-2 text-steam-accent transition-transform ${isOpen ? "rotate-180" : ""}`}
-          viewBox="0 0 12 12"
-          fill="currentColor"
+    <FocusContext.Provider value={focusKey}>
+      <div ref={setRefs} className="relative">
+        {/* Trigger button */}
+        <button
+          type="button"
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+          aria-controls={isOpen ? listboxId : undefined}
+          onClick={() => (isOpen ? close() : open())}
+          className={`w-full flex items-center justify-between bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text text-left
+            hover:border-steam-accent/50 transition-colors
+            ${focused ? "ring-2 ring-steam-accent border-steam-accent" : ""}`}
         >
-          <path d="M6 8L1 3h10z" />
-        </svg>
-      </button>
+          <span className={selectedOption ? "" : "text-steam-text-dim/50"}>
+            {selectedOption?.label ?? placeholder}
+          </span>
+          <svg
+            className={`w-3 h-3 ml-2 text-steam-accent transition-transform ${isOpen ? "rotate-180" : ""}`}
+            viewBox="0 0 12 12"
+            fill="currentColor"
+          >
+            <path d="M6 8L1 3h10z" />
+          </svg>
+        </button>
 
-      {/* Dropdown */}
-      {isOpen && (
-        <div className="absolute z-50 w-full mt-1 bg-steam-dark border border-steam-border rounded shadow-lg shadow-black/40 overflow-hidden">
-          <ul ref={listRef} id={listboxId} className="max-h-48 overflow-y-auto" role="listbox">
-            {options.map((option, index) => (
-              <li
-                key={option.value}
-                role="option"
-                aria-selected={option.value === value}
-                onClick={() => select(option.value)}
-                onMouseEnter={() => setHighlightedIndex(index)}
-                className={`px-3 py-2 text-sm cursor-pointer transition-colors
-                  ${
-                    index === highlightedIndex
-                      ? "bg-steam-accent/20 text-steam-accent"
-                      : option.value === value
-                        ? "text-steam-accent"
-                        : "text-steam-text hover:bg-steam-mid/30"
-                  }`}
-              >
-                {option.label}
-              </li>
-            ))}
-          </ul>
+        {/* Dropdown */}
+        {isOpen && (
+          <div className="absolute z-50 w-full mt-1 bg-steam-dark border border-steam-border rounded shadow-lg shadow-black/40 overflow-hidden">
+            <ul ref={listRef} id={listboxId} className="max-h-48 overflow-y-auto" role="listbox">
+              {options.map((option, index) => (
+                <li
+                  key={option.value}
+                  role="option"
+                  aria-selected={option.value === value}
+                  onClick={() => select(option.value)}
+                  onMouseEnter={() => setHighlightedIndex(index)}
+                  className={`px-3 py-2 text-sm cursor-pointer transition-colors
+                    ${
+                      index === highlightedIndex
+                        ? "bg-steam-accent/20 text-steam-accent"
+                        : option.value === value
+                          ? "text-steam-accent"
+                          : "text-steam-text hover:bg-steam-mid/30"
+                    }`}
+                >
+                  {option.label}
+                </li>
+              ))}
+            </ul>
 
-          {/* Button prompts */}
-          {inputMode === "gamepad" && (
-            <div className="flex gap-4 justify-center border-t border-steam-border px-3 py-1.5">
-              <ButtonPrompt action="CONFIRM" label="Select" />
-              <ButtonPrompt action="CANCEL" label="Back" />
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+            {/* Button prompts */}
+            {inputMode === "gamepad" && (
+              <div className="flex gap-4 justify-center border-t border-steam-border px-3 py-1.5">
+                <ButtonPrompt action="CONFIRM" label="Select" />
+                <ButtonPrompt action="CANCEL" label="Back" />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </FocusContext.Provider>
   );
 }

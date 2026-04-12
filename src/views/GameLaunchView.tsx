@@ -1,5 +1,7 @@
+import { FocusContext, setFocus, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import { useEffect, useRef, useState } from "react";
 import EnvVarEditor from "../components/EnvVarEditor";
+import { FocusButton, FocusInput } from "../components/FocusElements";
 import GamepadSelect from "../components/GamepadSelect";
 import * as api from "../lib/tauri";
 import { useAppStore } from "../stores/appStore";
@@ -92,9 +94,7 @@ export default function GameLaunchView() {
   const handleChangeCompatTool = () => {
     setActiveTab("compat");
     requestAnimationFrame(() => {
-      const panel = document.querySelector<HTMLElement>('[data-tab-active="true"]');
-      const firstFocusable = panel?.querySelector<HTMLElement>("[data-focusable]");
-      firstFocusable?.focus();
+      setFocus("tab-compat");
     });
   };
 
@@ -140,9 +140,12 @@ export default function GameLaunchView() {
     setIsNamingGameProfile(false);
   };
 
+  const { ref: viewRef, focusKey } = useFocusable({ focusKey: "tab-launch" });
+
   return (
-    <div className="max-w-3xl mx-auto space-y-4">
-      {/* Game Info */}
+    <FocusContext.Provider value={focusKey}>
+      <div ref={viewRef} className="max-w-3xl mx-auto space-y-4">
+        {/* Game Info */}
       <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
         <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-2">
           Game
@@ -188,21 +191,19 @@ export default function GameLaunchView() {
                   Profile for this game:{" "}
                   <span className="text-steam-accent">{gameProfile.name}</span>
                 </p>
-                <button
-                  data-focusable
+                <FocusButton
                   onClick={handleSaveGameProfile}
                   className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
                     hover:bg-steam-accent/30 hover:border-steam-accent transition-all
                     focus:outline-none focus:ring-2 focus:ring-steam-accent"
                 >
                   Update
-                </button>
+                </FocusButton>
               </div>
             ) : isNamingGameProfile ? (
               <div className="flex gap-2">
-                <input
+                <FocusInput
                   type="text"
-                  data-focusable
                   autoFocus
                   placeholder="Profile name..."
                   value={newGameProfileName}
@@ -219,8 +220,7 @@ export default function GameLaunchView() {
                     focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
                     hover:border-steam-accent/50 transition-colors"
                 />
-                <button
-                  data-focusable
+                <FocusButton
                   onClick={handleSaveGameProfile}
                   disabled={!newGameProfileName.trim()}
                   className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
@@ -229,9 +229,8 @@ export default function GameLaunchView() {
                     disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
                 >
                   Save
-                </button>
-                <button
-                  data-focusable
+                </FocusButton>
+                <FocusButton
                   onClick={() => {
                     setNewGameProfileName("");
                     setIsNamingGameProfile(false);
@@ -241,18 +240,17 @@ export default function GameLaunchView() {
                     focus:outline-none focus:ring-2 focus:ring-steam-accent"
                 >
                   Cancel
-                </button>
+                </FocusButton>
               </div>
             ) : (
-              <button
-                data-focusable
+              <FocusButton
                 onClick={() => setIsNamingGameProfile(true)}
                 className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
                   hover:bg-steam-accent/30 hover:border-steam-accent transition-all
                   focus:outline-none focus:ring-2 focus:ring-steam-accent"
               >
                 Save for this game
-              </button>
+              </FocusButton>
             )}
           </div>
         )}
@@ -278,15 +276,14 @@ export default function GameLaunchView() {
               <p className="text-sm text-steam-red-bright">No compatibility tool selected</p>
             )}
           </div>
-          <button
-            data-focusable
+          <FocusButton
             onClick={handleChangeCompatTool}
             className="px-3 py-1.5 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
               hover:bg-steam-accent/30 hover:border-steam-accent transition-all
               focus:outline-none focus:ring-2 focus:ring-steam-accent"
           >
             Change
-          </button>
+          </FocusButton>
         </div>
       </section>
 
@@ -296,8 +293,7 @@ export default function GameLaunchView() {
       </section>
 
       {/* Launch Button */}
-      <button
-        data-focusable
+      <FocusButton
         onClick={handleLaunch}
         disabled={!canLaunch}
         className={`w-full py-3 rounded text-lg font-bold uppercase tracking-wider transition-all
@@ -313,7 +309,8 @@ export default function GameLaunchView() {
           : !effectiveCompatTool
             ? "No Compatibility Tool"
             : "Launch Game"}
-      </button>
-    </div>
+      </FocusButton>
+      </div>
+    </FocusContext.Provider>
   );
 }

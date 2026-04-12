@@ -33,7 +33,7 @@ pnpm exec tsc --noEmit
 |---|---|
 | `src/components/` | Shared UI components (GamepadSelect, TabPanel, ButtonGlyph, ButtonPrompt, TabBar, EnvVarEditor, Layout) |
 | `src/views/` | Page-level views (GameLaunchView, ModdingView, ProtonView, ProfilesView) |
-| `src/hooks/` | Custom React hooks (useGamepad, useSpatialNav, useGamepadAction) |
+| `src/hooks/` | Custom React hooks (useGamepad, useSpatialNav) |
 | `src/stores/` | Zustand state stores (appStore, compatStore, profileStore, protonGeStore, inputStore) |
 | `src/lib/` | Utilities (tauri.ts invoke wrappers, gamepad.ts mappings, glyphs.ts glyph system) |
 | `src/types/` | TypeScript type definitions (input.ts, profile.ts, protonGe.ts, settings.ts, steam.ts) |
@@ -50,8 +50,8 @@ pnpm exec tsc --noEmit
 
 ## Key patterns
 
-- **Gamepad navigation**: All interactive elements must have a `data-focusable` attribute. The spatial navigation system (`useSpatialNav`) queries these to determine focus targets.
-- **Navigation lock**: Components that capture D-pad input (e.g., `GamepadSelect`) use `inputStore.setNavigationLock(true)` to prevent spatial navigation while open. The `useSpatialNav` hook dispatches `gamepad-action` custom events instead when locked.
+- **Gamepad navigation**: The app uses [`@noriginmedia/norigin-spatial-navigation`](https://github.com/nickersk/norigin-spatial-navigation) for focus management. Use `FocusButton` and `FocusInput` from `src/components/FocusElements.tsx` for interactive elements. Never use raw `data-focusable` attributes. See `docs/navigation.md` for full details.
+- **Dropdown pause/resume**: Components that capture D-pad input (e.g., `GamepadSelect`) call `pause()` / `resume()` from the norigin library to suspend its keyboard handling while open. Gamepad input is intercepted via cancelable `gamepad-action` CustomEvents.
 - **Controller detection**: `detectControllerType()` in `gamepad.ts` identifies Xbox/PlayStation/Nintendo controllers from the Gamepad API `id` string. The detected type is stored in `inputStore.controllerType`.
 - **Button glyphs**: `ButtonGlyph` and `ButtonPrompt` components render input-device-aware labels (e.g., "A" for Xbox, "Cross" for PlayStation, "Enter" for keyboard).
 - **Tab transitions**: Views are wrapped in `TabPanel` which uses CSS opacity transitions. Inactive panels get `data-tab-active="false"` to exclude their elements from spatial navigation.

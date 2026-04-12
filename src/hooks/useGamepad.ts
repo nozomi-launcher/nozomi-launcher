@@ -114,15 +114,12 @@ export function useGamepad(onAction: (action: GamepadAction) => void) {
   // Detect mouse movement to switch back to keyboard mode
   // and handle keyboard shortcuts that mirror gamepad actions
   useEffect(() => {
+    // Only map keys that the norigin library does NOT handle.
+    // Arrow keys and Enter are handled by the library's own keydown listener.
     const KEY_MAP: Record<string, GamepadAction> = {
       q: "TAB_LEFT",
       e: "TAB_RIGHT",
-      Enter: "CONFIRM",
       Escape: "CANCEL",
-      ArrowUp: "UP",
-      ArrowDown: "DOWN",
-      ArrowLeft: "LEFT",
-      ArrowRight: "RIGHT",
       r: "REFRESH",
     };
 

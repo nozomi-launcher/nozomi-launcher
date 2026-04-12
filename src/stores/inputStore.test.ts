@@ -6,7 +6,6 @@ describe("inputStore", () => {
     useInputStore.setState({
       inputMode: "keyboard",
       controllerType: null,
-      navigationLock: false,
     });
   });
 
@@ -38,20 +37,5 @@ describe("inputStore", () => {
     useInputStore.getState().setControllerType("playstation");
     useInputStore.getState().setControllerType(null);
     expect(useInputStore.getState().controllerType).toBeNull();
-  });
-
-  it("defaults navigationLock to false", () => {
-    expect(useInputStore.getState().navigationLock).toBe(false);
-  });
-
-  it("sets navigation lock", () => {
-    useInputStore.getState().setNavigationLock(true);
-    expect(useInputStore.getState().navigationLock).toBe(true);
-  });
-
-  it("clears navigation lock", () => {
-    useInputStore.getState().setNavigationLock(true);
-    useInputStore.getState().setNavigationLock(false);
-    expect(useInputStore.getState().navigationLock).toBe(false);
   });
 });

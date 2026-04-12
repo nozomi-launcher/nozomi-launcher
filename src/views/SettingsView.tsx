@@ -1,4 +1,6 @@
+import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import { useEffect, useState } from "react";
+import { FocusButton, FocusInput } from "../components/FocusElements";
 import { useCompatToolsStore } from "../stores/compatToolsStore";
 import { useSettingsStore } from "../stores/settingsStore";
 import type { SourceStatus } from "../types/compatTools";
@@ -19,6 +21,71 @@ function StatusLine({ status }: { status: SourceStatus | undefined }) {
     );
   }
   return <p className="text-xs text-steam-red-bright">✗ {status.error ?? "Failed to load"}</p>;
+}
+
+function SourceRow({
+  source,
+  status,
+  onToggle,
+  onRemove,
+}: {
+  source: { id: string; name: string; url: string; enabled: boolean };
+  status: SourceStatus | undefined;
+  onToggle: (id: string) => void;
+  onRemove: (id: string) => void;
+}) {
+  const { ref, focusKey } = useFocusable();
+
+  return (
+    <FocusContext.Provider value={focusKey}>
+      <div
+        ref={ref}
+        className="bg-steam-mid/30 border border-steam-border/50 rounded p-3 mb-2"
+        data-testid={`source-${source.id}`}
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <p className="font-medium text-steam-text">{source.name}</p>
+              {!source.enabled && (
+                <span className="text-[10px] px-1.5 py-0.5 bg-steam-mid/60 border border-steam-border text-steam-text-dim rounded uppercase tracking-wider">
+                  Disabled
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-steam-text-dim/70 break-all" title={source.url}>
+              {source.url}
+            </p>
+            <div className="mt-1">
+              {source.enabled ? (
+                <StatusLine status={status} />
+              ) : (
+                <p className="text-xs text-steam-text-dim/60">Not fetched</p>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-1.5 flex-shrink-0">
+            <FocusButton
+              onClick={() => onToggle(source.id)}
+              className="px-2.5 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
+                hover:bg-steam-accent/30 hover:border-steam-accent transition-all
+                focus:outline-none focus:ring-2 focus:ring-steam-accent"
+            >
+              {source.enabled ? "Disable" : "Enable"}
+            </FocusButton>
+            <FocusButton
+              onClick={() => onRemove(source.id)}
+              className="px-2.5 py-1 bg-steam-red/20 border border-steam-red/40 text-steam-red-bright rounded text-xs font-medium uppercase tracking-wider
+                hover:bg-steam-red/30 hover:border-steam-red-bright transition-all
+                focus:outline-none focus:ring-2 focus:ring-steam-red"
+            >
+              Remove
+            </FocusButton>
+          </div>
+        </div>
+      </div>
+    </FocusContext.Provider>
+  );
 }
 
 export default function SettingsView() {
@@ -70,8 +137,11 @@ export default function SettingsView() {
     await fetchReleases();
   };
 
+  const { ref: viewRef, focusKey } = useFocusable({ focusKey: "tab-settings" });
+
   return (
-    <div className="max-w-3xl mx-auto space-y-4">
+    <FocusContext.Provider value={focusKey}>
+      <div ref={viewRef} className="max-w-3xl mx-auto space-y-4">
       <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
         <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-3">
           Compatibility Tool Sources
@@ -105,67 +175,22 @@ export default function SettingsView() {
         </div>
 
         {/* Extra sources */}
-        {sources.map((source) => {
-          const status = sourceStatus.find((s) => s.sourceName === source.name);
-          return (
-            <div
-              key={source.id}
-              className="bg-steam-mid/30 border border-steam-border/50 rounded p-3 mb-2"
-              data-testid={`source-${source.id}`}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <p className="font-medium text-steam-text">{source.name}</p>
-                    {!source.enabled && (
-                      <span className="text-[10px] px-1.5 py-0.5 bg-steam-mid/60 border border-steam-border text-steam-text-dim rounded uppercase tracking-wider">
-                        Disabled
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-xs text-steam-text-dim/70 break-all" title={source.url}>
-                    {source.url}
-                  </p>
-                  <div className="mt-1">
-                    {source.enabled ? (
-                      <StatusLine status={status} />
-                    ) : (
-                      <p className="text-xs text-steam-text-dim/60">Not fetched</p>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-col gap-1.5 flex-shrink-0">
-                  <button
-                    data-focusable
-                    onClick={() => handleToggle(source.id)}
-                    className="px-2.5 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
-                      hover:bg-steam-accent/30 hover:border-steam-accent transition-all
-                      focus:outline-none focus:ring-2 focus:ring-steam-accent"
-                  >
-                    {source.enabled ? "Disable" : "Enable"}
-                  </button>
-                  <button
-                    data-focusable
-                    onClick={() => handleRemove(source.id)}
-                    className="px-2.5 py-1 bg-steam-red/20 border border-steam-red/40 text-steam-red-bright rounded text-xs font-medium uppercase tracking-wider
-                      hover:bg-steam-red/30 hover:border-steam-red-bright transition-all
-                      focus:outline-none focus:ring-2 focus:ring-steam-red"
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+        {sources.map((source) => (
+          <SourceRow
+            key={source.id}
+            source={source}
+            status={sourceStatus.find((s) => s.sourceName === source.name)}
+            onToggle={handleToggle}
+            onRemove={handleRemove}
+          />
+        ))}
 
         {/* Add source */}
         <div className="mt-3">
           {isAdding ? (
             <div className="bg-steam-mid/30 border border-steam-border/50 rounded p-3 space-y-2">
-              <input
+              <FocusInput
                 type="text"
-                data-focusable
                 autoFocus
                 placeholder="Source name (e.g. CachyOS Proton)"
                 value={newName}
@@ -175,9 +200,8 @@ export default function SettingsView() {
                   focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
                   hover:border-steam-accent/50 transition-colors"
               />
-              <input
+              <FocusInput
                 type="text"
-                data-focusable
                 placeholder="Manifest URL (https://...)"
                 value={newUrl}
                 onChange={(e) => setNewUrl(e.target.value)}
@@ -191,8 +215,7 @@ export default function SettingsView() {
                   hover:border-steam-accent/50 transition-colors"
               />
               <div className="flex gap-2">
-                <button
-                  data-focusable
+                <FocusButton
                   onClick={handleAdd}
                   disabled={!newName.trim() || !newUrl.trim()}
                   className="px-4 py-1.5 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
@@ -201,31 +224,30 @@ export default function SettingsView() {
                     disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
                 >
                   Save
-                </button>
-                <button
-                  data-focusable
+                </FocusButton>
+                <FocusButton
                   onClick={handleCancelAdd}
                   className="px-4 py-1.5 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-sm font-medium uppercase tracking-wider
                     hover:bg-steam-mid/50 hover:border-steam-accent/50 transition-all
                     focus:outline-none focus:ring-2 focus:ring-steam-accent"
                 >
                   Cancel
-                </button>
+                </FocusButton>
               </div>
             </div>
           ) : (
-            <button
-              data-focusable
+            <FocusButton
               onClick={() => setIsAdding(true)}
               className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
                 hover:bg-steam-accent/30 hover:border-steam-accent transition-all
                 focus:outline-none focus:ring-2 focus:ring-steam-accent"
             >
               + Add Manifest Source
-            </button>
+            </FocusButton>
           )}
         </div>
       </section>
     </div>
+    </FocusContext.Provider>
   );
 }

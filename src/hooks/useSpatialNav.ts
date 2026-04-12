@@ -30,7 +30,7 @@ export function useSpatialNav() {
 
       if (action === "REFRESH") {
         if (activeTab === "compat") {
-          fetchReleases();
+          fetchReleases(true);
           fetchInstalled();
         }
         return;

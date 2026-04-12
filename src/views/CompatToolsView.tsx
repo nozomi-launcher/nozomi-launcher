@@ -200,7 +200,7 @@ export default function CompatToolsView() {
   }, [settingsInitialized, loadSources]);
 
   const handleRefresh = () => {
-    fetchReleases();
+    fetchReleases(true);
     fetchInstalled();
   };
 

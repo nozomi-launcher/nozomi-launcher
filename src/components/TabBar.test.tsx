@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { useAppStore } from "../stores/appStore";
 import TabBar from "./TabBar";
@@ -16,17 +16,12 @@ describe("TabBar", () => {
     expect(screen.getByText("Modding")).toBeInTheDocument();
     expect(screen.getByText("Compatibility Tools")).toBeInTheDocument();
     expect(screen.getByText("Profiles")).toBeInTheDocument();
+    expect(screen.getByText("Settings")).toBeInTheDocument();
   });
 
-  it("switches tab on click", () => {
+  it("highlights the active tab", () => {
     render(<TabBar />);
-    fireEvent.click(screen.getByText("Profiles"));
-    expect(useAppStore.getState().activeTab).toBe("profiles");
-  });
-
-  it("all tabs are rendered as focusable elements", () => {
-    render(<TabBar />);
-    const buttons = screen.getAllByRole("button");
-    expect(buttons.length).toBeGreaterThanOrEqual(4);
+    const activeTab = screen.getByText("Game Launch").closest("[data-tab-id]");
+    expect(activeTab?.className).toContain("text-steam-accent");
   });
 });

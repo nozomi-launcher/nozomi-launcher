@@ -24,6 +24,7 @@ pub struct CompatToolManifest {
     /// Category label used by the UI to group compatibility tools. Each
     /// manifest declares its own category — e.g. "GE-Proton" for the official
     /// Glorious Eggroll source. Never hardcoded in the app.
+    #[serde(default)]
     pub category: String,
     pub generated_at: String,
     pub releases: Vec<CompatToolRelease>,

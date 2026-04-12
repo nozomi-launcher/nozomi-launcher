@@ -100,10 +100,6 @@ export default function CompatToolsView() {
     fetchInstalled();
   };
 
-  const handleForceRefresh = () => {
-    fetchReleases(true);
-    fetchInstalled();
-  };
 
   const handleActivate = async (tagName: string) => {
     await setGlobalCompatTool(tagName);
@@ -140,17 +136,6 @@ export default function CompatToolsView() {
                 disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
             >
               {isLoading ? "Loading..." : "Refresh"}
-            </button>
-            <button
-              data-focusable
-              onClick={handleForceRefresh}
-              disabled={isLoading}
-              className="px-3 py-1 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-sm font-medium uppercase tracking-wider
-                hover:bg-steam-mid/50 hover:border-steam-accent/50 hover:text-steam-text transition-all
-                focus:outline-none focus:ring-2 focus:ring-steam-accent
-                disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
-            >
-              Force Check
             </button>
           </div>
         </div>

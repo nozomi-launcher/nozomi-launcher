@@ -96,12 +96,6 @@ describe("CompatToolsView", () => {
     expect(refreshBtn).toHaveAttribute("data-focusable");
   });
 
-  it("force check button has data-focusable", () => {
-    render(<CompatToolsView />);
-    const forceBtn = screen.getByText("Force Check");
-    expect(forceBtn).toHaveAttribute("data-focusable");
-  });
-
   it("shows last checked timestamp", () => {
     render(<CompatToolsView />);
     expect(screen.getByText(/Last checked:/)).toBeInTheDocument();

@@ -1,0 +1,48 @@
+{
+  "name": "nozomi-launcher",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+
+  "containerEnv": {
+    "DISPLAY": "${localEnv:DISPLAY:-:0}",
+    "WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}",
+    "XDG_RUNTIME_DIR": "/tmp/xdg-runtime"
+  },
+
+  "runArgs": [
+    "--userns=keep-id",
+    "--security-opt=label=disable",
+    "--network=host"
+  ],
+
+  "mounts": [
+    "source=nozomi-cargo-registry,target=/home/dev/.cargo/registry,type=volume",
+    "source=nozomi-cargo-git,target=/home/dev/.cargo/git,type=volume",
+    "source=nozomi-target,target=/workspace/src-tauri/target,type=volume",
+    "source=nozomi-node-modules,target=/workspace/node_modules,type=volume",
+    "source=nozomi-pnpm-store,target=/home/dev/.local/share/pnpm/store,type=volume"
+  ],
+
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "tauri-apps.tauri-vscode",
+        "biomejs.biome",
+        "bradlc.vscode-tailwindcss"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "rust-analyzer.cargo.buildScripts.enable": true
+      }
+    }
+  },
+
+  "remoteUser": "dev"
+}

@@ -6,6 +6,51 @@
 pnpm install
 ```
 
+## Dev Container (recommended for Linux targeting)
+
+The project includes a Podman-based dev container (Debian Bookworm) with all Tauri/Rust/Node dependencies pre-installed. This is the recommended way to develop since the app targets Linux as a Steam compatibility tool.
+
+### Prerequisites
+
+- [Podman](https://podman.io/) installed on your host
+- VS Code with the **Dev Containers** extension
+- Set `"dev.containers.dockerPath": "podman"` in VS Code settings
+
+### Opening the container
+
+1. Open the project in VS Code
+2. `Ctrl+Shift+P` → **Dev Containers: Reopen in Container**
+3. The container will build and run `post-create.sh` automatically
+
+### GUI forwarding
+
+The container needs access to a display server to render the Tauri window.
+
+**Linux host (X11):**
+```bash
+# Allow local connections (run on host)
+xhost +local:
+```
+DISPLAY is forwarded automatically via `--network=host`.
+
+**Linux host (Wayland):**
+Add this mount to `devcontainer.json` `mounts` array:
+```json
+"source=${localEnv:XDG_RUNTIME_DIR}/wayland-0,target=/tmp/xdg-runtime/wayland-0,type=bind"
+```
+
+**macOS host:**
+1. Install [XQuartz](https://www.xquartz.org/)
+2. Open XQuartz → Preferences → Security → check "Allow connections from network clients"
+3. Restart XQuartz, then run on the host:
+   ```bash
+   xhost +localhost
+   ```
+4. In the container terminal, set:
+   ```bash
+   export DISPLAY=host.containers.internal:0
+   ```
+
 ## Running in development mode
 
 ```bash

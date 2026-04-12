@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as api from "../lib/tauri";
-import { useProtonGeStore } from "../stores/protonGeStore";
+import { useCompatToolsStore } from "../stores/compatToolsStore";
 import { useSettingsStore } from "../stores/settingsStore";
 import type { AppSettings } from "../types/settings";
 import SettingsView from "./SettingsView";
@@ -10,30 +10,28 @@ vi.mock("../lib/tauri");
 
 const mockedApi = vi.mocked(api);
 
-function baseSettings(sources: AppSettings["protonManifestSources"] = []): AppSettings {
-  return { activeCompatTool: null, protonManifestSources: sources };
+function baseSettings(sources: AppSettings["compatToolSources"] = []): AppSettings {
+  return { activeCompatTool: null, compatToolSources: sources };
 }
 
 describe("SettingsView", () => {
   beforeEach(() => {
     mockedApi.getSettings.mockReset();
     mockedApi.updateSettings.mockReset();
-    mockedApi.fetchProtonGeReleases.mockReset();
+    mockedApi.fetchCompatTools.mockReset();
 
     mockedApi.getSettings.mockResolvedValue(baseSettings());
     mockedApi.updateSettings.mockImplementation(async (patch) => ({
       ...baseSettings(),
       ...patch,
     }));
-    mockedApi.fetchProtonGeReleases.mockResolvedValue({
+    mockedApi.fetchCompatTools.mockResolvedValue({
       releases: [],
       sourceStatus: [],
     });
 
     useSettingsStore.setState({ sources: [], initialized: true });
-    // Only override the data fields so the real fetchReleases action (which
-    // calls the mocked api) is used.
-    useProtonGeStore.setState({
+    useCompatToolsStore.setState({
       releases: [],
       sourceStatus: [
         {
@@ -42,9 +40,11 @@ describe("SettingsView", () => {
           success: true,
           releaseCount: 42,
           error: null,
+          fromCache: false,
         },
       ],
       installedVersions: [],
+      lastCheckedEpochSecs: null,
       isLoading: false,
       error: null,
     });
@@ -64,10 +64,8 @@ describe("SettingsView", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/42 releases/)).toBeInTheDocument();
 
-    // Default source is inside a testid container
     const defaultBlock = screen.getByTestId("default-source");
     expect(defaultBlock.textContent).toContain("Default");
-    // Default source has no Remove / Disable buttons
     expect(defaultBlock.querySelector("button[data-focusable]")).toBeNull();
   });
 
@@ -103,7 +101,6 @@ describe("SettingsView", () => {
 
     fireEvent.click(screen.getByText("Save"));
 
-    // Wait for the async chain to settle
     await Promise.resolve();
     await Promise.resolve();
 
@@ -115,7 +112,7 @@ describe("SettingsView", () => {
       enabled: true,
     });
     expect(mockedApi.updateSettings).toHaveBeenCalled();
-    expect(mockedApi.fetchProtonGeReleases).toHaveBeenCalled();
+    expect(mockedApi.fetchCompatTools).toHaveBeenCalled();
   });
 
   it("Cancel discards the form", () => {
@@ -143,7 +140,7 @@ describe("SettingsView", () => {
       ],
       initialized: true,
     });
-    useProtonGeStore.setState({
+    useCompatToolsStore.setState({
       sourceStatus: [
         {
           sourceName: "CachyOS Proton",
@@ -151,6 +148,7 @@ describe("SettingsView", () => {
           success: true,
           releaseCount: 8,
           error: null,
+          fromCache: false,
         },
       ],
     });
@@ -182,8 +180,8 @@ describe("SettingsView", () => {
     await Promise.resolve();
 
     expect(useSettingsStore.getState().sources).toHaveLength(0);
-    expect(mockedApi.updateSettings).toHaveBeenCalledWith({ protonManifestSources: [] });
-    expect(mockedApi.fetchProtonGeReleases).toHaveBeenCalled();
+    expect(mockedApi.updateSettings).toHaveBeenCalledWith({ compatToolSources: [] });
+    expect(mockedApi.fetchCompatTools).toHaveBeenCalled();
   });
 
   it("toggles a source when Disable/Enable is clicked", async () => {
@@ -206,7 +204,7 @@ describe("SettingsView", () => {
     await Promise.resolve();
 
     expect(useSettingsStore.getState().sources[0].enabled).toBe(false);
-    expect(mockedApi.fetchProtonGeReleases).toHaveBeenCalled();
+    expect(mockedApi.fetchCompatTools).toHaveBeenCalled();
   });
 
   it("shows error status for failed sources", () => {
@@ -221,7 +219,7 @@ describe("SettingsView", () => {
       ],
       initialized: true,
     });
-    useProtonGeStore.setState({
+    useCompatToolsStore.setState({
       sourceStatus: [
         {
           sourceName: "Bad Source",
@@ -229,6 +227,7 @@ describe("SettingsView", () => {
           success: false,
           releaseCount: 0,
           error: "HTTP 404",
+          fromCache: false,
         },
       ],
     });

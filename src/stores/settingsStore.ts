@@ -1,17 +1,15 @@
 import { create } from "zustand";
 import * as api from "../lib/tauri";
-import type { ProtonManifestSource } from "../types/settings";
+import type { CompatToolSource } from "../types/settings";
 
 interface SettingsStore {
-  /** User-configured extra manifest sources (default source is NOT stored here). */
-  sources: ProtonManifestSource[];
-  /** Whether settings have been loaded from disk */
+  sources: CompatToolSource[];
   initialized: boolean;
   loadSources: () => Promise<void>;
   addSource: (name: string, url: string) => Promise<void>;
   removeSource: (id: string) => Promise<void>;
   toggleSource: (id: string) => Promise<void>;
-  updateSource: (id: string, updates: Partial<Omit<ProtonManifestSource, "id">>) => Promise<void>;
+  updateSource: (id: string, updates: Partial<Omit<CompatToolSource, "id">>) => Promise<void>;
 }
 
 function newSourceId(): string {
@@ -29,7 +27,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     try {
       const settings = await api.getSettings();
       set({
-        sources: settings.protonManifestSources ?? [],
+        sources: settings.compatToolSources ?? [],
         initialized: true,
       });
     } catch (e) {
@@ -43,29 +41,29 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     const trimmedUrl = url.trim();
     if (!trimmedName || !trimmedUrl) return;
 
-    const next: ProtonManifestSource[] = [
+    const next: CompatToolSource[] = [
       ...get().sources,
       { id: newSourceId(), name: trimmedName, url: trimmedUrl, enabled: true },
     ];
     set({ sources: next });
-    await api.updateSettings({ protonManifestSources: next });
+    await api.updateSettings({ compatToolSources: next });
   },
 
   removeSource: async (id) => {
     const next = get().sources.filter((s) => s.id !== id);
     set({ sources: next });
-    await api.updateSettings({ protonManifestSources: next });
+    await api.updateSettings({ compatToolSources: next });
   },
 
   toggleSource: async (id) => {
     const next = get().sources.map((s) => (s.id === id ? { ...s, enabled: !s.enabled } : s));
     set({ sources: next });
-    await api.updateSettings({ protonManifestSources: next });
+    await api.updateSettings({ compatToolSources: next });
   },
 
   updateSource: async (id, updates) => {
     const next = get().sources.map((s) => (s.id === id ? { ...s, ...updates } : s));
     set({ sources: next });
-    await api.updateSettings({ protonManifestSources: next });
+    await api.updateSettings({ compatToolSources: next });
   },
 }));

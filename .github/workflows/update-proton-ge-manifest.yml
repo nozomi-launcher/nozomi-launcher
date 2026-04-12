@@ -24,7 +24,7 @@ jobs:
           gh api "repos/GloriousEggroll/proton-ge-custom/releases?per_page=100" --paginate \
             | jq -s 'add' \
             | jq --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '{
-                schemaVersion: 2,
+                schemaVersion: 1,
                 category: "GE-Proton",
                 generatedAt: $ts,
                 source: "https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases",
@@ -43,7 +43,7 @@ jobs:
 
       - name: Validate manifest
         run: |
-          jq -e '.schemaVersion == 2
+          jq -e '.schemaVersion == 1
                  and (.category | type == "string" and length > 0)
                  and (.releases | length > 0)
                  and all(.releases[]; .tagName and .downloadUrl and .assetSize > 0)' \

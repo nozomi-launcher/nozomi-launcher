@@ -2,11 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import ButtonGlyph from "../components/ButtonGlyph";
 import { useAppStore } from "../stores/appStore";
 import { useCompatStore } from "../stores/compatStore";
-import { groupVersions, mergeVersions, useProtonGeStore } from "../stores/protonGeStore";
+import { groupVersions, mergeVersions, useCompatToolsStore } from "../stores/compatToolsStore";
 import { useSettingsStore } from "../stores/settingsStore";
-import type { ProtonGeStatus } from "../types/protonGe";
+import type { CompatToolStatus } from "../types/compatTools";
 
-function StatusBadge({ status }: { status: ProtonGeStatus }) {
+function StatusBadge({ status }: { status: CompatToolStatus }) {
   const styles = {
     available: "bg-steam-mid/30 text-steam-text-dim border border-steam-border/50",
     installed: "bg-steam-green/20 text-steam-green-bright border border-steam-green/40",
@@ -41,20 +41,25 @@ function formatDate(dateStr: string | null): string {
   }
 }
 
-export default function ProtonView() {
-  const releases = useProtonGeStore((s) => s.releases);
-  const installedVersions = useProtonGeStore((s) => s.installedVersions);
-  const isLoading = useProtonGeStore((s) => s.isLoading);
-  const error = useProtonGeStore((s) => s.error);
-  const fetchReleases = useProtonGeStore((s) => s.fetchReleases);
-  const fetchInstalled = useProtonGeStore((s) => s.fetchInstalled);
+function formatLastChecked(epochSecs: number | null): string {
+  if (!epochSecs) return "Never";
+  return new Date(epochSecs * 1000).toLocaleString();
+}
+
+export default function CompatToolsView() {
+  const releases = useCompatToolsStore((s) => s.releases);
+  const installedVersions = useCompatToolsStore((s) => s.installedVersions);
+  const isLoading = useCompatToolsStore((s) => s.isLoading);
+  const error = useCompatToolsStore((s) => s.error);
+  const fetchReleases = useCompatToolsStore((s) => s.fetchReleases);
+  const fetchInstalled = useCompatToolsStore((s) => s.fetchInstalled);
+  const lastCheckedEpochSecs = useCompatToolsStore((s) => s.lastCheckedEpochSecs);
   const globalCompatTool = useCompatStore((s) => s.globalCompatTool);
   const setGlobalCompatTool = useCompatStore((s) => s.setGlobalCompatTool);
   const setActiveTab = useAppStore((s) => s.setActiveTab);
   const extraSources = useSettingsStore((s) => s.sources);
   const settingsInitialized = useSettingsStore((s) => s.initialized);
   const loadSources = useSettingsStore((s) => s.loadSources);
-  // Default source is always present, so "multiple" means at least one enabled extra.
   const hasMultipleSources = extraSources.some((s) => s.enabled);
 
   const versions = useMemo(
@@ -63,15 +68,14 @@ export default function ProtonView() {
   );
   const groups = useMemo(() => groupVersions(versions), [versions]);
 
-  const [activeMajor, setActiveMajor] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
-  // Auto-select first group when groups load, or reset if active group no longer exists
   useEffect(() => {
     if (groups.length === 0) return;
-    if (!activeMajor || !groups.some((g) => g.majorVersion === activeMajor)) {
-      setActiveMajor(groups[0].majorVersion);
+    if (!activeCategory || !groups.some((g) => g.category === activeCategory)) {
+      setActiveCategory(groups[0].category);
     }
-  }, [groups, activeMajor]);
+  }, [groups, activeCategory]);
 
   useEffect(() => {
     fetchReleases();
@@ -89,6 +93,11 @@ export default function ProtonView() {
     fetchInstalled();
   };
 
+  const handleForceRefresh = () => {
+    fetchReleases(true);
+    fetchInstalled();
+  };
+
   const handleActivate = async (tagName: string) => {
     await setGlobalCompatTool(tagName);
     setActiveTab("launch");
@@ -99,28 +108,44 @@ export default function ProtonView() {
     });
   };
 
-  const activeGroup = groups.find((g) => g.majorVersion === activeMajor);
+  const activeGroup = groups.find((g) => g.category === activeCategory);
 
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3">
         <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent">
-          Proton-GE Versions
+          Compatibility Tools
         </h2>
-        <div className="flex items-center gap-1.5">
-          <ButtonGlyph action="REFRESH" />
-          <button
-            data-focusable
-            onClick={handleRefresh}
-            disabled={isLoading}
-            className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
-              hover:bg-steam-accent/30 hover:border-steam-accent transition-all
-              focus:outline-none focus:ring-2 focus:ring-steam-accent
-              disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
-          >
-            {isLoading ? "Loading..." : "Refresh"}
-          </button>
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-steam-text-dim">
+            Last checked: {formatLastChecked(lastCheckedEpochSecs)}
+          </span>
+          <div className="flex items-center gap-1.5">
+            <ButtonGlyph action="REFRESH" />
+            <button
+              data-focusable
+              onClick={handleRefresh}
+              disabled={isLoading}
+              className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
+                hover:bg-steam-accent/30 hover:border-steam-accent transition-all
+                focus:outline-none focus:ring-2 focus:ring-steam-accent
+                disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
+            >
+              {isLoading ? "Loading..." : "Refresh"}
+            </button>
+            <button
+              data-focusable
+              onClick={handleForceRefresh}
+              disabled={isLoading}
+              className="px-3 py-1 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-sm font-medium uppercase tracking-wider
+                hover:bg-steam-mid/50 hover:border-steam-accent/50 hover:text-steam-text transition-all
+                focus:outline-none focus:ring-2 focus:ring-steam-accent
+                disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
+            >
+              Force Check
+            </button>
+          </div>
         </div>
       </div>
 
@@ -144,7 +169,7 @@ export default function ProtonView() {
           className="flex mx-4 mb-4 border border-steam-border rounded overflow-hidden"
           style={{ height: "calc(100vh - 10rem)" }}
         >
-          {/* Sidebar: major versions */}
+          {/* Sidebar: categories */}
           <nav className="w-48 flex-shrink-0 bg-steam-darkest border-r border-steam-border overflow-y-auto">
             {groups.map((group) => {
               const installed = group.versions.filter(
@@ -152,18 +177,18 @@ export default function ProtonView() {
               ).length;
               return (
                 <button
-                  key={group.majorVersion}
+                  key={group.category}
                   data-focusable
-                  onClick={() => setActiveMajor(group.majorVersion)}
+                  onClick={() => setActiveCategory(group.category)}
                   className={`w-full text-left px-4 py-3 text-sm transition-all
                     focus:outline-none focus:ring-2 focus:ring-steam-accent focus:ring-inset
                     ${
-                      activeMajor === group.majorVersion
+                      activeCategory === group.category
                         ? "bg-steam-dark text-steam-accent border-l-2 border-steam-accent"
                         : "text-steam-text-dim hover:text-steam-text hover:bg-steam-dark/50 border-l-2 border-transparent"
                     }`}
                 >
-                  <span className="font-medium block">{group.majorVersion}</span>
+                  <span className="font-medium block">{group.category}</span>
                   <span className="text-xs opacity-60">
                     {installed > 0 ? `${installed} installed` : `${group.versions.length} versions`}
                   </span>
@@ -172,7 +197,7 @@ export default function ProtonView() {
             })}
           </nav>
 
-          {/* Right panel: minor versions */}
+          {/* Right panel: versions */}
           <div className="flex-1 overflow-y-auto bg-steam-dark/50">
             {activeGroup ? (
               <div>

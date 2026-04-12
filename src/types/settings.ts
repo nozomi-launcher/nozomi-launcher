@@ -1,4 +1,4 @@
-export interface ProtonManifestSource {
+export interface CompatToolSource {
   id: string;
   name: string;
   url: string;
@@ -7,5 +7,5 @@ export interface ProtonManifestSource {
 
 export interface AppSettings {
   activeCompatTool: string | null;
-  protonManifestSources: ProtonManifestSource[];
+  compatToolSources: CompatToolSource[];
 }

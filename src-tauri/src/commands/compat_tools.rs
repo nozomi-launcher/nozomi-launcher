@@ -328,7 +328,7 @@ mod tests {
 
     fn sample_manifest_json() -> &'static str {
         r#"{
-            "schemaVersion": 2,
+            "schemaVersion": 1,
             "category": "GE-Proton",
             "generatedAt": "2026-04-09T06:00:00Z",
             "source": "https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases",
@@ -379,7 +379,7 @@ mod tests {
         tags: &[&str],
     ) -> CompatToolManifest {
         CompatToolManifest {
-            schema_version: 2,
+            schema_version: 1,
             category: category.to_string(),
             generated_at: generated_at.to_string(),
             releases: tags.iter().map(|t| make_release(t)).collect(),
@@ -411,7 +411,7 @@ mod tests {
     #[test]
     fn manifest_deserializes_releases() {
         let manifest: CompatToolManifest = serde_json::from_str(sample_manifest_json()).unwrap();
-        assert_eq!(manifest.schema_version, 2);
+        assert_eq!(manifest.schema_version, 1);
         assert_eq!(manifest.category, "GE-Proton");
         assert_eq!(manifest.releases.len(), 2);
         assert_eq!(manifest.releases[0].tag_name, "GE-Proton9-27");
@@ -422,7 +422,7 @@ mod tests {
     #[test]
     fn manifest_ignores_unknown_fields() {
         let json = r#"{
-            "schemaVersion": 2,
+            "schemaVersion": 1,
             "category": "GE-Proton",
             "generatedAt": "2026-04-09T06:00:00Z",
             "source": "https://example.com",

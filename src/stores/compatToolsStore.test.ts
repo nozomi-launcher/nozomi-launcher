@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { ProtonGeRelease } from "../types/protonGe";
+import type { CompatToolRelease } from "../types/compatTools";
 import type { ProtonVersion } from "../types/steam";
 import {
   compareVersions,
@@ -7,9 +7,9 @@ import {
   groupVersions,
   mergeVersions,
   parseVersion,
-} from "./protonGeStore";
+} from "./compatToolsStore";
 
-const mockReleases: ProtonGeRelease[] = [
+const mockReleases: CompatToolRelease[] = [
   {
     tagName: "GE-Proton9-27",
     publishedAt: "2026-04-01T12:00:00Z",
@@ -129,7 +129,6 @@ describe("mergeVersions", () => {
     const result = mergeVersions(mockReleases, mockInstalled, null);
     const names = result.map((v) => v.tagName);
 
-    // GE-Proton10 should come before GE-Proton9, and 9-27 before 9-9
     expect(names.indexOf("GE-Proton10-2")).toBeLessThan(names.indexOf("GE-Proton10-1"));
     expect(names.indexOf("GE-Proton10-1")).toBeLessThan(names.indexOf("GE-Proton9-27"));
     expect(names.indexOf("GE-Proton9-27")).toBeLessThan(names.indexOf("GE-Proton9-9"));
@@ -154,26 +153,26 @@ describe("groupVersions", () => {
     const versions = mergeVersions(mockReleases, mockInstalled, null);
     const groups = groupVersions(versions);
 
-    const majorNames = groups.map((g) => g.majorVersion);
-    expect(majorNames).toContain("GE-Proton10");
-    expect(majorNames).toContain("GE-Proton9");
-    expect(majorNames).toContain("GE-Proton8");
+    const categories = groups.map((g) => g.category);
+    expect(categories).toContain("GE-Proton10");
+    expect(categories).toContain("GE-Proton9");
+    expect(categories).toContain("GE-Proton8");
   });
 
   it("sorts groups by major version descending", () => {
     const versions = mergeVersions(mockReleases, mockInstalled, null);
     const groups = groupVersions(versions);
 
-    const majorNames = groups.map((g) => g.majorVersion);
-    expect(majorNames.indexOf("GE-Proton10")).toBeLessThan(majorNames.indexOf("GE-Proton9"));
-    expect(majorNames.indexOf("GE-Proton9")).toBeLessThan(majorNames.indexOf("GE-Proton8"));
+    const categories = groups.map((g) => g.category);
+    expect(categories.indexOf("GE-Proton10")).toBeLessThan(categories.indexOf("GE-Proton9"));
+    expect(categories.indexOf("GE-Proton9")).toBeLessThan(categories.indexOf("GE-Proton8"));
   });
 
   it("preserves version order within groups", () => {
     const versions = mergeVersions(mockReleases, [], null);
     const groups = groupVersions(versions);
 
-    const ge9 = groups.find((g) => g.majorVersion === "GE-Proton9");
+    const ge9 = groups.find((g) => g.category === "GE-Proton9");
     const names = ge9!.versions.map((v) => v.tagName);
     expect(names.indexOf("GE-Proton9-27")).toBeLessThan(names.indexOf("GE-Proton9-9"));
   });

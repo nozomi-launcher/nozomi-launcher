@@ -1,9 +1,10 @@
-export interface ProtonGeRelease {
+export interface CompatToolRelease {
   tagName: string;
   publishedAt: string;
   downloadUrl: string;
   assetSize: number;
   sourceName?: string | null;
+  category?: string | null;
 }
 
 export interface SourceStatus {
@@ -12,23 +13,28 @@ export interface SourceStatus {
   success: boolean;
   releaseCount: number;
   error: string | null;
+  category?: string | null;
+  lastCheckedEpochSecs?: number | null;
+  fromCache: boolean;
 }
 
-export interface FetchReleasesResult {
-  releases: ProtonGeRelease[];
+export interface FetchCompatToolsResult {
+  releases: CompatToolRelease[];
   sourceStatus: SourceStatus[];
+  lastCheckedEpochSecs?: number | null;
 }
 
-export type ProtonGeStatus = "available" | "installed" | "selected";
+export type CompatToolStatus = "available" | "installed" | "selected";
 
-export interface ProtonGeVersion {
+export interface CompatToolVersion {
   tagName: string;
   publishedAt: string | null;
-  status: ProtonGeStatus;
+  status: CompatToolStatus;
   sourceName?: string | null;
+  category?: string | null;
 }
 
-export interface ProtonGeGroup {
-  majorVersion: string;
-  versions: ProtonGeVersion[];
+export interface CompatToolGroup {
+  category: string;
+  versions: CompatToolVersion[];
 }

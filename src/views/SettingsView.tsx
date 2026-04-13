@@ -1,7 +1,7 @@
 import { FocusContext, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import { useEffect, useState } from "react";
 import ButtonPrompt from "../components/ButtonPrompt";
-import { FocusButton, FocusInput } from "../components/FocusElements";
+import { EditableField, FocusButton, FocusInput } from "../components/FocusElements";
 import { useCompatToolsStore } from "../stores/compatToolsStore";
 import { useSettingsStore } from "../stores/settingsStore";
 import type { SourceStatus } from "../types/compatTools";
@@ -104,17 +104,12 @@ export default function SettingsView() {
   const [isAdding, setIsAdding] = useState(false);
   const [newName, setNewName] = useState("");
   const [newUrl, setNewUrl] = useState("");
-  const [localCompatDir, setLocalCompatDir] = useState("");
 
   useEffect(() => {
     if (!initialized) {
       loadSources();
     }
   }, [initialized, loadSources]);
-
-  useEffect(() => {
-    setLocalCompatDir(compatToolsDir ?? "");
-  }, [compatToolsDir]);
 
   const defaultStatus = sourceStatus.find((s) => s.sourceName === DEFAULT_MANIFEST_NAME);
 
@@ -160,44 +155,24 @@ export default function SettingsView() {
                 Override where compatibility tools are installed. Leave empty to use the default
                 Steam directory (<code className="text-steam-text-dim">compatibilitytools.d</code>).
               </p>
-              <div className="flex gap-2">
-                <FocusInput
-                  type="text"
-                  placeholder="e.g. /home/user/.steam/root/compatibilitytools.d"
-                  value={localCompatDir}
-                  onChange={(e) => setLocalCompatDir(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setCompatToolsDir(localCompatDir.trim() || null);
-                    }
-                  }}
-                  className="flex-1 bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
-                placeholder:text-steam-text-dim/50
-                focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
-                hover:border-steam-accent/50 transition-colors"
-                />
-                <FocusButton
-                  onClick={() => setCompatToolsDir(localCompatDir.trim() || null)}
-                  className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
-                hover:bg-steam-accent/30 hover:border-steam-accent transition-all
-                focus:outline-none focus:ring-2 focus:ring-steam-accent"
-                >
-                  Apply
-                </FocusButton>
-                {compatToolsDir && (
-                  <FocusButton
-                    onClick={() => {
-                      setLocalCompatDir("");
-                      setCompatToolsDir(null);
-                    }}
-                    className="px-4 py-2 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-sm font-medium uppercase tracking-wider
-                  hover:bg-steam-mid/50 hover:border-steam-accent/50 transition-all
-                  focus:outline-none focus:ring-2 focus:ring-steam-accent"
-                  >
-                    Reset
-                  </FocusButton>
-                )}
-              </div>
+              <EditableField
+                value={compatToolsDir ?? ""}
+                onApply={(v) => setCompatToolsDir(v || null)}
+                placeholder="e.g. /home/user/.steam/root/compatibilitytools.d"
+                emptyLabel="Using default Steam directory"
+                extraButtons={
+                  compatToolsDir ? (
+                    <FocusButton
+                      onClick={() => setCompatToolsDir(null)}
+                      className="px-4 py-2 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-sm font-medium uppercase tracking-wider
+                        hover:bg-steam-mid/50 hover:border-steam-accent/50 transition-all
+                        focus:outline-none focus:ring-2 focus:ring-steam-accent"
+                    >
+                      Reset
+                    </FocusButton>
+                  ) : undefined
+                }
+              />
             </section>
 
             <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
@@ -252,7 +227,6 @@ export default function SettingsView() {
                   <div className="bg-steam-mid/30 border border-steam-border/50 rounded p-3 space-y-2">
                     <FocusInput
                       type="text"
-                      autoFocus
                       placeholder="Source name (e.g. CachyOS Proton)"
                       value={newName}
                       onChange={(e) => setNewName(e.target.value)}
@@ -266,10 +240,8 @@ export default function SettingsView() {
                       placeholder="Manifest URL (https://...)"
                       value={newUrl}
                       onChange={(e) => setNewUrl(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") handleAdd();
-                        if (e.key === "Escape") handleCancelAdd();
-                      }}
+                      onApply={handleAdd}
+                      onCancel={handleCancelAdd}
                       className="w-full bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
                   placeholder:text-steam-text-dim/50
                   focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent

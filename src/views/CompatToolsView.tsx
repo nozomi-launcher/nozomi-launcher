@@ -91,7 +91,15 @@ function VersionRow({
 }) {
   const isInstalled = version.status === "installed" || version.status === "selected";
   const isInstalling = version.status === "installing" || !!installProgress;
-  const { ref, focused } = useFocusable();
+  const { ref, focused } = useFocusable({
+    onEnterPress: () => {
+      if (isInstalled) {
+        onSelect(version.tagName);
+      } else if (!isInstalling) {
+        onInstall(version.tagName);
+      }
+    },
+  });
 
   return (
     <div
@@ -208,7 +216,11 @@ export default function CompatToolsView() {
   const loadSources = useSettingsStore((s) => s.loadSources);
   const hasMultipleSources = extraSources.some((s) => s.enabled);
 
-  const installingSet = useMemo(() => new Set(installing.keys()), [installing]);
+  // Only recompute when the set of *which tags* are installing changes, not on
+  // every progress tick.  This prevents the versions/groups memos from
+  // cascading a full re-render of every VersionRow on each progress event.
+  const installingKeysStr = useMemo(() => [...installing.keys()].sort().join(","), [installing]);
+  const installingSet = useMemo(() => new Set(installing.keys()), [installingKeysStr]);
 
   const versions = useMemo(
     () => mergeVersions(releases, installedVersions, globalCompatTool, installingSet),

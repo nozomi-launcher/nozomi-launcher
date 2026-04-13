@@ -428,7 +428,9 @@ pub async fn install_compat_tool(
         .await
         .map_err(|e| format!("Failed to create temp file: {e}"))?;
 
+    use std::time::Instant;
     use tokio::io::AsyncWriteExt;
+    let mut last_emit = Instant::now();
     while let Some(chunk) = stream.next().await {
         let chunk = chunk.map_err(|e| {
             emit_progress("error", downloaded);
@@ -439,8 +441,13 @@ pub async fn install_compat_tool(
             format!("Failed to write to temp file: {e}")
         })?;
         downloaded += chunk.len() as u64;
-        emit_progress("downloading", downloaded);
+        if last_emit.elapsed() >= Duration::from_millis(200) {
+            emit_progress("downloading", downloaded);
+            last_emit = Instant::now();
+        }
     }
+    // Always emit final download state before moving to extraction
+    emit_progress("downloading", downloaded);
     file.flush()
         .await
         .map_err(|e| format!("Flush failed: {e}"))?;

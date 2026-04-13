@@ -106,6 +106,16 @@ export const useCompatToolsStore = create<CompatToolsStore>((set, get) => ({
         name: release.name ?? null,
         assetSize: release.assetSize,
       });
+      // Belt-and-suspenders: the "done" event should also trigger cleanup +
+      // fetchInstalled, but if it was missed (IPC ordering, UI backlog) we
+      // handle it here as well.
+      const current = get().installing;
+      if (current.has(release.tagName)) {
+        const updated = new Map(current);
+        updated.delete(release.tagName);
+        set({ installing: updated });
+      }
+      await fetchInstalled();
     } catch (e) {
       const current = get().installing;
       const updated = new Map(current);

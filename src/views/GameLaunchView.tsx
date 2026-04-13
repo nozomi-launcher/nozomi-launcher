@@ -1,5 +1,6 @@
 import { FocusContext, setFocus, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import { useEffect, useRef, useState } from "react";
+import ButtonPrompt from "../components/ButtonPrompt";
 import EnvVarEditor from "../components/EnvVarEditor";
 import { FocusButton, FocusInput } from "../components/FocusElements";
 import GamepadSelect from "../components/GamepadSelect";
@@ -151,7 +152,9 @@ export default function GameLaunchView() {
 
   return (
     <FocusContext.Provider value={focusKey}>
-      <div ref={viewRef} className="max-w-3xl mx-auto space-y-4">
+      <div ref={viewRef} className="flex flex-col h-full overflow-hidden">
+        <div className="flex-1 min-h-0 overflow-y-auto p-6">
+        <div className="max-w-3xl mx-auto space-y-4">
         {/* Game Info */}
         <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
           <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-2">
@@ -334,6 +337,14 @@ export default function GameLaunchView() {
               Abort
             </FocusButton>
           )}
+        </div>
+        </div>
+        </div>
+
+        {/* Footer: button prompts */}
+        <div className="flex items-center justify-end gap-6 px-4 py-2 border-t border-steam-border/50 bg-steam-darkest/80 shrink-0">
+          <ButtonPrompt action="CONFIRM" label="Select" />
+          <ButtonPrompt action="CANCEL" label="Cancel" />
         </div>
       </div>
     </FocusContext.Provider>

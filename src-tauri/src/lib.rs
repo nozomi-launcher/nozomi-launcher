@@ -32,6 +32,8 @@ pub fn run() {
             commands::profiles::load_profile,
             commands::proton::list_proton_versions,
             commands::compat_tools::fetch_compat_tools,
+            commands::compat_tools::install_compat_tool,
+            commands::compat_tools::uninstall_compat_tool,
             commands::settings::get_settings,
             commands::settings::save_settings,
         ])

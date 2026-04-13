@@ -60,3 +60,13 @@ pub struct FetchCompatToolsResult {
     /// nothing has ever been checked successfully.
     pub last_checked_epoch_secs: Option<u64>,
 }
+
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct InstallProgress {
+    pub tag_name: String,
+    pub stage: String,
+    pub bytes_downloaded: u64,
+    pub total_bytes: u64,
+    pub progress_pct: f64,
+}

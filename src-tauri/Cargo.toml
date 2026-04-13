@@ -23,8 +23,11 @@ tauri-plugin-log = "2"
 uuid = { version = "1", features = ["v4"] }
 dirs = "6"
 tokio = { version = "1", features = ["process"] }
-reqwest = { version = "0.12", features = ["json"] }
+reqwest = { version = "0.12", features = ["json", "stream"] }
 futures = "0.3"
+flate2 = "1"
+tar = "0.4"
+tokio-util = { version = "0.7", features = ["io"] }
 
 [dev-dependencies]
 tempfile = "3"

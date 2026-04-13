@@ -11,19 +11,23 @@ const tabs: { id: Tab; label: string }[] = [
 
 function TabButton({ tab }: { tab: { id: Tab; label: string } }) {
   const activeTab = useAppStore((s) => s.activeTab);
+  const setActiveTab = useAppStore((s) => s.setActiveTab);
 
   return (
-    <div
+    <button
+      type="button"
       data-tab-id={tab.id}
-      className={`px-6 py-3 text-sm font-medium uppercase tracking-wider transition-all
+      onClick={() => setActiveTab(tab.id)}
+      className={`px-6 py-3 text-sm font-medium uppercase tracking-wider transition-all cursor-pointer
+        focus:outline-none focus:ring-2 focus:ring-steam-accent focus:ring-inset
         ${
           activeTab === tab.id
             ? "bg-steam-dark text-steam-accent border-t-2 border-steam-accent"
-            : "text-steam-text-dim border-t-2 border-transparent"
+            : "text-steam-text-dim hover:text-steam-text border-t-2 border-transparent"
         }`}
     >
       {tab.label}
-    </div>
+    </button>
   );
 }
 

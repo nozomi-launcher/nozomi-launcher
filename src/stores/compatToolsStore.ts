@@ -1,3 +1,4 @@
+import { listen, type UnlistenFn } from "@tauri-apps/api/event";
 import { create } from "zustand";
 import * as api from "../lib/tauri";
 import type {
@@ -5,6 +6,7 @@ import type {
   CompatToolRelease,
   CompatToolStatus,
   CompatToolVersion,
+  InstallProgress,
   SourceStatus,
 } from "../types/compatTools";
 import type { ProtonVersion } from "../types/steam";
@@ -16,17 +18,23 @@ interface CompatToolsStore {
   lastCheckedEpochSecs: number | null;
   isLoading: boolean;
   error: string | null;
+  installing: Map<string, InstallProgress>;
   fetchReleases: (force?: boolean) => Promise<void>;
   fetchInstalled: () => Promise<void>;
+  installTool: (release: CompatToolRelease) => Promise<void>;
+  uninstallTool: (tagName: string) => Promise<void>;
 }
 
-export const useCompatToolsStore = create<CompatToolsStore>((set) => ({
+let progressUnlisten: UnlistenFn | null = null;
+
+export const useCompatToolsStore = create<CompatToolsStore>((set, get) => ({
   releases: [],
   sourceStatus: [],
   installedVersions: [],
   lastCheckedEpochSecs: null,
   isLoading: false,
   error: null,
+  installing: new Map(),
 
   fetchReleases: async (force?: boolean) => {
     set({ isLoading: true, error: null });
@@ -47,6 +55,70 @@ export const useCompatToolsStore = create<CompatToolsStore>((set) => ({
     try {
       const installedVersions = await api.listProtonVersions();
       set({ installedVersions });
+    } catch (e) {
+      set({ error: String(e) });
+    }
+  },
+
+  installTool: async (release: CompatToolRelease) => {
+    const { installing, fetchInstalled } = get();
+    if (installing.has(release.tagName)) return;
+
+    const initial: InstallProgress = {
+      tagName: release.tagName,
+      stage: "downloading",
+      bytesDownloaded: 0,
+      totalBytes: release.assetSize,
+      progressPct: 0,
+    };
+    const next = new Map(installing);
+    next.set(release.tagName, initial);
+    set({ installing: next });
+
+    // Listen for progress events
+    if (!progressUnlisten) {
+      progressUnlisten = await listen<InstallProgress>(
+        "compat-tool-install-progress",
+        (event) => {
+          const progress = event.payload;
+          const current = get().installing;
+          if (progress.stage === "done" || progress.stage === "error") {
+            const updated = new Map(current);
+            updated.delete(progress.tagName);
+            set({ installing: updated });
+            if (progress.stage === "done") {
+              fetchInstalled();
+            }
+            if (progress.stage === "error") {
+              set({ error: `Install failed for ${progress.tagName}` });
+            }
+          } else {
+            const updated = new Map(current);
+            updated.set(progress.tagName, progress);
+            set({ installing: updated });
+          }
+        },
+      );
+    }
+
+    try {
+      await api.installCompatTool({
+        downloadUrl: release.downloadUrl,
+        tagName: release.tagName,
+        assetSize: release.assetSize,
+      });
+    } catch (e) {
+      const current = get().installing;
+      const updated = new Map(current);
+      updated.delete(release.tagName);
+      set({ installing: updated, error: String(e) });
+    }
+  },
+
+  uninstallTool: async (tagName: string) => {
+    try {
+      await api.uninstallCompatTool(tagName);
+      await get().fetchInstalled();
     } catch (e) {
       set({ error: String(e) });
     }
@@ -78,12 +150,15 @@ export function mergeVersions(
   releases: CompatToolRelease[],
   installedVersions: ProtonVersion[],
   selectedVersion: string | null,
+  installingSet?: Set<string>,
 ): CompatToolVersion[] {
   const installedNames = new Set(installedVersions.map((v) => v.name));
 
   const versions: CompatToolVersion[] = releases.map((r) => {
     let status: CompatToolStatus = "available";
-    if (r.tagName === selectedVersion) {
+    if (installingSet?.has(r.tagName)) {
+      status = "installing";
+    } else if (r.tagName === selectedVersion) {
       status = "selected";
     } else if (installedNames.has(r.tagName)) {
       status = "installed";

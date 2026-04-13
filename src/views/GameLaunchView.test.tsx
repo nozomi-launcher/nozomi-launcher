@@ -52,7 +52,7 @@ describe("GameLaunchView", () => {
 
   it("does not show abort button in standalone mode", () => {
     render(<GameLaunchView />);
-    expect(screen.queryByText("Abort")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Abort" })).not.toBeInTheDocument();
   });
 
   it("shows abort button when launched as compat tool", async () => {

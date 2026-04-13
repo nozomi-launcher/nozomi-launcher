@@ -122,7 +122,7 @@ describe("SettingsView", () => {
     fireEvent.change(screen.getByPlaceholderText(/Source name/), {
       target: { value: "typed" },
     });
-    fireEvent.click(screen.getByText("Cancel"));
+    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
     expect(screen.queryByPlaceholderText(/Source name/)).toBeNull();
     expect(screen.getByText("+ Add Manifest Source")).toBeInTheDocument();

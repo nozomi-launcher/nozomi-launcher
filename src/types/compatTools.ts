@@ -24,7 +24,7 @@ export interface FetchCompatToolsResult {
   lastCheckedEpochSecs?: number | null;
 }
 
-export type CompatToolStatus = "available" | "installed" | "selected";
+export type CompatToolStatus = "available" | "installed" | "selected" | "installing";
 
 export interface CompatToolVersion {
   tagName: string;
@@ -37,4 +37,12 @@ export interface CompatToolVersion {
 export interface CompatToolGroup {
   category: string;
   versions: CompatToolVersion[];
+}
+
+export interface InstallProgress {
+  tagName: string;
+  stage: "downloading" | "extracting" | "done" | "error";
+  bytesDownloaded: number;
+  totalBytes: number;
+  progressPct: number;
 }

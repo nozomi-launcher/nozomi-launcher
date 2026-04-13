@@ -146,6 +146,22 @@ describe("mergeVersions", () => {
 
     expect(v81?.status).toBe("selected");
   });
+
+  it("marks installing versions correctly", () => {
+    const installingSet = new Set(["GE-Proton10-2"]);
+    const result = mergeVersions(mockReleases, mockInstalled, null, installingSet);
+    const v102 = result.find((v) => v.tagName === "GE-Proton10-2");
+
+    expect(v102?.status).toBe("installing");
+  });
+
+  it("installing takes precedence over available", () => {
+    const installingSet = new Set(["GE-Proton9-9"]);
+    const result = mergeVersions(mockReleases, mockInstalled, null, installingSet);
+    const v9 = result.find((v) => v.tagName === "GE-Proton9-9");
+
+    expect(v9?.status).toBe("installing");
+  });
 });
 
 describe("groupVersions", () => {

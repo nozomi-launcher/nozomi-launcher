@@ -63,3 +63,15 @@ export async function launchGame(options: {
 export async function abortLaunch(): Promise<void> {
   return invoke("abort_launch");
 }
+
+export async function installCompatTool(options: {
+  downloadUrl: string;
+  tagName: string;
+  assetSize: number;
+}): Promise<void> {
+  return invoke("install_compat_tool", options);
+}
+
+export async function uninstallCompatTool(tagName: string): Promise<void> {
+  return invoke("uninstall_compat_tool", { tagName });
+}

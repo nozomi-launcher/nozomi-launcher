@@ -5,19 +5,13 @@
     "context": "."
   },
   "workspaceFolder": "/workspace",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
 
   "containerEnv": {
     "DISPLAY": "${localEnv:DISPLAY:-:0}",
     "WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}",
     "XDG_RUNTIME_DIR": "/tmp/xdg-runtime"
   },
-
-  "runArgs": [
-    "--userns=keep-id",
-    "--security-opt=label=disable",
-    "--network=host"
-  ],
 
   "mounts": [
     "source=nozomi-cargo-registry,target=/home/dev/.cargo/registry,type=volume",
@@ -44,5 +38,6 @@
     }
   },
 
-  "remoteUser": "dev"
+  "remoteUser": "dev",
+  "updateRemoteUserUID": true
 }

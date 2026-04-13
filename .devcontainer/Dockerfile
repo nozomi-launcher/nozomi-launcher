@@ -77,7 +77,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
 ENV PATH="/home/${USERNAME}/.cargo/bin:${PATH}"
 
 # ── pnpm ─────────────────────────────────────────────────────────────────────
-RUN npm install -g pnpm@${PNPM_VERSION}
+RUN sudo npm install -g pnpm@${PNPM_VERSION}
 
 # ── Tauri CLI (installed globally for convenience) ───────────────────────────
 RUN cargo install tauri-cli --locked

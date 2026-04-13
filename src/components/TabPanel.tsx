@@ -19,7 +19,7 @@ export default function TabPanel({ active, children }: TabPanelProps) {
         className={`transition-opacity duration-200 ease-in-out
           ${
             active
-              ? "opacity-100 relative pointer-events-auto"
+              ? "opacity-100 relative pointer-events-auto h-full"
               : "opacity-0 absolute inset-0 pointer-events-none"
           }`}
       >

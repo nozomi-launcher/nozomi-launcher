@@ -19,6 +19,10 @@ pub struct AppSettings {
     /// settings files written before the rename.
     #[serde(default, alias = "protonManifestSources")]
     pub compat_tool_sources: Vec<CompatToolSource>,
+    /// Override directory where compatibility tools are installed.
+    /// When `None`, defaults to `<steam_root>/compatibilitytools.d`.
+    #[serde(default)]
+    pub compat_tools_dir: Option<String>,
 }
 
 #[cfg(test)]
@@ -42,6 +46,7 @@ mod tests {
                 url: "https://example.com/cachy.json".to_string(),
                 enabled: true,
             }],
+            ..Default::default()
         };
         let json = serde_json::to_string(&settings).unwrap();
         let deserialized: AppSettings = serde_json::from_str(&json).unwrap();
@@ -53,6 +58,7 @@ mod tests {
         let settings = AppSettings {
             active_compat_tool: Some("GE-Proton10-34".to_string()),
             compat_tool_sources: vec![],
+            ..Default::default()
         };
         let json = serde_json::to_string(&settings).unwrap();
         assert!(json.contains("activeCompatTool"));

@@ -8,4 +8,5 @@ export interface CompatToolSource {
 export interface AppSettings {
   activeCompatTool: string | null;
   compatToolSources: CompatToolSource[];
+  compatToolsDir: string | null;
 }

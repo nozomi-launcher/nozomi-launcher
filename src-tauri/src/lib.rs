@@ -25,12 +25,15 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             commands::steam::get_launch_context,
             commands::launch::launch_game,
+            commands::launch::abort_launch,
             commands::profiles::list_profiles,
             commands::profiles::save_profile,
             commands::profiles::delete_profile,
             commands::profiles::load_profile,
             commands::proton::list_proton_versions,
             commands::compat_tools::fetch_compat_tools,
+            commands::compat_tools::install_compat_tool,
+            commands::compat_tools::uninstall_compat_tool,
             commands::settings::get_settings,
             commands::settings::save_settings,
         ])

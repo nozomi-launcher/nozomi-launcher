@@ -1,5 +1,7 @@
 export interface CompatToolRelease {
   tagName: string;
+  /** Actual directory name on disk. Falls back to tagName when absent. */
+  name?: string | null;
   publishedAt: string;
   downloadUrl: string;
   assetSize: number;
@@ -24,10 +26,12 @@ export interface FetchCompatToolsResult {
   lastCheckedEpochSecs?: number | null;
 }
 
-export type CompatToolStatus = "available" | "installed" | "selected";
+export type CompatToolStatus = "available" | "installed" | "selected" | "installing";
 
 export interface CompatToolVersion {
   tagName: string;
+  /** Actual directory name on disk (resolved). */
+  name: string;
   publishedAt: string | null;
   status: CompatToolStatus;
   sourceName?: string | null;
@@ -37,4 +41,12 @@ export interface CompatToolVersion {
 export interface CompatToolGroup {
   category: string;
   versions: CompatToolVersion[];
+}
+
+export interface InstallProgress {
+  tagName: string;
+  stage: "downloading" | "extracting" | "done" | "error";
+  bytesDownloaded: number;
+  totalBytes: number;
+  progressPct: number;
 }

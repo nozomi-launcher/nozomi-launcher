@@ -11,6 +11,7 @@ function baseSettings(sources: CompatToolSource[] = []): AppSettings {
   return {
     activeCompatTool: null,
     compatToolSources: sources,
+    compatToolsDir: null,
   };
 }
 

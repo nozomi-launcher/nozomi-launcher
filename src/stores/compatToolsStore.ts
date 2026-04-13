@@ -1,3 +1,4 @@
+import { listen, type UnlistenFn } from "@tauri-apps/api/event";
 import { create } from "zustand";
 import * as api from "../lib/tauri";
 import type {
@@ -5,6 +6,7 @@ import type {
   CompatToolRelease,
   CompatToolStatus,
   CompatToolVersion,
+  InstallProgress,
   SourceStatus,
 } from "../types/compatTools";
 import type { ProtonVersion } from "../types/steam";
@@ -16,17 +18,23 @@ interface CompatToolsStore {
   lastCheckedEpochSecs: number | null;
   isLoading: boolean;
   error: string | null;
+  installing: Map<string, InstallProgress>;
   fetchReleases: (force?: boolean) => Promise<void>;
   fetchInstalled: () => Promise<void>;
+  installTool: (release: CompatToolRelease) => Promise<void>;
+  uninstallTool: (tagName: string) => Promise<void>;
 }
 
-export const useCompatToolsStore = create<CompatToolsStore>((set) => ({
+let progressUnlisten: UnlistenFn | null = null;
+
+export const useCompatToolsStore = create<CompatToolsStore>((set, get) => ({
   releases: [],
   sourceStatus: [],
   installedVersions: [],
   lastCheckedEpochSecs: null,
   isLoading: false,
   error: null,
+  installing: new Map(),
 
   fetchReleases: async (force?: boolean) => {
     set({ isLoading: true, error: null });
@@ -47,6 +55,80 @@ export const useCompatToolsStore = create<CompatToolsStore>((set) => ({
     try {
       const installedVersions = await api.listProtonVersions();
       set({ installedVersions });
+    } catch (e) {
+      set({ error: String(e) });
+    }
+  },
+
+  installTool: async (release: CompatToolRelease) => {
+    const { installing, fetchInstalled } = get();
+    if (installing.has(release.tagName)) return;
+    set({ error: null });
+
+    const initial: InstallProgress = {
+      tagName: release.tagName,
+      stage: "downloading",
+      bytesDownloaded: 0,
+      totalBytes: release.assetSize,
+      progressPct: 0,
+    };
+    const next = new Map(installing);
+    next.set(release.tagName, initial);
+    set({ installing: next });
+
+    // Listen for progress events
+    if (!progressUnlisten) {
+      progressUnlisten = await listen<InstallProgress>("compat-tool-install-progress", (event) => {
+        const progress = event.payload;
+        const current = get().installing;
+        if (progress.stage === "done" || progress.stage === "error") {
+          const updated = new Map(current);
+          updated.delete(progress.tagName);
+          set({ installing: updated });
+          if (progress.stage === "done") {
+            fetchInstalled();
+          }
+          if (progress.stage === "error") {
+            set({ error: `Install failed for ${progress.tagName}` });
+          }
+        } else {
+          const updated = new Map(current);
+          updated.set(progress.tagName, progress);
+          set({ installing: updated });
+        }
+      });
+    }
+
+    try {
+      await api.installCompatTool({
+        downloadUrl: release.downloadUrl,
+        tagName: release.tagName,
+        name: release.name ?? null,
+        assetSize: release.assetSize,
+      });
+      // Belt-and-suspenders: the "done" event should also trigger cleanup +
+      // fetchInstalled, but if it was missed (IPC ordering, UI backlog) we
+      // handle it here as well.
+      const current = get().installing;
+      if (current.has(release.tagName)) {
+        const updated = new Map(current);
+        updated.delete(release.tagName);
+        set({ installing: updated });
+      }
+      await fetchInstalled();
+    } catch (e) {
+      const current = get().installing;
+      const updated = new Map(current);
+      updated.delete(release.tagName);
+      set({ installing: updated, error: String(e) });
+    }
+  },
+
+  uninstallTool: async (tagName: string) => {
+    set({ error: null });
+    try {
+      await api.uninstallCompatTool(tagName);
+      await get().fetchInstalled();
     } catch (e) {
       set({ error: String(e) });
     }
@@ -78,18 +160,23 @@ export function mergeVersions(
   releases: CompatToolRelease[],
   installedVersions: ProtonVersion[],
   selectedVersion: string | null,
+  installingSet?: Set<string>,
 ): CompatToolVersion[] {
   const installedNames = new Set(installedVersions.map((v) => v.name));
 
   const versions: CompatToolVersion[] = releases.map((r) => {
+    const name = r.name ?? r.tagName;
     let status: CompatToolStatus = "available";
-    if (r.tagName === selectedVersion) {
+    if (installingSet?.has(r.tagName)) {
+      status = "installing";
+    } else if (r.tagName === selectedVersion || name === selectedVersion) {
       status = "selected";
-    } else if (installedNames.has(r.tagName)) {
+    } else if (installedNames.has(name)) {
       status = "installed";
     }
     return {
       tagName: r.tagName,
+      name,
       publishedAt: r.publishedAt,
       status,
       sourceName: r.sourceName ?? null,
@@ -97,11 +184,12 @@ export function mergeVersions(
     };
   });
 
-  const remoteNames = new Set(releases.map((r) => r.tagName));
+  const remoteNames = new Set(releases.map((r) => r.name ?? r.tagName));
   for (const installed of installedVersions) {
     if (!remoteNames.has(installed.name)) {
       versions.push({
         tagName: installed.name,
+        name: installed.name,
         publishedAt: null,
         status: installed.name === selectedVersion ? "selected" : "installed",
       });
@@ -114,8 +202,15 @@ export function mergeVersions(
 
 export function groupVersions(versions: CompatToolVersion[]): CompatToolGroup[] {
   const groupMap = new Map<string, CompatToolVersion[]>();
+  const latestAliases: CompatToolVersion[] = [];
 
   for (const v of versions) {
+    // "GE-Proton Latest" doesn't match a numeric major version;
+    // collect it separately and insert into the top group later.
+    if (v.tagName === "GE-Proton Latest") {
+      latestAliases.push(v);
+      continue;
+    }
     const major = getMajorVersion(v.tagName);
     const group = groupMap.get(major);
     if (group) {
@@ -135,6 +230,11 @@ export function groupVersions(versions: CompatToolVersion[]): CompatToolGroup[] 
     const bNum = Number(b.category.match(/\d+/)?.[0] ?? 0);
     return bNum - aNum;
   });
+
+  // Prepend "GE-Proton Latest" to the highest major version group
+  if (latestAliases.length > 0 && groups.length > 0) {
+    groups[0].versions = [...latestAliases, ...groups[0].versions];
+  }
 
   return groups;
 }

@@ -36,8 +36,11 @@ describe("CompatToolsView", () => {
       lastCheckedEpochSecs: null,
       isLoading: false,
       error: null,
+      installing: new Map(),
       fetchReleases: async () => {},
       fetchInstalled: async () => {},
+      installTool: async () => {},
+      uninstallTool: async () => {},
     });
     useCompatStore.setState({
       globalCompatTool: "GE-Proton9-27",
@@ -67,17 +70,18 @@ describe("CompatToolsView", () => {
   it("clicking a sidebar item shows that group's versions", () => {
     render(<CompatToolsView />);
     fireEvent.click(screen.getByText("GE-Proton9"));
-    expect(screen.getByText("GE-Proton9-27")).toBeInTheDocument();
+    // GE-Proton9-27 appears in both header (active tool) and version list
+    expect(screen.getAllByText("GE-Proton9-27").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("GE-Proton9-26")).toBeInTheDocument();
   });
 
-  it("shows Active badge for the globally active version", () => {
+  it("shows checkmark for the globally active version", () => {
     render(<CompatToolsView />);
     fireEvent.click(screen.getByText("GE-Proton9"));
-    expect(screen.getByText("Active")).toBeInTheDocument();
+    expect(screen.getByTitle("Active")).toBeInTheDocument();
   });
 
-  it("shows Activate button for installed but non-active versions", () => {
+  it("shows Select button for installed but non-active versions", () => {
     useCompatStore.setState({ globalCompatTool: "GE-Proton10-1" });
     useCompatToolsStore.setState({
       installedVersions: [
@@ -87,12 +91,12 @@ describe("CompatToolsView", () => {
     });
     render(<CompatToolsView />);
     fireEvent.click(screen.getByText("GE-Proton9"));
-    expect(screen.getByText("Activate")).toBeInTheDocument();
+    expect(screen.getByText("Select", { selector: "button" })).toBeInTheDocument();
   });
 
   it("refresh button is rendered", () => {
     render(<CompatToolsView />);
-    const refreshBtn = screen.getByText("Refresh");
+    const refreshBtn = screen.getByRole("button", { name: "Refresh" });
     expect(refreshBtn).toBeInTheDocument();
   });
 
@@ -106,8 +110,11 @@ describe("CompatToolsView", () => {
       releases: [],
       installedVersions: [],
       isLoading: true,
+      installing: new Map(),
       fetchReleases: async () => {},
       fetchInstalled: async () => {},
+      installTool: async () => {},
+      uninstallTool: async () => {},
     });
     render(<CompatToolsView />);
     expect(screen.getByText("Loading releases...")).toBeInTheDocument();
@@ -117,8 +124,11 @@ describe("CompatToolsView", () => {
   it("shows error message", () => {
     useCompatToolsStore.setState({
       error: "Network error",
+      installing: new Map(),
       fetchReleases: async () => {},
       fetchInstalled: async () => {},
+      installTool: async () => {},
+      uninstallTool: async () => {},
     });
     render(<CompatToolsView />);
     expect(screen.getByText("Network error")).toBeInTheDocument();
@@ -129,10 +139,67 @@ describe("CompatToolsView", () => {
       releases: [],
       installedVersions: [],
       isLoading: false,
+      installing: new Map(),
       fetchReleases: async () => {},
       fetchInstalled: async () => {},
+      installTool: async () => {},
+      uninstallTool: async () => {},
     });
     render(<CompatToolsView />);
     expect(screen.getByText("No versions found.")).toBeInTheDocument();
+  });
+
+  it("shows Download button for available versions", () => {
+    render(<CompatToolsView />);
+    // GE-Proton10-1 is available (not installed)
+    expect(screen.getByText("Download")).toBeInTheDocument();
+  });
+
+  it("shows Delete button for installed versions", () => {
+    render(<CompatToolsView />);
+    fireEvent.click(screen.getByText("GE-Proton9"));
+    expect(screen.getByText("Delete")).toBeInTheDocument();
+  });
+
+  it("shows progress bar for versions being installed", () => {
+    useCompatToolsStore.setState({
+      installing: new Map([
+        [
+          "GE-Proton10-1",
+          {
+            tagName: "GE-Proton10-1",
+            stage: "downloading",
+            bytesDownloaded: 100000000,
+            totalBytes: 410000000,
+            progressPct: 24.4,
+          },
+        ],
+      ]),
+    });
+    render(<CompatToolsView />);
+    expect(screen.getByText("Downloading...")).toBeInTheDocument();
+    expect(screen.getByText("24%")).toBeInTheDocument();
+  });
+
+  it("error toast can be dismissed", () => {
+    useCompatToolsStore.setState({
+      error: "Some error",
+      installing: new Map(),
+      fetchReleases: async () => {},
+      fetchInstalled: async () => {},
+      installTool: async () => {},
+      uninstallTool: async () => {},
+    });
+    render(<CompatToolsView />);
+    expect(screen.getByText("Some error")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("alertdialog", { name: "Error" }));
+    expect(screen.queryByText("Some error")).not.toBeInTheDocument();
+  });
+
+  it("renders footer with button prompts", () => {
+    render(<CompatToolsView />);
+    expect(screen.getByText("Select")).toBeInTheDocument();
+    expect(screen.getByText("Cancel")).toBeInTheDocument();
+    expect(screen.getAllByText("Refresh").length).toBeGreaterThanOrEqual(1);
   });
 });

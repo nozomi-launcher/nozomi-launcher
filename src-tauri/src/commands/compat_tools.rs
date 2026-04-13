@@ -1,12 +1,15 @@
 use crate::commands::settings::get_settings;
 use crate::models::compat_tools::{
-    CompatToolManifest, CompatToolRelease, FetchCompatToolsResult, SourceStatus,
+    CompatToolManifest, CompatToolRelease, FetchCompatToolsResult, InstallProgress, SourceStatus,
 };
 use crate::models::settings::CompatToolSource;
+use crate::steam::env;
+use futures::StreamExt;
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use tauri::Emitter;
 
 pub const DEFAULT_MANIFEST_URL: &str =
     "https://raw.githubusercontent.com/nozomi-launcher/nozomi-launcher/main/manifests/proton-ge.json";
@@ -319,6 +322,213 @@ pub async fn fetch_compat_tools(force: Option<bool>) -> Result<FetchCompatToolsR
     Ok(merged)
 }
 
+/// Get or create the compatibility tools directory.
+/// Uses the user-configured override from settings if set, otherwise falls
+/// back to `<steam_root>/compatibilitytools.d`.
+fn get_or_create_compat_tools_dir() -> Result<PathBuf, String> {
+    let dir = if let Ok(settings) = get_settings() {
+        if let Some(ref custom) = settings.compat_tools_dir {
+            if !custom.is_empty() {
+                PathBuf::from(custom)
+            } else {
+                default_compat_tools_dir()?
+            }
+        } else {
+            default_compat_tools_dir()?
+        }
+    } else {
+        default_compat_tools_dir()?
+    };
+    if !dir.exists() {
+        std::fs::create_dir_all(&dir)
+            .map_err(|e| format!("Failed to create compat tools directory: {e}"))?;
+    }
+    Ok(dir)
+}
+
+fn default_compat_tools_dir() -> Result<PathBuf, String> {
+    let root = env::steam_root().ok_or("Could not find Steam root directory")?;
+    Ok(root.join("compatibilitytools.d"))
+}
+
+/// Validate a tag name to prevent path traversal attacks.
+fn is_safe_tag_name(tag: &str) -> bool {
+    !tag.is_empty()
+        && !tag.contains('/')
+        && !tag.contains('\\')
+        && !tag.contains("..")
+        && tag != "."
+}
+
+#[tauri::command]
+pub async fn install_compat_tool(
+    app_handle: tauri::AppHandle,
+    download_url: String,
+    tag_name: String,
+    name: Option<String>,
+    asset_size: u64,
+) -> Result<(), String> {
+    // The directory name is the `name` (actual folder on disk) if provided,
+    // otherwise fall back to the tag name.
+    let dir_name = name.as_deref().unwrap_or(&tag_name);
+    if !is_safe_tag_name(dir_name) {
+        return Err(format!("Invalid tool name: {dir_name}"));
+    }
+
+    let compat_dir = get_or_create_compat_tools_dir()?;
+    let target_dir = compat_dir.join(dir_name);
+    if target_dir.exists() {
+        return Err(format!("{dir_name} is already installed"));
+    }
+
+    let emit_progress = |stage: &str, bytes: u64| {
+        let pct = if asset_size > 0 {
+            (bytes as f64 / asset_size as f64 * 100.0).min(100.0)
+        } else {
+            0.0
+        };
+        let _ = app_handle.emit(
+            "compat-tool-install-progress",
+            InstallProgress {
+                tag_name: tag_name.clone(),
+                stage: stage.to_string(),
+                bytes_downloaded: bytes,
+                total_bytes: asset_size,
+                progress_pct: pct,
+            },
+        );
+    };
+
+    emit_progress("downloading", 0);
+
+    // Download with streaming
+    let client = reqwest::Client::builder()
+        .build()
+        .map_err(|e| format!("Failed to create HTTP client: {e}"))?;
+
+    let response = client
+        .get(&download_url)
+        .header("User-Agent", "nozomi-launcher")
+        .send()
+        .await
+        .map_err(|e| {
+            emit_progress("error", 0);
+            format!("Download failed: {e}")
+        })?;
+
+    if !response.status().is_success() {
+        emit_progress("error", 0);
+        return Err(format!("Download failed: HTTP {}", response.status()));
+    }
+
+    let temp_file = std::env::temp_dir().join(format!("nozomi-download-{tag_name}.tar.gz"));
+    let mut downloaded: u64 = 0;
+    let mut stream = response.bytes_stream();
+    let mut file = tokio::fs::File::create(&temp_file)
+        .await
+        .map_err(|e| format!("Failed to create temp file: {e}"))?;
+
+    use std::time::Instant;
+    use tokio::io::AsyncWriteExt;
+    let mut last_emit = Instant::now();
+    while let Some(chunk) = stream.next().await {
+        let chunk = chunk.map_err(|e| {
+            emit_progress("error", downloaded);
+            format!("Download stream error: {e}")
+        })?;
+        file.write_all(&chunk).await.map_err(|e| {
+            emit_progress("error", downloaded);
+            format!("Failed to write to temp file: {e}")
+        })?;
+        downloaded += chunk.len() as u64;
+        if last_emit.elapsed() >= Duration::from_millis(200) {
+            emit_progress("downloading", downloaded);
+            last_emit = Instant::now();
+        }
+    }
+    // Always emit final download state before moving to extraction
+    emit_progress("downloading", downloaded);
+    file.flush()
+        .await
+        .map_err(|e| format!("Flush failed: {e}"))?;
+    drop(file);
+
+    emit_progress("extracting", downloaded);
+
+    // Extract tar.gz in a blocking task
+    let temp_file_clone = temp_file.clone();
+    let compat_dir_clone = compat_dir.clone();
+    tokio::task::spawn_blocking(move || {
+        let file = std::fs::File::open(&temp_file_clone)
+            .map_err(|e| format!("Failed to open downloaded file: {e}"))?;
+        let decoder = flate2::read::GzDecoder::new(file);
+        let mut archive = tar::Archive::new(decoder);
+        archive.set_overwrite(false);
+
+        // Validate all archive entries against path traversal before extracting
+        let file2 = std::fs::File::open(&temp_file_clone)
+            .map_err(|e| format!("Failed to reopen archive: {e}"))?;
+        let decoder2 = flate2::read::GzDecoder::new(file2);
+        let mut check_archive = tar::Archive::new(decoder2);
+        for entry in check_archive
+            .entries()
+            .map_err(|e| format!("Failed to read archive entries: {e}"))?
+        {
+            let entry = entry.map_err(|e| format!("Bad archive entry: {e}"))?;
+            let path = entry.path().map_err(|e| format!("Bad entry path: {e}"))?;
+            if path
+                .components()
+                .any(|c| matches!(c, std::path::Component::ParentDir))
+            {
+                return Err("Archive contains path traversal — aborting".to_string());
+            }
+        }
+
+        archive
+            .unpack(&compat_dir_clone)
+            .map_err(|e| format!("Failed to extract archive: {e}"))?;
+        Ok::<(), String>(())
+    })
+    .await
+    .map_err(|e| format!("Extract task panicked: {e}"))??;
+
+    // Clean up temp file
+    let _ = tokio::fs::remove_file(&temp_file).await;
+
+    emit_progress("done", downloaded);
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn uninstall_compat_tool(tag_name: String) -> Result<(), String> {
+    if !is_safe_tag_name(&tag_name) {
+        return Err(format!("Invalid tag name: {tag_name}"));
+    }
+
+    let compat_dir = get_or_create_compat_tools_dir()?;
+    let target_dir = compat_dir.join(&tag_name);
+
+    if !target_dir.exists() {
+        return Err(format!("{tag_name} is not installed"));
+    }
+
+    // Ensure the target is actually inside compat_dir (defense-in-depth)
+    let canonical_compat = compat_dir
+        .canonicalize()
+        .map_err(|e| format!("canonicalize compat dir: {e}"))?;
+    let canonical_target = target_dir
+        .canonicalize()
+        .map_err(|e| format!("canonicalize target: {e}"))?;
+    if !canonical_target.starts_with(&canonical_compat) {
+        return Err("Target path escapes compatibility tools directory".to_string());
+    }
+
+    std::fs::remove_dir_all(&target_dir)
+        .map_err(|e| format!("Failed to remove {tag_name}: {e}"))?;
+
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -358,6 +568,7 @@ mod tests {
     fn make_release(tag: &str) -> CompatToolRelease {
         CompatToolRelease {
             tag_name: tag.to_string(),
+            name: Some(tag.to_string()),
             published_at: "2026-04-01T12:00:00Z".to_string(),
             download_url: format!("https://example.com/{tag}.tar.gz"),
             asset_size: 1000,
@@ -442,6 +653,7 @@ mod tests {
     fn compat_tool_release_serde_roundtrip() {
         let release = CompatToolRelease {
             tag_name: "GE-Proton9-27".to_string(),
+            name: Some("GE-Proton9-27".to_string()),
             published_at: "2026-04-01T12:00:00Z".to_string(),
             download_url: "https://example.com/GE-Proton9-27.tar.gz".to_string(),
             asset_size: 400000000,
@@ -853,5 +1065,22 @@ mod tests {
         assert!(status.from_cache);
         assert_eq!(status.error.as_deref(), Some("network down"));
         assert_eq!(merged.last_checked_epoch_secs, Some(1_000_000));
+    }
+
+    #[test]
+    fn is_safe_tag_name_valid() {
+        assert!(is_safe_tag_name("GE-Proton9-27"));
+        assert!(is_safe_tag_name("Proton-9.0-4"));
+        assert!(is_safe_tag_name("wine-ge-8-26"));
+    }
+
+    #[test]
+    fn is_safe_tag_name_rejects_path_traversal() {
+        assert!(!is_safe_tag_name(".."));
+        assert!(!is_safe_tag_name("../etc/passwd"));
+        assert!(!is_safe_tag_name("foo/bar"));
+        assert!(!is_safe_tag_name("foo\\bar"));
+        assert!(!is_safe_tag_name(""));
+        assert!(!is_safe_tag_name("."));
     }
 }

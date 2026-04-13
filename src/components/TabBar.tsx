@@ -9,10 +9,25 @@ const tabs: { id: Tab; label: string }[] = [
   { id: "settings", label: "Settings" },
 ];
 
-export default function TabBar() {
+function TabButton({ tab }: { tab: { id: Tab; label: string } }) {
   const activeTab = useAppStore((s) => s.activeTab);
-  const setActiveTab = useAppStore((s) => s.setActiveTab);
 
+  return (
+    <div
+      data-tab-id={tab.id}
+      className={`px-6 py-3 text-sm font-medium uppercase tracking-wider transition-all
+        ${
+          activeTab === tab.id
+            ? "bg-steam-dark text-steam-accent border-t-2 border-steam-accent"
+            : "text-steam-text-dim border-t-2 border-transparent"
+        }`}
+    >
+      {tab.label}
+    </div>
+  );
+}
+
+export default function TabBar() {
   return (
     <nav className="flex items-center bg-steam-darkest border-b border-steam-border">
       <div className="pl-4 pr-2">
@@ -21,21 +36,7 @@ export default function TabBar() {
 
       <div className="flex flex-1">
         {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            data-focusable
-            data-tab-id={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`px-6 py-3 text-sm font-medium uppercase tracking-wider transition-all
-              focus:outline-none focus:ring-2 focus:ring-steam-accent focus:ring-inset
-              ${
-                activeTab === tab.id
-                  ? "bg-steam-dark text-steam-accent border-t-2 border-steam-accent"
-                  : "text-steam-text-dim hover:text-steam-text hover:bg-steam-dark/50 border-t-2 border-transparent"
-              }`}
-          >
-            {tab.label}
-          </button>
+          <TabButton key={tab.id} tab={tab} />
         ))}
       </div>
 

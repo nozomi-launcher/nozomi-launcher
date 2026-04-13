@@ -66,7 +66,7 @@ describe("SettingsView", () => {
 
     const defaultBlock = screen.getByTestId("default-source");
     expect(defaultBlock.textContent).toContain("Default");
-    expect(defaultBlock.querySelector("button[data-focusable]")).toBeNull();
+    expect(defaultBlock.querySelector("button")).toBeNull();
   });
 
   it("shows Add Manifest Source button initially", () => {

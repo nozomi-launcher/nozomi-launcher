@@ -5,13 +5,13 @@ import type { ControllerType, GamepadAction } from "../types/input";
 export const BUTTON_MAP: Record<number, GamepadAction> = {
   0: "CONFIRM", // A
   1: "CANCEL", // B
+  3: "REFRESH", // Y (Xbox) / Triangle (PS) / X (Nintendo)
   4: "TAB_LEFT", // LB
   5: "TAB_RIGHT", // RB
   12: "UP", // D-pad up
   13: "DOWN", // D-pad down
   14: "LEFT", // D-pad left
   15: "RIGHT", // D-pad right
-  3: "REFRESH", // Y (Xbox) / Triangle (PS) / X (Nintendo)
 };
 
 // Left stick axis thresholds

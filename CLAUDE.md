@@ -44,7 +44,7 @@ pnpm exec tsc --noEmit  # TypeScript type check
 - Zustand stores go in `src/stores/`
 - Tauri invoke wrappers go in `src/lib/tauri.ts`
 - Types go in `src/types/`
-- All interactive elements must have `data-focusable` attribute for gamepad navigation
+- All interactive elements must use `FocusButton` / `FocusInput` from `src/components/FocusElements.tsx` for spatial navigation
 - Custom hooks go in `src/hooks/`
 - Use Tailwind CSS classes with the custom Steam theme (`steam-*` colors); include `focus:ring-2 focus:ring-steam-accent` on focusable elements
 - Use `GamepadSelect` instead of native `<select>` elements for gamepad compatibility

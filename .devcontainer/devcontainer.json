@@ -1,0 +1,45 @@
+{
+  "name": "nozomi-launcher",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".",
+    "options": ["--tag=nozomi-launcher-dev:latest"]
+  },
+  "runArgs": ["--name=nozomi-launcher-dev"],
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+
+  "containerEnv": {
+    "WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}"
+  },
+
+  "mounts": [
+    "source=nozomi-cargo-registry,target=/home/dev/.cargo/registry,type=volume",
+    "source=nozomi-cargo-git,target=/home/dev/.cargo/git,type=volume",
+    "source=nozomi-target,target=/workspace/src-tauri/target,type=volume",
+    "source=nozomi-node-modules,target=/workspace/node_modules,type=volume",
+    "source=nozomi-pnpm-store,target=/home/dev/.local/share/pnpm/store,type=volume",
+    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind"
+  ],
+
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "postStartCommand": "bash -c 'source /workspace/.devcontainer/env-setup.sh && grep -qF env-setup.sh ~/.bashrc 2>/dev/null || echo \"source /workspace/.devcontainer/env-setup.sh\" >> ~/.bashrc'",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "tauri-apps.tauri-vscode",
+        "biomejs.biome",
+        "bradlc.vscode-tailwindcss"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "rust-analyzer.cargo.buildScripts.enable": true
+      }
+    }
+  },
+
+  "remoteUser": "dev",
+  "updateRemoteUserUID": true
+}

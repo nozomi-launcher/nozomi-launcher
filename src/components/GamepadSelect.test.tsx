@@ -12,7 +12,6 @@ const options = [
 describe("GamepadSelect", () => {
   afterEach(() => {
     useInputStore.setState({
-      navigationLock: false,
       inputMode: "keyboard",
       controllerType: null,
     });
@@ -70,21 +69,8 @@ describe("GamepadSelect", () => {
     expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
   });
 
-  it("sets navigation lock when opened", () => {
+  it("trigger button is rendered as a button", () => {
     render(<GamepadSelect options={options} value="" onChange={() => {}} />);
-    fireEvent.click(screen.getByRole("button"));
-    expect(useInputStore.getState().navigationLock).toBe(true);
-  });
-
-  it("clears navigation lock when closed", () => {
-    render(<GamepadSelect options={options} value="" onChange={() => {}} />);
-    fireEvent.click(screen.getByRole("button"));
-    fireEvent.keyDown(window, { key: "Escape" });
-    expect(useInputStore.getState().navigationLock).toBe(false);
-  });
-
-  it("has data-focusable on trigger button", () => {
-    render(<GamepadSelect options={options} value="" onChange={() => {}} />);
-    expect(screen.getByRole("button")).toHaveAttribute("data-focusable");
+    expect(screen.getByRole("button")).toBeInTheDocument();
   });
 });

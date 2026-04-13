@@ -67,6 +67,7 @@ export async function abortLaunch(): Promise<void> {
 export async function installCompatTool(options: {
   downloadUrl: string;
   tagName: string;
+  name?: string | null;
   assetSize: number;
 }): Promise<void> {
   return invoke("install_compat_tool", options);

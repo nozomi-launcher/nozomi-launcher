@@ -4,8 +4,10 @@ import type { CompatToolSource } from "../types/settings";
 
 interface SettingsStore {
   sources: CompatToolSource[];
+  compatToolsDir: string | null;
   initialized: boolean;
   loadSources: () => Promise<void>;
+  setCompatToolsDir: (dir: string | null) => Promise<void>;
   addSource: (name: string, url: string) => Promise<void>;
   removeSource: (id: string) => Promise<void>;
   toggleSource: (id: string) => Promise<void>;
@@ -21,6 +23,7 @@ function newSourceId(): string {
 
 export const useSettingsStore = create<SettingsStore>((set, get) => ({
   sources: [],
+  compatToolsDir: null,
   initialized: false,
 
   loadSources: async () => {
@@ -28,6 +31,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
       const settings = await api.getSettings();
       set({
         sources: settings.compatToolSources ?? [],
+        compatToolsDir: settings.compatToolsDir ?? null,
         initialized: true,
       });
     } catch (e) {
@@ -65,5 +69,10 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     const next = get().sources.map((s) => (s.id === id ? { ...s, ...updates } : s));
     set({ sources: next });
     await api.updateSettings({ compatToolSources: next });
+  },
+
+  setCompatToolsDir: async (dir) => {
+    set({ compatToolsDir: dir });
+    await api.updateSettings({ compatToolsDir: dir });
   },
 }));

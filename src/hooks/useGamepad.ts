@@ -121,6 +121,10 @@ export function useGamepad(onAction: (action: GamepadAction) => void) {
       e: "TAB_RIGHT",
       Escape: "CANCEL",
       r: "REFRESH",
+      w: "UP",
+      a: "LEFT",
+      s: "DOWN",
+      d: "RIGHT",
     };
 
     const handleMouseMove = () => setInputMode("keyboard");

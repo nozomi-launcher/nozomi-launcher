@@ -23,22 +23,30 @@ jobs:
           mkdir -p manifests
           gh api "repos/GloriousEggroll/proton-ge-custom/releases?per_page=100" --paginate \
             | jq -s 'add' \
-            | jq --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '{
+            | jq --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '
+              # Build the regular releases array
+              [
+                .[]
+                | . as $r
+                | ($r.assets[]? | select(.name | endswith(".tar.gz")))
+                | {
+                    tagName: $r.tag_name,
+                    name: (.name | rtrimstr(".tar.gz")),
+                    publishedAt: $r.published_at,
+                    downloadUrl: .browser_download_url,
+                    assetSize: .size
+                  }
+              ] as $releases |
+
+              # Latest release is the first entry (API returns newest first)
+              ($releases[0] + { tagName: "GE-Proton Latest" }) as $latestAlias |
+
+              {
                 schemaVersion: 1,
                 category: "GE-Proton",
                 generatedAt: $ts,
                 source: "https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases",
-                releases: [
-                  .[]
-                  | . as $r
-                  | ($r.assets[]? | select(.name | endswith(".tar.gz")))
-                  | {
-                      tagName: $r.tag_name,
-                      publishedAt: $r.published_at,
-                      downloadUrl: .browser_download_url,
-                      assetSize: .size
-                    }
-                ]
+                releases: ([$latestAlias] + $releases)
               }' > manifests/proton-ge.json
 
       - name: Validate manifest
@@ -46,7 +54,7 @@ jobs:
           jq -e '.schemaVersion == 1
                  and (.category | type == "string" and length > 0)
                  and (.releases | length > 0)
-                 and all(.releases[]; .tagName and .downloadUrl and .assetSize > 0)' \
+                 and all(.releases[]; .tagName and .name and .downloadUrl and .assetSize > 0)' \
              manifests/proton-ge.json > /dev/null
 
       - name: Commit if changed

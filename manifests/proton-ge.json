@@ -1,1346 +1,1576 @@
 {
   "schemaVersion": 1,
   "category": "GE-Proton",
-  "generatedAt": "2026-04-11T04:18:44Z",
+  "generatedAt": "2026-04-13T11:16:35Z",
   "source": "https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases",
   "releases": [
+    {
+      "tagName": "GE-Proton Latest",
+      "publishedAt": "2026-03-23T04:27:46Z",
+      "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-34/GE-Proton10-34.tar.gz",
+      "assetSize": 516611656,
+      "name": "GE-Proton10-34"
+    },
     {
       "tagName": "GE-Proton10-34",
       "publishedAt": "2026-03-23T04:27:46Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-34/GE-Proton10-34.tar.gz",
-      "assetSize": 516611656
+      "assetSize": 516611656,
+      "name": "GE-Proton10-34"
     },
     {
       "tagName": "GE-Proton10-33",
       "publishedAt": "2026-03-18T00:35:56Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-33/GE-Proton10-33.tar.gz",
-      "assetSize": 516090373
+      "assetSize": 516090373,
+      "name": "GE-Proton10-33"
     },
     {
       "tagName": "GE-Proton10-32",
       "publishedAt": "2026-02-16T15:37:12Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-32/GE-Proton10-32.tar.gz",
-      "assetSize": 515874267
+      "assetSize": 515874267,
+      "name": "GE-Proton10-32"
     },
     {
       "tagName": "GE-Proton10-31",
       "publishedAt": "2026-02-15T12:14:53Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-31/GE-Proton10-31.tar.gz",
-      "assetSize": 515871387
+      "assetSize": 515871387,
+      "name": "GE-Proton10-31"
     },
     {
       "tagName": "GE-Proton10-30",
       "publishedAt": "2026-02-10T05:50:03Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-30/GE-Proton10-30.tar.gz",
-      "assetSize": 515630086
+      "assetSize": 515630086,
+      "name": "GE-Proton10-30"
     },
     {
       "tagName": "GE-Proton10-29",
       "publishedAt": "2026-01-24T04:16:25Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-29/GE-Proton10-29.tar.gz",
-      "assetSize": 514575201
+      "assetSize": 514575201,
+      "name": "GE-Proton10-29"
     },
     {
       "tagName": "GE-Proton10-28",
       "publishedAt": "2026-01-01T22:56:26Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-28/GE-Proton10-28.tar.gz",
-      "assetSize": 513714713
+      "assetSize": 513714713,
+      "name": "GE-Proton10-28"
     },
     {
       "tagName": "GE-Proton10-27",
       "publishedAt": "2025-12-22T10:30:40Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-27/GE-Proton10-27.tar.gz",
-      "assetSize": 512857380
+      "assetSize": 512857380,
+      "name": "GE-Proton10-27"
     },
     {
       "tagName": "GE-Proton10-26",
       "publishedAt": "2025-12-07T19:43:41Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-26/GE-Proton10-26.tar.gz",
-      "assetSize": 512762307
+      "assetSize": 512762307,
+      "name": "GE-Proton10-26"
     },
     {
       "tagName": "GE-Proton10-25",
       "publishedAt": "2025-11-02T17:56:37Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-25/GE-Proton10-25.tar.gz",
-      "assetSize": 508760125
+      "assetSize": 508760125,
+      "name": "GE-Proton10-25"
     },
     {
       "tagName": "GE-Proton10-24",
       "publishedAt": "2025-10-29T06:17:36Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-24/GE-Proton10-24.tar.gz",
-      "assetSize": 508701727
+      "assetSize": 508701727,
+      "name": "GE-Proton10-24"
     },
     {
       "tagName": "GE-Proton10-23",
       "publishedAt": "2025-10-28T00:23:21Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-23/GE-Proton10-23.tar.gz",
-      "assetSize": 508687020
+      "assetSize": 508687020,
+      "name": "GE-Proton10-23"
     },
     {
       "tagName": "GE-Proton10-22",
       "publishedAt": "2025-10-27T02:52:54Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-22/GE-Proton10-22.tar.gz",
-      "assetSize": 513203278
+      "assetSize": 513203278,
+      "name": "GE-Proton10-22"
     },
     {
       "tagName": "GE-Proton10-21",
       "publishedAt": "2025-10-20T09:46:07Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-21/GE-Proton10-21.tar.gz",
-      "assetSize": 513179640
+      "assetSize": 513179640,
+      "name": "GE-Proton10-21"
     },
     {
       "tagName": "GE-Proton10-20",
       "publishedAt": "2025-10-13T23:50:54Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-20/GE-Proton10-20.tar.gz",
-      "assetSize": 512793485
+      "assetSize": 512793485,
+      "name": "GE-Proton10-20"
     },
     {
       "tagName": "GE-Proton10-19",
       "publishedAt": "2025-10-13T18:42:07Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-19/GE-Proton10-19.tar.gz",
-      "assetSize": 512839954
+      "assetSize": 512839954,
+      "name": "GE-Proton10-19"
     },
     {
       "tagName": "GE-Proton10-18",
       "publishedAt": "2025-10-12T22:26:20Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-18/GE-Proton10-18.tar.gz",
-      "assetSize": 512827626
+      "assetSize": 512827626,
+      "name": "GE-Proton10-18"
     },
     {
       "tagName": "GE-Proton10-17",
       "publishedAt": "2025-09-24T21:35:20Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-17/GE-Proton10-17.tar.gz",
-      "assetSize": 512176796
+      "assetSize": 512176796,
+      "name": "GE-Proton10-17"
     },
     {
       "tagName": "GE-Proton10-16",
       "publishedAt": "2025-09-21T21:19:46Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-16/GE-Proton10-16.tar.gz",
-      "assetSize": 513267402
+      "assetSize": 513267402,
+      "name": "GE-Proton10-16"
     },
     {
       "tagName": "GE-Proton10-15",
       "publishedAt": "2025-08-27T20:10:44Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-15/GE-Proton10-15.tar.gz",
-      "assetSize": 503128684
+      "assetSize": 503128684,
+      "name": "GE-Proton10-15"
     },
     {
       "tagName": "GE-Proton10-14",
       "publishedAt": "2025-08-27T11:23:35Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-14/GE-Proton10-14.tar.gz",
-      "assetSize": 503121319
+      "assetSize": 503121319,
+      "name": "GE-Proton10-14"
     },
     {
       "tagName": "GE-Proton10-13",
       "publishedAt": "2025-08-27T08:13:47Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-13/GE-Proton10-13.tar.gz",
-      "assetSize": 502217822
+      "assetSize": 502217822,
+      "name": "GE-Proton10-13"
     },
     {
       "tagName": "GE-Proton10-12",
       "publishedAt": "2025-08-12T23:03:33Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-12/GE-Proton10-12.tar.gz",
-      "assetSize": 501989660
+      "assetSize": 501989660,
+      "name": "GE-Proton10-12"
     },
     {
       "tagName": "GE-Proton10-11",
       "publishedAt": "2025-08-11T01:39:39Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-11/GE-Proton10-11.tar.gz",
-      "assetSize": 501915314
+      "assetSize": 501915314,
+      "name": "GE-Proton10-11"
     },
     {
       "tagName": "GE-Proton10-10",
       "publishedAt": "2025-07-19T06:34:48Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-10/GE-Proton10-10.tar.gz",
-      "assetSize": 499898188
+      "assetSize": 499898188,
+      "name": "GE-Proton10-10"
     },
     {
       "tagName": "GE-Proton10-9",
       "publishedAt": "2025-07-11T21:17:00Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-9/GE-Proton10-9.tar.gz",
-      "assetSize": 502252756
+      "assetSize": 502252756,
+      "name": "GE-Proton10-9"
     },
     {
       "tagName": "GE-Proton10-8",
       "publishedAt": "2025-07-02T02:38:17Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-8/GE-Proton10-8.tar.gz",
-      "assetSize": 502093518
+      "assetSize": 502093518,
+      "name": "GE-Proton10-8"
     },
     {
       "tagName": "GE-Proton10-7",
       "publishedAt": "2025-06-30T00:12:47Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-7/GE-Proton10-7.tar.gz",
-      "assetSize": 502066417
+      "assetSize": 502066417,
+      "name": "GE-Proton10-7"
     },
     {
       "tagName": "GE-Proton10-6",
       "publishedAt": "2025-06-29T23:58:07Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-6/GE-Proton10-6.tar.gz",
-      "assetSize": 502058069
+      "assetSize": 502058069,
+      "name": "GE-Proton10-6"
     },
     {
       "tagName": "GE-Proton10-4",
       "publishedAt": "2025-06-02T02:51:35Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-4/GE-Proton10-4.tar.gz",
-      "assetSize": 501926049
+      "assetSize": 501926049,
+      "name": "GE-Proton10-4"
     },
     {
       "tagName": "GE-Proton10-3",
       "publishedAt": "2025-05-20T06:47:01Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-3/GE-Proton10-3.tar.gz",
-      "assetSize": 502110633
+      "assetSize": 502110633,
+      "name": "GE-Proton10-3"
     },
     {
       "tagName": "GE-Proton10-2",
       "publishedAt": "2025-05-19T11:55:17Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-2/GE-Proton10-2.tar.gz",
-      "assetSize": 502115901
+      "assetSize": 502115901,
+      "name": "GE-Proton10-2"
     },
     {
       "tagName": "GE-Proton10-1",
       "publishedAt": "2025-05-14T10:23:24Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-1/GE-Proton10-1.tar.gz",
-      "assetSize": 502113360
+      "assetSize": 502113360,
+      "name": "GE-Proton10-1"
     },
     {
       "tagName": "GE-Proton9-27",
       "publishedAt": "2025-04-01T11:43:05Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-27/GE-Proton9-27.tar.gz",
-      "assetSize": 488766224
+      "assetSize": 488766224,
+      "name": "GE-Proton9-27"
     },
     {
       "tagName": "GE-Proton9-26",
       "publishedAt": "2025-03-11T21:11:13Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-26/GE-Proton9-26.tar.gz",
-      "assetSize": 488629379
+      "assetSize": 488629379,
+      "name": "GE-Proton9-26"
     },
     {
       "tagName": "GE-Proton9-25",
       "publishedAt": "2025-02-10T02:47:55Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-25/GE-Proton9-25.tar.gz",
-      "assetSize": 488362584
+      "assetSize": 488362584,
+      "name": "GE-Proton9-25"
     },
     {
       "tagName": "GE-Proton9-24",
       "publishedAt": "2025-02-08T16:40:29Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-24/GE-Proton9-24.tar.gz",
-      "assetSize": 488365472
+      "assetSize": 488365472,
+      "name": "GE-Proton9-24"
     },
     {
       "tagName": "GE-Proton9-23",
       "publishedAt": "2025-01-17T22:34:54Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-23/GE-Proton9-23.tar.gz",
-      "assetSize": 488054705
+      "assetSize": 488054705,
+      "name": "GE-Proton9-23"
     },
     {
       "tagName": "GE-Proton9-22",
       "publishedAt": "2024-12-28T09:54:43Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-22/GE-Proton9-22.tar.gz",
-      "assetSize": 487538473
+      "assetSize": 487538473,
+      "name": "GE-Proton9-22"
     },
     {
       "tagName": "GE-Proton9-21",
       "publishedAt": "2024-12-12T23:37:33Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-21/GE-Proton9-21.tar.gz",
-      "assetSize": 487726014
+      "assetSize": 487726014,
+      "name": "GE-Proton9-21"
     },
     {
       "tagName": "GE-Proton9-20",
       "publishedAt": "2024-11-10T20:56:40Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-20/GE-Proton9-20.tar.gz",
-      "assetSize": 449514226
+      "assetSize": 449514226,
+      "name": "GE-Proton9-20"
     },
     {
       "tagName": "GE-Proton9-19",
       "publishedAt": "2024-11-09T18:47:02Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-19/GE-Proton9-19.tar.gz",
-      "assetSize": 449529089
+      "assetSize": 449529089,
+      "name": "GE-Proton9-19"
     },
     {
       "tagName": "GE-Proton9-18",
       "publishedAt": "2024-11-01T05:28:28Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-18/GE-Proton9-18.tar.gz",
-      "assetSize": 449085043
+      "assetSize": 449085043,
+      "name": "GE-Proton9-18"
     },
     {
       "tagName": "GE-Proton9-17",
       "publishedAt": "2024-10-31T23:16:19Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-17/GE-Proton9-17.tar.gz",
-      "assetSize": 449084830
+      "assetSize": 449084830,
+      "name": "GE-Proton9-17"
     },
     {
       "tagName": "GE-Proton9-16",
       "publishedAt": "2024-10-16T01:12:25Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-16/GE-Proton9-16.tar.gz",
-      "assetSize": 435277158
+      "assetSize": 435277158,
+      "name": "GE-Proton9-16"
     },
     {
       "tagName": "GE-Proton9-15",
       "publishedAt": "2024-09-29T02:21:13Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-15/GE-Proton9-15.tar.gz",
-      "assetSize": 434561651
+      "assetSize": 434561651,
+      "name": "GE-Proton9-15"
     },
     {
       "tagName": "GE-Proton9-14",
       "publishedAt": "2024-09-24T07:30:05Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-14/GE-Proton9-14.tar.gz",
-      "assetSize": 434109617
+      "assetSize": 434109617,
+      "name": "GE-Proton9-14"
     },
     {
       "tagName": "GE-Proton9-13",
       "publishedAt": "2024-09-04T20:36:21Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-13/GE-Proton9-13.tar.gz",
-      "assetSize": 430084551
+      "assetSize": 430084551,
+      "name": "GE-Proton9-13"
     },
     {
       "tagName": "GE-Proton9-12",
       "publishedAt": "2024-08-31T22:47:47Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-12/GE-Proton9-12.tar.gz",
-      "assetSize": 433117443
+      "assetSize": 433117443,
+      "name": "GE-Proton9-12"
     },
     {
       "tagName": "GE-Proton9-11",
       "publishedAt": "2024-07-28T05:48:26Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-11/GE-Proton9-11.tar.gz",
-      "assetSize": 433150823
+      "assetSize": 433150823,
+      "name": "GE-Proton9-11"
     },
     {
       "tagName": "GE-Proton9-10",
       "publishedAt": "2024-07-07T21:11:41Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-10/GE-Proton9-10.tar.gz",
-      "assetSize": 433334753
+      "assetSize": 433334753,
+      "name": "GE-Proton9-10"
     },
     {
       "tagName": "GE-Proton9-9",
       "publishedAt": "2024-06-30T17:27:03Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-9/GE-Proton9-9.tar.gz",
-      "assetSize": 435596930
+      "assetSize": 435596930,
+      "name": "GE-Proton9-9"
     },
     {
       "tagName": "GE-Proton9-8",
       "publishedAt": "2024-06-30T15:15:38Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-8/GE-Proton9-8.tar.gz",
-      "assetSize": 435601243
+      "assetSize": 435601243,
+      "name": "GE-Proton9-8"
     },
     {
       "tagName": "GE-Proton9-7",
       "publishedAt": "2024-06-06T05:53:55Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-7/GE-Proton9-7.tar.gz",
-      "assetSize": 435456079
+      "assetSize": 435456079,
+      "name": "GE-Proton9-7"
     },
     {
       "tagName": "GE-Proton9-6",
       "publishedAt": "2024-06-04T17:12:44Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-6/GE-Proton9-6.tar.gz",
-      "assetSize": 435435205
+      "assetSize": 435435205,
+      "name": "GE-Proton9-6"
     },
     {
       "tagName": "GE-Proton9-5",
       "publishedAt": "2024-05-11T03:06:19Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-5/GE-Proton9-5.tar.gz",
-      "assetSize": 435344174
+      "assetSize": 435344174,
+      "name": "GE-Proton9-5"
     },
     {
       "tagName": "GE-Proton9-4",
       "publishedAt": "2024-04-15T17:06:26Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-4/GE-Proton9-4.tar.gz",
-      "assetSize": 435270624
+      "assetSize": 435270624,
+      "name": "GE-Proton9-4"
     },
     {
       "tagName": "GE-Proton9-3",
       "publishedAt": "2024-04-14T13:32:35Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-3/GE-Proton9-3.tar.gz",
-      "assetSize": 435294359
+      "assetSize": 435294359,
+      "name": "GE-Proton9-3"
     },
     {
       "tagName": "GE-Proton9-2",
       "publishedAt": "2024-03-21T05:24:45Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-2/GE-Proton9-2.tar.gz",
-      "assetSize": 435314167
+      "assetSize": 435314167,
+      "name": "GE-Proton9-2"
     },
     {
       "tagName": "GE-Proton9-1",
       "publishedAt": "2024-03-08T23:00:01Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-1/GE-Proton9-1.tar.gz",
-      "assetSize": 435267845
+      "assetSize": 435267845,
+      "name": "GE-Proton9-1"
     },
     {
       "tagName": "GE-Proton8-32",
       "publishedAt": "2024-02-12T01:38:46Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-32/GE-Proton8-32.tar.gz",
-      "assetSize": 448215391
+      "assetSize": 448215391,
+      "name": "GE-Proton8-32"
     },
     {
       "tagName": "GE-Proton8-31",
       "publishedAt": "2024-02-10T06:29:27Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-31/GE-Proton8-31.tar.gz",
-      "assetSize": 448216899
+      "assetSize": 448216899,
+      "name": "GE-Proton8-31"
     },
     {
       "tagName": "GE-Proton8-30",
       "publishedAt": "2024-01-30T21:25:54Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-30/GE-Proton8-30.tar.gz",
-      "assetSize": 448135203
+      "assetSize": 448135203,
+      "name": "GE-Proton8-30"
     },
     {
       "tagName": "GE-Proton8-29",
       "publishedAt": "2024-01-30T01:40:38Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-29/GE-Proton8-29.tar.gz",
-      "assetSize": 448147023
+      "assetSize": 448147023,
+      "name": "GE-Proton8-29"
     },
     {
       "tagName": "GE-Proton8-28",
       "publishedAt": "2024-01-28T04:05:33Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-28/GE-Proton8-28.tar.gz",
-      "assetSize": 428517462
+      "assetSize": 428517462,
+      "name": "GE-Proton8-28"
     },
     {
       "tagName": "GE-Proton8-27",
       "publishedAt": "2024-01-09T05:58:14Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-27/GE-Proton8-27.tar.gz",
-      "assetSize": 428679858
+      "assetSize": 428679858,
+      "name": "GE-Proton8-27"
     },
     {
       "tagName": "GE-Proton8-26",
       "publishedAt": "2024-01-09T00:21:31Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-26/GE-Proton8-26.tar.gz",
-      "assetSize": 446428855
+      "assetSize": 446428855,
+      "name": "GE-Proton8-26"
     },
     {
       "tagName": "GE-Proton8-25",
       "publishedAt": "2023-11-21T22:01:18Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-25/GE-Proton8-25.tar.gz",
-      "assetSize": 428716716
+      "assetSize": 428716716,
+      "name": "GE-Proton8-25"
     },
     {
       "tagName": "GE-Proton8-24",
       "publishedAt": "2023-11-19T18:20:45Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-24/GE-Proton8-24.tar.gz",
-      "assetSize": 428720199
+      "assetSize": 428720199,
+      "name": "GE-Proton8-24"
     },
     {
       "tagName": "GE-Proton8-23",
       "publishedAt": "2023-11-08T04:38:18Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-23/GE-Proton8-23.tar.gz",
-      "assetSize": 442887536
+      "assetSize": 442887536,
+      "name": "GE-Proton8-23"
     },
     {
       "tagName": "GE-Proton8-22",
       "publishedAt": "2023-10-30T19:35:38Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-22/GE-Proton8-22.tar.gz",
-      "assetSize": 442775618
+      "assetSize": 442775618,
+      "name": "GE-Proton8-22"
     },
     {
       "tagName": "GE-Proton8-21",
       "publishedAt": "2023-10-23T08:17:58Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-21/GE-Proton8-21.tar.gz",
-      "assetSize": 442501304
+      "assetSize": 442501304,
+      "name": "GE-Proton8-21"
     },
     {
       "tagName": "GE-Proton8-20",
       "publishedAt": "2023-10-16T22:05:21Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-20/GE-Proton8-20.tar.gz",
-      "assetSize": 442490055
+      "assetSize": 442490055,
+      "name": "GE-Proton8-20"
     },
     {
       "tagName": "GE-Proton8-19",
       "publishedAt": "2023-10-16T01:10:22Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-19/GE-Proton8-19.tar.gz",
-      "assetSize": 442487952
+      "assetSize": 442487952,
+      "name": "GE-Proton8-19"
     },
     {
       "tagName": "GE-Proton8-18",
       "publishedAt": "2023-10-15T19:58:41Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-18/GE-Proton8-18.tar.gz",
-      "assetSize": 442487141
+      "assetSize": 442487141,
+      "name": "GE-Proton8-18"
     },
     {
       "tagName": "GE-Proton8-17",
       "publishedAt": "2023-10-15T04:47:56Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-17/GE-Proton8-17.tar.gz",
-      "assetSize": 442487715
+      "assetSize": 442487715,
+      "name": "GE-Proton8-17"
     },
     {
       "tagName": "GE-Proton8-16",
       "publishedAt": "2023-09-24T07:29:01Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-16/GE-Proton8-16.tar.gz",
-      "assetSize": 443116881
+      "assetSize": 443116881,
+      "name": "GE-Proton8-16"
     },
     {
       "tagName": "GE-Proton8-15",
       "publishedAt": "2023-09-16T22:12:52Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-15/GE-Proton8-15.tar.gz",
-      "assetSize": 443045986
+      "assetSize": 443045986,
+      "name": "GE-Proton8-15"
     },
     {
       "tagName": "GE-Proton8-14",
       "publishedAt": "2023-09-01T19:08:08Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-14/GE-Proton8-14.tar.gz",
-      "assetSize": 443044180
+      "assetSize": 443044180,
+      "name": "GE-Proton8-14"
     },
     {
       "tagName": "GE-Proton8-13",
       "publishedAt": "2023-08-20T21:28:13Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-13/GE-Proton8-13.tar.gz",
-      "assetSize": 440531104
+      "assetSize": 440531104,
+      "name": "GE-Proton8-13"
     },
     {
       "tagName": "GE-Proton8-12",
       "publishedAt": "2023-08-20T00:06:57Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-12/GE-Proton8-12.tar.gz",
-      "assetSize": 440549780
+      "assetSize": 440549780,
+      "name": "GE-Proton8-12"
     },
     {
       "tagName": "GE-Proton8-11",
       "publishedAt": "2023-08-04T00:31:03Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-11/GE-Proton8-11.tar.gz",
-      "assetSize": 440508897
+      "assetSize": 440508897,
+      "name": "GE-Proton8-11"
     },
     {
       "tagName": "GE-Proton8-10",
       "publishedAt": "2023-08-02T21:40:31Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-10/GE-Proton8-10.tar.gz",
-      "assetSize": 437369393
+      "assetSize": 437369393,
+      "name": "GE-Proton8-10"
     },
     {
       "tagName": "GE-Proton8-9",
       "publishedAt": "2023-07-22T14:38:51Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-9/GE-Proton8-9.tar.gz",
-      "assetSize": 440379174
+      "assetSize": 440379174,
+      "name": "GE-Proton8-9"
     },
     {
       "tagName": "GE-Proton8-8",
       "publishedAt": "2023-07-22T00:49:25Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-8/GE-Proton8-8.tar.gz",
-      "assetSize": 252576590
+      "assetSize": 252576590,
+      "name": "GE-Proton8-8"
     },
     {
       "tagName": "GE-Proton8-7",
       "publishedAt": "2023-07-21T07:13:10Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-7/GE-Proton8-7.tar.gz",
-      "assetSize": 440379720
+      "assetSize": 440379720,
+      "name": "GE-Proton8-7"
     },
     {
       "tagName": "GE-Proton8-6",
       "publishedAt": "2023-07-02T20:49:07Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-6/GE-Proton8-6.tar.gz",
-      "assetSize": 440870582
+      "assetSize": 440870582,
+      "name": "GE-Proton8-6"
     },
     {
       "tagName": "GE-Proton8-5",
       "publishedAt": "2023-07-02T12:13:22Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-5/GE-Proton8-5.tar.gz",
-      "assetSize": 440859706
+      "assetSize": 440859706,
+      "name": "GE-Proton8-5"
     },
     {
       "tagName": "GE-Proton8-4",
       "publishedAt": "2023-06-05T19:49:13Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-4/GE-Proton8-4.tar.gz",
-      "assetSize": 437190428
+      "assetSize": 437190428,
+      "name": "GE-Proton8-4"
     },
     {
       "tagName": "GE-Proton8-3",
       "publishedAt": "2023-05-10T21:38:07Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-3/GE-Proton8-3.tar.gz",
-      "assetSize": 436800799
+      "assetSize": 436800799,
+      "name": "GE-Proton8-3"
     },
     {
       "tagName": "GE-Proton8-2",
       "publishedAt": "2023-05-06T02:00:17Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-2/GE-Proton8-2.tar.gz",
-      "assetSize": 436814485
+      "assetSize": 436814485,
+      "name": "GE-Proton8-2"
     },
     {
       "tagName": "GE-Proton8-1",
       "publishedAt": "2023-05-01T02:35:58Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-1/GE-Proton8-1.tar.gz",
-      "assetSize": 436695046
+      "assetSize": 436695046,
+      "name": "GE-Proton8-1"
     },
     {
       "tagName": "GE-Proton7-55",
       "publishedAt": "2023-04-10T18:13:21Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-55/GE-Proton7-55.tar.gz",
-      "assetSize": 414899774
+      "assetSize": 414899774,
+      "name": "GE-Proton7-55"
     },
     {
       "tagName": "GE-Proton7-54",
       "publishedAt": "2023-04-03T17:24:42Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-54/GE-Proton7-54.tar.gz",
-      "assetSize": 414903154
+      "assetSize": 414903154,
+      "name": "GE-Proton7-54"
     },
     {
       "tagName": "GE-Proton7-53",
       "publishedAt": "2023-03-24T05:42:33Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-53/GE-Proton7-53.tar.gz",
-      "assetSize": 414675043
+      "assetSize": 414675043,
+      "name": "GE-Proton7-53"
     },
     {
       "tagName": "GE-Proton7-52",
       "publishedAt": "2023-03-24T00:26:41Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-52/GE-Proton7-52.tar.gz",
-      "assetSize": 414673756
+      "assetSize": 414673756,
+      "name": "GE-Proton7-52"
     },
     {
       "tagName": "GE-Proton7-51-diablo_4_beta",
       "publishedAt": "2023-03-18T08:25:17Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-51-diablo_4_beta/GE-Proton7-51-diablo_4_beta.tar.gz",
-      "assetSize": 414691079
+      "assetSize": 414691079,
+      "name": "GE-Proton7-51-diablo_4_beta"
     },
     {
       "tagName": "GE-Proton7-51",
       "publishedAt": "2023-03-16T00:25:39Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-51/GE-Proton7-51.tar.gz",
-      "assetSize": 414566076
+      "assetSize": 414566076,
+      "name": "GE-Proton7-51"
     },
     {
       "tagName": "GE-Proton7-50",
       "publishedAt": "2023-03-06T09:19:56Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-50/GE-Proton7-50.tar.gz",
-      "assetSize": 414551659
+      "assetSize": 414551659,
+      "name": "GE-Proton7-50"
     },
     {
       "tagName": "GE-Proton7-49",
       "publishedAt": "2023-02-07T00:00:48Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-49/GE-Proton7-49.tar.gz",
-      "assetSize": 415108217
+      "assetSize": 415108217,
+      "name": "GE-Proton7-49"
     },
     {
       "tagName": "GE-Proton7-48",
       "publishedAt": "2023-01-30T01:13:50Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-48/GE-Proton7-48.tar.gz",
-      "assetSize": 415104257
+      "assetSize": 415104257,
+      "name": "GE-Proton7-48"
     },
     {
       "tagName": "GE-Proton7-47",
       "publishedAt": "2023-01-21T01:09:51Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-47/GE-Proton7-47.tar.gz",
-      "assetSize": 415068513
+      "assetSize": 415068513,
+      "name": "GE-Proton7-47"
     },
     {
       "tagName": "GE-Proton7-46",
       "publishedAt": "2023-01-20T05:50:14Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-46/GE-Proton7-46.tar.gz",
-      "assetSize": 414190692
+      "assetSize": 414190692,
+      "name": "GE-Proton7-46"
     },
     {
       "tagName": "GE-Proton7-45",
       "publishedAt": "2023-01-18T19:38:31Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-45/GE-Proton7-45.tar.gz",
-      "assetSize": 415086176
+      "assetSize": 415086176,
+      "name": "GE-Proton7-45"
     },
     {
       "tagName": "GE-Proton7-44",
       "publishedAt": "2023-01-18T08:37:59Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-44/GE-Proton7-44.tar.gz",
-      "assetSize": 415076846
+      "assetSize": 415076846,
+      "name": "GE-Proton7-44"
     },
     {
       "tagName": "GE-Proton7-43",
       "publishedAt": "2022-12-19T00:39:48Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-43/GE-Proton7-43.tar.gz",
-      "assetSize": 414729650
+      "assetSize": 414729650,
+      "name": "GE-Proton7-43"
     },
     {
       "tagName": "GE-Proton7-42",
       "publishedAt": "2022-12-03T01:24:46Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-42/GE-Proton7-42.tar.gz",
-      "assetSize": 414720148
+      "assetSize": 414720148,
+      "name": "GE-Proton7-42"
     },
     {
       "tagName": "GE-Proton7-41",
       "publishedAt": "2022-11-07T23:58:07Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-41/GE-Proton7-41.tar.gz",
-      "assetSize": 416820784
+      "assetSize": 416820784,
+      "name": "GE-Proton7-41"
     },
     {
       "tagName": "GE-Proton7-40",
       "publishedAt": "2022-11-07T22:19:33Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-40/GE-Proton7-40.tar.gz",
-      "assetSize": 416794296
+      "assetSize": 416794296,
+      "name": "GE-Proton7-40"
     },
     {
       "tagName": "GE-Proton7-39",
       "publishedAt": "2022-11-06T06:31:05Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-39/GE-Proton7-39.tar.gz",
-      "assetSize": 416809330
+      "assetSize": 416809330,
+      "name": "GE-Proton7-39"
     },
     {
       "tagName": "GE-Proton7-38",
       "publishedAt": "2022-10-25T02:02:45Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-38/GE-Proton7-38.tar.gz",
-      "assetSize": 416401602
+      "assetSize": 416401602,
+      "name": "GE-Proton7-38"
     },
     {
       "tagName": "GE-Proton7-37",
       "publishedAt": "2022-10-05T05:13:46Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-37/GE-Proton7-37.tar.gz",
-      "assetSize": 416302658
+      "assetSize": 416302658,
+      "name": "GE-Proton7-37"
     },
     {
       "tagName": "GE-Proton7-36",
       "publishedAt": "2022-10-03T01:27:11Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-36/GE-Proton7-36.tar.gz",
-      "assetSize": 416269627
+      "assetSize": 416269627,
+      "name": "GE-Proton7-36"
     },
     {
       "tagName": "GE-Proton7-35",
       "publishedAt": "2022-09-18T22:50:01Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-35/GE-Proton7-35.tar.gz",
-      "assetSize": 415969464
+      "assetSize": 415969464,
+      "name": "GE-Proton7-35"
     },
     {
       "tagName": "GE-Proton7-34",
       "publishedAt": "2022-09-18T21:44:15Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-34/GE-Proton7-34.tar.gz",
-      "assetSize": 415972723
+      "assetSize": 415972723,
+      "name": "GE-Proton7-34"
     },
     {
       "tagName": "GE-Proton7-33",
       "publishedAt": "2022-09-11T22:09:57Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-33/GE-Proton7-33.tar.gz",
-      "assetSize": 415957578
+      "assetSize": 415957578,
+      "name": "GE-Proton7-33"
     },
     {
       "tagName": "GE-Proton7-31",
       "publishedAt": "2022-08-29T19:27:02Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-31/GE-Proton7-31.tar.gz",
-      "assetSize": 417360754
+      "assetSize": 417360754,
+      "name": "GE-Proton7-31"
     },
     {
       "tagName": "GE-Proton7-30",
       "publishedAt": "2022-08-23T01:58:06Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-30/GE-Proton7-30.tar.gz",
-      "assetSize": 412929643
+      "assetSize": 412929643,
+      "name": "GE-Proton7-30"
     },
     {
       "tagName": "GE-Proton7-29",
       "publishedAt": "2022-08-07T08:59:31Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-29/GE-Proton7-29.tar.gz",
-      "assetSize": 416341212
+      "assetSize": 416341212,
+      "name": "GE-Proton7-29"
     },
     {
       "tagName": "GE-Proton7-28",
       "publishedAt": "2022-07-31T01:08:46Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-28/GE-Proton7-28.tar.gz",
-      "assetSize": 416168736
+      "assetSize": 416168736,
+      "name": "GE-Proton7-28"
     },
     {
       "tagName": "GE-Proton7-27",
       "publishedAt": "2022-07-26T07:46:04Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-27/GE-Proton7-27.tar.gz",
-      "assetSize": 415170082
+      "assetSize": 415170082,
+      "name": "GE-Proton7-27"
     },
     {
       "tagName": "GE-Proton7-26",
       "publishedAt": "2022-07-20T06:02:41Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-26/GE-Proton7-26.tar.gz",
-      "assetSize": 414999186
+      "assetSize": 414999186,
+      "name": "GE-Proton7-26"
     },
     {
       "tagName": "GE-Proton7-25",
       "publishedAt": "2022-07-18T05:12:01Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-25/GE-Proton7-25.tar.gz",
-      "assetSize": 414969518
+      "assetSize": 414969518,
+      "name": "GE-Proton7-25"
     },
     {
       "tagName": "GE-Proton7-24",
       "publishedAt": "2022-06-29T07:39:22Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-24/GE-Proton7-24.tar.gz",
-      "assetSize": 419425406
+      "assetSize": 419425406,
+      "name": "GE-Proton7-24"
     },
     {
       "tagName": "GE-Proton7-23",
       "publishedAt": "2022-06-28T04:09:15Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-23/GE-Proton7-23.tar.gz",
-      "assetSize": 419299902
+      "assetSize": 419299902,
+      "name": "GE-Proton7-23"
     },
     {
       "tagName": "GE-Proton7-22",
       "publishedAt": "2022-06-27T07:28:06Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-22/GE-Proton7-22.tar.gz",
-      "assetSize": 419301874
+      "assetSize": 419301874,
+      "name": "GE-Proton7-22"
     },
     {
       "tagName": "GE-Proton7-21",
       "publishedAt": "2022-06-26T02:03:05Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-21/GE-Proton7-21.tar.gz",
-      "assetSize": 419298952
+      "assetSize": 419298952,
+      "name": "GE-Proton7-21"
     },
     {
       "tagName": "GE-Proton7-20",
       "publishedAt": "2022-05-29T23:07:01Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-20/GE-Proton7-20.tar.gz",
-      "assetSize": 419133801
+      "assetSize": 419133801,
+      "name": "GE-Proton7-20"
     },
     {
       "tagName": "GE-Proton7-19",
       "publishedAt": "2022-05-28T04:15:10Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-19/GE-Proton7-19.tar.gz",
-      "assetSize": 414403513
+      "assetSize": 414403513,
+      "name": "GE-Proton7-19"
     },
     {
       "tagName": "GE-Proton7-18",
       "publishedAt": "2022-05-19T07:37:36Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-18/GE-Proton7-18.tar.gz",
-      "assetSize": 418746899
+      "assetSize": 418746899,
+      "name": "GE-Proton7-18"
     },
     {
       "tagName": "GE-Proton7-17",
       "publishedAt": "2022-05-07T07:05:32Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-17/GE-Proton7-17.tar.gz",
-      "assetSize": 418708771
+      "assetSize": 418708771,
+      "name": "GE-Proton7-17"
     },
     {
       "tagName": "GE-Proton7-16",
       "publishedAt": "2022-04-30T04:49:11Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-16/GE-Proton7-16.tar.gz",
-      "assetSize": 418730612
+      "assetSize": 418730612,
+      "name": "GE-Proton7-16"
     },
     {
       "tagName": "GE-Proton7-15",
       "publishedAt": "2022-04-22T08:44:29Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-15/GE-Proton7-15.tar.gz",
-      "assetSize": 418724381
+      "assetSize": 418724381,
+      "name": "GE-Proton7-15"
     },
     {
       "tagName": "GE-Proton7-14",
       "publishedAt": "2022-04-04T17:06:21Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-14/GE-Proton7-14.tar.gz",
-      "assetSize": 418258406
+      "assetSize": 418258406,
+      "name": "GE-Proton7-14"
     },
     {
       "tagName": "GE-Proton7-13",
       "publishedAt": "2022-04-04T06:16:02Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-13/GE-Proton7-13.tar.gz",
-      "assetSize": 418272887
+      "assetSize": 418272887,
+      "name": "GE-Proton7-13"
     },
     {
       "tagName": "GE-Proton7-12",
       "publishedAt": "2022-04-04T04:32:24Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-12/GE-Proton7-12.tar.gz",
-      "assetSize": 417394131
+      "assetSize": 417394131,
+      "name": "GE-Proton7-12"
     },
     {
       "tagName": "GE-Proton7-11",
       "publishedAt": "2022-04-04T02:40:54Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-11/GE-Proton7-11.tar.gz",
-      "assetSize": 417399353
+      "assetSize": 417399353,
+      "name": "GE-Proton7-11"
     },
     {
       "tagName": "GE-Proton7-10",
       "publishedAt": "2022-03-19T03:31:02Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-10/GE-Proton7-10.tar.gz",
-      "assetSize": 418213768
+      "assetSize": 418213768,
+      "name": "GE-Proton7-10"
     },
     {
       "tagName": "GE-Proton7-9",
       "publishedAt": "2022-03-08T05:00:12Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-9/GE-Proton7-9.tar.gz",
-      "assetSize": 418157117
+      "assetSize": 418157117,
+      "name": "GE-Proton7-9"
     },
     {
       "tagName": "GE-Proton7-8",
       "publishedAt": "2022-03-05T08:35:41Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-8/GE-Proton7-8.tar.gz",
-      "assetSize": 418138108
+      "assetSize": 418138108,
+      "name": "GE-Proton7-8"
     },
     {
       "tagName": "GE-Proton7-7",
       "publishedAt": "2022-03-05T06:50:45Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-7/GE-Proton7-7.tar.gz",
-      "assetSize": 417809535
+      "assetSize": 417809535,
+      "name": "GE-Proton7-7"
     },
     {
       "tagName": "GE-Proton7-6",
       "publishedAt": "2022-03-05T03:31:00Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-6/GE-Proton7-6.tar.gz",
-      "assetSize": 417800160
+      "assetSize": 417800160,
+      "name": "GE-Proton7-6"
     },
     {
       "tagName": "GE-Proton7-5",
       "publishedAt": "2022-03-02T00:58:28Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-5/GE-Proton7-5.tar.gz",
-      "assetSize": 414978122
+      "assetSize": 414978122,
+      "name": "GE-Proton7-5"
     },
     {
       "tagName": "GE-Proton7-4",
       "publishedAt": "2022-02-28T20:21:17Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-4/GE-Proton7-4.tar.gz",
-      "assetSize": 414120946
+      "assetSize": 414120946,
+      "name": "GE-Proton7-4"
     },
     {
       "tagName": "GE-Proton7-3",
       "publishedAt": "2022-02-28T05:57:05Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-3/GE-Proton7-3.tar.gz",
-      "assetSize": 427412308
+      "assetSize": 427412308,
+      "name": "GE-Proton7-3"
     },
     {
       "tagName": "GE-Proton7-2",
       "publishedAt": "2022-02-27T23:17:26Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-2/GE-Proton7-2.tar.gz",
-      "assetSize": 426980717
+      "assetSize": 426980717,
+      "name": "GE-Proton7-2"
     },
     {
       "tagName": "GE-Proton7-1",
       "publishedAt": "2022-02-27T21:13:49Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-1/GE-Proton7-1.tar.gz",
-      "assetSize": 427013608
+      "assetSize": 427013608,
+      "name": "GE-Proton7-1"
     },
     {
       "tagName": "7.3-GE-1",
       "publishedAt": "2022-02-26T03:04:38Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/7.3-GE-1/Proton-7.3-GE-1.tar.gz",
-      "assetSize": 895628630
+      "assetSize": 895628630,
+      "name": "Proton-7.3-GE-1"
     },
     {
       "tagName": "7.2-GE-3-test-2",
       "publishedAt": "2022-02-21T05:05:16Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/7.2-GE-3-test-2/Proton-7.2-GE-3-test-3.tar.gz",
-      "assetSize": 461264314
+      "assetSize": 461264314,
+      "name": "Proton-7.2-GE-3-test-3"
     },
     {
       "tagName": "7.2-GE-2",
       "publishedAt": "2022-02-14T05:55:39Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/7.2-GE-2/Proton-7.2-GE-2.tar.gz",
-      "assetSize": 430014103
+      "assetSize": 430014103,
+      "name": "Proton-7.2-GE-2"
     },
     {
       "tagName": "7.2-GE-1",
       "publishedAt": "2022-02-14T04:21:53Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/7.2-GE-1/Proton-7.2-GE-1.tar.gz",
-      "assetSize": 430005410
+      "assetSize": 430005410,
+      "name": "Proton-7.2-GE-1"
     },
     {
       "tagName": "7.1-GE-2",
       "publishedAt": "2022-01-30T03:25:52Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/7.1-GE-2/Proton-7.1-GE-2.tar.gz",
-      "assetSize": 429149078
+      "assetSize": 429149078,
+      "name": "Proton-7.1-GE-2"
     },
     {
       "tagName": "7.1-GE-1",
       "publishedAt": "2022-01-30T00:55:58Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/7.1-GE-1/Proton-7.1-GE-1.tar.gz",
-      "assetSize": 429139426
+      "assetSize": 429139426,
+      "name": "Proton-7.1-GE-1"
     },
     {
       "tagName": "7.0rc6-GE-1",
       "publishedAt": "2022-01-15T21:33:40Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/7.0rc6-GE-1/Proton-7.0rc6-GE-1.tar.gz",
-      "assetSize": 429151792
+      "assetSize": 429151792,
+      "name": "Proton-7.0rc6-GE-1"
     },
     {
       "tagName": "7.0rc3-GE-1",
       "publishedAt": "2021-12-28T01:01:40Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/7.0rc3-GE-1/Proton-7.0rc3-GE-1.tar.gz",
-      "assetSize": 429062374
+      "assetSize": 429062374,
+      "name": "Proton-7.0rc3-GE-1"
     },
     {
       "tagName": "7.0rc2-GE-1",
       "publishedAt": "2021-12-19T22:12:32Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/7.0rc2-GE-1/Proton-7.0rc2-GE-1.tar.gz",
-      "assetSize": 429044591
+      "assetSize": 429044591,
+      "name": "Proton-7.0rc2-GE-1"
     },
     {
       "tagName": "6.21-GE-2",
       "publishedAt": "2021-11-16T01:08:18Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.21-GE-2/Proton-6.21-GE-2.tar.gz",
-      "assetSize": 428356353
+      "assetSize": 428356353,
+      "name": "Proton-6.21-GE-2"
     },
     {
       "tagName": "6.20-GE-1",
       "publishedAt": "2021-10-25T06:19:25Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.20-GE-1/Proton-6.20-GE-1.tar.gz",
-      "assetSize": 427333272
+      "assetSize": 427333272,
+      "name": "Proton-6.20-GE-1"
     },
     {
       "tagName": "6.19-GE-2",
       "publishedAt": "2021-10-11T07:44:41Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.19-GE-2/Proton-6.19-GE-2.tar.gz",
-      "assetSize": 423667191
+      "assetSize": 423667191,
+      "name": "Proton-6.19-GE-2"
     },
     {
       "tagName": "6.19-GE-1",
       "publishedAt": "2021-10-10T09:52:23Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.19-GE-1/Proton-6.19-GE-1.tar.gz",
-      "assetSize": 423672635
+      "assetSize": 423672635,
+      "name": "Proton-6.19-GE-1"
     },
     {
       "tagName": "6.18-GE-2",
       "publishedAt": "2021-09-26T01:30:13Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.18-GE-2/Proton-6.18-GE-2.tar.gz",
-      "assetSize": 422876726
+      "assetSize": 422876726,
+      "name": "Proton-6.18-GE-2"
     },
     {
       "tagName": "6.18-GE-1",
       "publishedAt": "2021-09-25T23:51:42Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.18-GE-1/Proton-6.18-GE-1.tar.gz",
-      "assetSize": 421802570
+      "assetSize": 421802570,
+      "name": "Proton-6.18-GE-1"
     },
     {
       "tagName": "6.16-GE-1",
       "publishedAt": "2021-08-29T01:41:13Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.16-GE-1/Proton-6.16-GE-1.tar.gz",
-      "assetSize": 431742014
+      "assetSize": 431742014,
+      "name": "Proton-6.16-GE-1"
     },
     {
       "tagName": "6.15-GE-2",
       "publishedAt": "2021-08-17T06:34:53Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.15-GE-2/Proton-6.15-GE-2.tar.gz",
-      "assetSize": 432747431
+      "assetSize": 432747431,
+      "name": "Proton-6.15-GE-2"
     },
     {
       "tagName": "6.15-GE-1",
       "publishedAt": "2021-08-16T06:01:24Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.15-GE-1/Proton-6.15-GE-1.tar.gz",
-      "assetSize": 432734862
+      "assetSize": 432734862,
+      "name": "Proton-6.15-GE-1"
     },
     {
       "tagName": "6.14-GE-2",
       "publishedAt": "2021-08-02T02:40:54Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.14-GE-2/Proton-6.14-GE-2.tar.gz",
-      "assetSize": 432607845
+      "assetSize": 432607845,
+      "name": "Proton-6.14-GE-2"
     },
     {
       "tagName": "6.14-GE-1",
       "publishedAt": "2021-08-01T04:24:22Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.14-GE-1/Proton-6.14-GE-1.tar.gz",
-      "assetSize": 432591613
+      "assetSize": 432591613,
+      "name": "Proton-6.14-GE-1"
     },
     {
       "tagName": "6.13-GE-1",
       "publishedAt": "2021-07-26T19:54:15Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.13-GE-1/Proton-6.13-GE-1.tar.gz",
-      "assetSize": 433280368
+      "assetSize": 433280368,
+      "name": "Proton-6.13-GE-1"
     },
     {
       "tagName": "6.12-GE-1",
       "publishedAt": "2021-07-06T07:09:06Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.12-GE-1/Proton-6.12-GE-1.tar.gz",
-      "assetSize": 389700793
+      "assetSize": 389700793,
+      "name": "Proton-6.12-GE-1"
     },
     {
       "tagName": "6.10-GE-1",
       "publishedAt": "2021-06-07T06:59:38Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.10-GE-1/Proton-6.10-GE-1.tar.gz",
-      "assetSize": 388824050
+      "assetSize": 388824050,
+      "name": "Proton-6.10-GE-1"
     },
     {
       "tagName": "6.9-GE-2-github-actions-test",
       "publishedAt": "2021-05-30T23:48:07Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.9-GE-2-github-actions-test/Proton-6.9-GE-2-github-actions-test.tar.gz",
-      "assetSize": 388253728
+      "assetSize": 388253728,
+      "name": "Proton-6.9-GE-2-github-actions-test"
     },
     {
       "tagName": "6.9-GE-2",
       "publishedAt": "2021-05-29T05:11:47Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.9-GE-2/Proton-6.9-GE-2.tar.gz",
-      "assetSize": 388031094
+      "assetSize": 388031094,
+      "name": "Proton-6.9-GE-2"
     },
     {
       "tagName": "6.9-GE-1",
       "publishedAt": "2021-05-23T05:56:12Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.9-GE-1/Proton-6.9-GE-1.tar.gz",
-      "assetSize": 387967919
+      "assetSize": 387967919,
+      "name": "Proton-6.9-GE-1"
     },
     {
       "tagName": "6.8-GE-2",
       "publishedAt": "2021-05-17T04:33:32Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.8-GE-2/Proton-6.8-GE-2.tar.gz",
-      "assetSize": 490922702
+      "assetSize": 490922702,
+      "name": "Proton-6.8-GE-2"
     },
     {
       "tagName": "6.8-GE-1",
       "publishedAt": "2021-05-10T03:57:07Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.8-GE-1/Proton-6.8-GE-1.tar.gz",
-      "assetSize": 490782863
+      "assetSize": 490782863,
+      "name": "Proton-6.8-GE-1"
     },
     {
       "tagName": "6.5-GE-2",
       "publishedAt": "2021-04-08T07:56:20Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.5-GE-2/Proton-6.5-GE-2.tar.gz",
-      "assetSize": 335686163
+      "assetSize": 335686163,
+      "name": "Proton-6.5-GE-2"
     },
     {
       "tagName": "6.5-GE-1",
       "publishedAt": "2021-03-30T08:51:00Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.5-GE-1/Proton-6.5-GE-1.tar.gz",
-      "assetSize": 335517508
+      "assetSize": 335517508,
+      "name": "Proton-6.5-GE-1"
     },
     {
       "tagName": "6.4-GE-1",
       "publishedAt": "2021-03-22T05:21:48Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.4-GE-1/Proton-6.4-GE-1.tar.gz",
-      "assetSize": 335386369
+      "assetSize": 335386369,
+      "name": "Proton-6.4-GE-1"
     },
     {
       "tagName": "6.1-GE-2",
       "publishedAt": "2021-02-08T00:31:47Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.1-GE-2/Proton-6.1-GE-2.tar.gz",
-      "assetSize": 336544078
+      "assetSize": 336544078,
+      "name": "Proton-6.1-GE-2"
     },
     {
       "tagName": "6.1-GE-1",
       "publishedAt": "2021-01-31T04:26:01Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.1-GE-1/Proton-6.1-GE-1.tar.gz",
-      "assetSize": 336295486
+      "assetSize": 336295486,
+      "name": "Proton-6.1-GE-1"
     },
     {
       "tagName": "6.0-GE-1",
       "publishedAt": "2021-01-18T09:26:16Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/6.0-GE-1/Proton-6.0-GE-1.tar.gz",
-      "assetSize": 335959880
+      "assetSize": 335959880,
+      "name": "Proton-6.0-GE-1"
     },
     {
       "tagName": "5.9-GE-8-ST",
       "publishedAt": "2020-10-13T05:14:41Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.9-GE-8-ST/Proton-5.9-GE-8-ST.tar.gz",
-      "assetSize": 409774651
+      "assetSize": 409774651,
+      "name": "Proton-5.9-GE-8-ST"
     },
     {
       "tagName": "5.9-GE-7-ST",
       "publishedAt": "2020-10-05T08:28:35Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.9-GE-7-ST/Proton-5.9-GE-7-ST.tar.gz",
-      "assetSize": 409769109
+      "assetSize": 409769109,
+      "name": "Proton-5.9-GE-7-ST"
     },
     {
       "tagName": "5.9-GE-6-ST",
       "publishedAt": "2020-09-17T08:35:58Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.9-GE-6-ST/Proton-5.9-GE-6-ST.tar.gz",
-      "assetSize": 407207602
+      "assetSize": 407207602,
+      "name": "Proton-5.9-GE-6-ST"
     },
     {
       "tagName": "5.9-GE-5-ST",
       "publishedAt": "2020-07-28T06:58:54Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.9-GE-5-ST/Proton-5.9-GE-5-ST.tar.gz",
-      "assetSize": 406721946
+      "assetSize": 406721946,
+      "name": "Proton-5.9-GE-5-ST"
     },
     {
       "tagName": "5.9-GE-4-ST",
       "publishedAt": "2020-07-26T01:01:28Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.9-GE-4-ST/Proton-5.9-GE-4-ST.tar.gz",
-      "assetSize": 406695752
+      "assetSize": 406695752,
+      "name": "Proton-5.9-GE-4-ST"
     },
     {
       "tagName": "5.9-GE-3-ST",
       "publishedAt": "2020-07-06T07:02:28Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.9-GE-3-ST/Proton-5.9-GE-3-ST.tar.gz",
-      "assetSize": 405504541
+      "assetSize": 405504541,
+      "name": "Proton-5.9-GE-3-ST"
     },
     {
       "tagName": "5.11-GE-3-MF",
       "publishedAt": "2020-07-04T22:31:42Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.11-GE-3-MF/Proton-5.11-GE-3-MF.tar.gz",
-      "assetSize": 406135492
+      "assetSize": 406135492,
+      "name": "Proton-5.11-GE-3-MF"
     },
     {
       "tagName": "5.11-GE-2-MF",
       "publishedAt": "2020-06-29T09:02:02Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.11-GE-2-MF/Proton-5.11-GE-2-MF.tar.gz",
-      "assetSize": 406097260
+      "assetSize": 406097260,
+      "name": "Proton-5.11-GE-2-MF"
     },
     {
       "tagName": "5.11-GE-1-MF",
       "publishedAt": "2020-06-25T08:32:45Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.11-GE-1-MF/Proton-5.11-GE-1-MF.tar.gz",
-      "assetSize": 406075454
+      "assetSize": 406075454,
+      "name": "Proton-5.11-GE-1-MF"
     },
     {
       "tagName": "5.9-GE-2-MF",
       "publishedAt": "2020-06-10T08:02:27Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.9-GE-2-MF/Proton-5.9-GE-2-MF.tar.gz",
-      "assetSize": 414251429
+      "assetSize": 414251429,
+      "name": "Proton-5.9-GE-2-MF"
     },
     {
       "tagName": "5.9-GE-1-NR",
       "publishedAt": "2020-05-28T03:11:42Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.9-GE-1-NR/Proton-5.9-GE-1-MF.tar.gz",
-      "assetSize": 400846396
+      "assetSize": 400846396,
+      "name": "Proton-5.9-GE-1-MF"
     },
     {
       "tagName": "5.8-GE-2-MF",
       "publishedAt": "2020-05-13T06:10:53Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.8-GE-2-MF/Proton-5.8-GE-2-MF.tar.gz",
-      "assetSize": 413924480
+      "assetSize": 413924480,
+      "name": "Proton-5.8-GE-2-MF"
     },
     {
       "tagName": "5.8-GE-1-MF",
       "publishedAt": "2020-05-10T06:45:29Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.8-GE-1-MF/Proton-5.8-GE-1-MF.tar.gz",
-      "assetSize": 413931081
+      "assetSize": 413931081,
+      "name": "Proton-5.8-GE-1-MF"
     },
     {
       "tagName": "5.6-GE-2",
       "publishedAt": "2020-04-14T05:16:28Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.6-GE-2/Proton-5.6-GE-2.tar.gz",
-      "assetSize": 414800397
+      "assetSize": 414800397,
+      "name": "Proton-5.6-GE-2"
     },
     {
       "tagName": "5.6-GE-1",
       "publishedAt": "2020-04-13T10:03:32Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.6-GE-1/Proton-5.6-GE-1.tar.gz",
-      "assetSize": 414797752
+      "assetSize": 414797752,
+      "name": "Proton-5.6-GE-1"
     },
     {
       "tagName": "5.5-GE-1",
       "publishedAt": "2020-04-05T00:54:12Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.5-GE-1/Proton-5.5-GE-1.tar.gz",
-      "assetSize": 447568013
+      "assetSize": 447568013,
+      "name": "Proton-5.5-GE-1"
     },
     {
       "tagName": "5.4-GE-3",
       "publishedAt": "2020-03-25T01:33:13Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.4-GE-3/Proton-5.4-GE-3.tar.gz",
-      "assetSize": 441477726
+      "assetSize": 441477726,
+      "name": "Proton-5.4-GE-3"
     },
     {
       "tagName": "5.4-GE-2",
       "publishedAt": "2020-03-22T02:47:36Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.4-GE-2/Proton-5.4-GE-2.tar.gz",
-      "assetSize": 441163738
+      "assetSize": 441163738,
+      "name": "Proton-5.4-GE-2"
     },
     {
       "tagName": "5.4-GE-1",
       "publishedAt": "2020-03-16T04:49:19Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.4-GE-1/Proton-5.4-GE-1.tar.gz",
-      "assetSize": 437550988
+      "assetSize": 437550988,
+      "name": "Proton-5.4-GE-1"
     },
     {
       "tagName": "5.2-GE-2",
       "publishedAt": "2020-02-23T20:21:37Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.2-GE-2/Proton-5.2-GE-2.tar.gz",
-      "assetSize": 436516626
+      "assetSize": 436516626,
+      "name": "Proton-5.2-GE-2"
     },
     {
       "tagName": "5.2-GE-1",
       "publishedAt": "2020-02-19T06:03:14Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.2-GE-1/Proton-5.2-GE-1.tar.gz",
-      "assetSize": 435707302
+      "assetSize": 435707302,
+      "name": "Proton-5.2-GE-1"
     },
     {
       "tagName": "5.1-GE-2",
       "publishedAt": "2020-02-17T06:41:46Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.1-GE-2/Proton-5.1-GE-2.tar.gz",
-      "assetSize": 441399353
+      "assetSize": 441399353,
+      "name": "Proton-5.1-GE-2"
     },
     {
       "tagName": "5.1-GE-1",
       "publishedAt": "2020-02-10T08:26:42Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.1-GE-1/Proton-5.1-GE-1.tar.gz",
-      "assetSize": 441416493
+      "assetSize": 441416493,
+      "name": "Proton-5.1-GE-1"
     },
     {
       "tagName": "5.0-GE-1",
       "publishedAt": "2020-01-30T22:23:30Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/5.0-GE-1/Proton-5.0-GE-1-no-mouse-coord.tar.gz",
-      "assetSize": 420338267
+      "assetSize": 420338267,
+      "name": "Proton-5.0-GE-1-no-mouse-coord"
     },
     {
       "tagName": "4.21-GE-2",
       "publishedAt": "2019-12-18T09:06:16Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.21-GE-2/Proton-4.21-GE-2.tar.gz",
-      "assetSize": 353073138
+      "assetSize": 353073138,
+      "name": "Proton-4.21-GE-2"
     },
     {
       "tagName": "4.21-GE-1-MCC-2",
       "publishedAt": "2019-12-05T22:50:05Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.21-GE-1-MCC-2/Proton-4.21-GE-1.tar.gz",
-      "assetSize": 353066384
+      "assetSize": 353066384,
+      "name": "Proton-4.21-GE-1"
     },
     {
       "tagName": "4.21-GE-1-MCC",
       "publishedAt": "2019-12-04T07:22:37Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.21-GE-1-MCC/Proton-4.21-GE-1.tar.gz",
-      "assetSize": 353055639
+      "assetSize": 353055639,
+      "name": "Proton-4.21-GE-1"
     },
     {
       "tagName": "4.21-GE-1",
       "publishedAt": "2019-12-02T08:25:02Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.21-GE-1/Proton-4.21-GE-1.tar.gz",
-      "assetSize": 353008552
+      "assetSize": 353008552,
+      "name": "Proton-4.21-GE-1"
     },
     {
       "tagName": "4.20-GE-1",
       "publishedAt": "2019-11-27T09:17:13Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.20-GE-1/Proton-4.20-GE-1.tar.gz",
-      "assetSize": 527405134
+      "assetSize": 527405134,
+      "name": "Proton-4.20-GE-1"
     },
     {
       "tagName": "4.15-GE-1",
       "publishedAt": "2019-09-02T06:20:21Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.15-GE-1/Proton-4.15-GE-1.tar.gz",
-      "assetSize": 508065291
+      "assetSize": 508065291,
+      "name": "Proton-4.15-GE-1"
     },
     {
       "tagName": "4.14-GE-2",
       "publishedAt": "2019-08-29T05:52:42Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.14-GE-2/Proton-4.14-GE-2.tar.gz",
-      "assetSize": 506010664
+      "assetSize": 506010664,
+      "name": "Proton-4.14-GE-2"
     },
     {
       "tagName": "4.14-GE-1",
       "publishedAt": "2019-08-20T06:49:17Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.14-GE-1/Proton-4.14-GE-1.tar.gz",
-      "assetSize": 505558767
+      "assetSize": 505558767,
+      "name": "Proton-4.14-GE-1"
     },
     {
       "tagName": "4.11-GE-1",
       "publishedAt": "2019-06-24T03:34:42Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.11-GE-1/Proton-4.11-GE-1.tar.gz",
-      "assetSize": 490040490
+      "assetSize": 490040490,
+      "name": "Proton-4.11-GE-1"
     },
     {
       "tagName": "4.10-GE-3",
       "publishedAt": "2019-06-20T06:32:01Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.10-GE-3/Proton-4.10-GE-3.tar.gz",
-      "assetSize": 489542078
+      "assetSize": 489542078,
+      "name": "Proton-4.10-GE-3"
     },
     {
       "tagName": "4.10-GE-2",
       "publishedAt": "2019-06-16T21:12:14Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.10-GE-2/Proton-4.10-GE-2.tar.gz",
-      "assetSize": 489491470
+      "assetSize": 489491470,
+      "name": "Proton-4.10-GE-2"
     },
     {
       "tagName": "4.10-GE-1",
       "publishedAt": "2019-06-16T00:02:38Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.10-GE-1/Proton-4.10-GE-1.tar.gz",
-      "assetSize": 489004868
+      "assetSize": 489004868,
+      "name": "Proton-4.10-GE-1"
     },
     {
       "tagName": "4.6-GE-2",
       "publishedAt": "2019-04-19T08:09:11Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.6-GE-2/Proton-4.6-GE-2.tar.gz",
-      "assetSize": 490406623
+      "assetSize": 490406623,
+      "name": "Proton-4.6-GE-2"
     },
     {
       "tagName": "4.6-GE-1",
       "publishedAt": "2019-04-13T19:27:44Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.6-GE-1/Proton-4.6-GE-1.tar.gz",
-      "assetSize": 397656296
+      "assetSize": 397656296,
+      "name": "Proton-4.6-GE-1"
     },
     {
       "tagName": "4.5-GE-Beta-4",
       "publishedAt": "2019-04-08T07:01:11Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.5-GE-Beta-4/Proton-4.5-GE-Beta-4.tar.gz",
-      "assetSize": 381648151
+      "assetSize": 381648151,
+      "name": "Proton-4.5-GE-Beta-4"
     },
     {
       "tagName": "4.5-GE-Beta-3",
       "publishedAt": "2019-04-04T07:11:41Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.5-GE-Beta-3/Proton-4.5-GE-Beta-3.tar.gz",
-      "assetSize": 381596776
+      "assetSize": 381596776,
+      "name": "Proton-4.5-GE-Beta-3"
     },
     {
       "tagName": "4.5-GE-Beta-2",
       "publishedAt": "2019-04-02T04:35:17Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.5-GE-Beta-2/Proton-4.5-GE-Beta-2.tar.gz",
-      "assetSize": 384141560
+      "assetSize": 384141560,
+      "name": "Proton-4.5-GE-Beta-2"
     },
     {
       "tagName": "4.5-GE-Beta-1",
       "publishedAt": "2019-04-01T06:59:29Z",
       "downloadUrl": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/4.5-GE-Beta-1/Proton-4.5-GE-Beta-1.tar.gz",
-      "assetSize": 384132379
+      "assetSize": 384132379,
+      "name": "Proton-4.5-GE-Beta-1"
     }
   ]
 }

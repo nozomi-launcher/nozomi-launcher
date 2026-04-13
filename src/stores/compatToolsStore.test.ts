@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { CompatToolRelease } from "../types/compatTools";
+import type { CompatToolRelease, CompatToolVersion } from "../types/compatTools";
 import type { ProtonVersion } from "../types/steam";
 import {
   compareVersions,
@@ -196,5 +196,25 @@ describe("groupVersions", () => {
   it("handles empty input", () => {
     const groups = groupVersions([]);
     expect(groups).toEqual([]);
+  });
+
+  it("places GE-Proton Latest at top of highest major version group", () => {
+    const latestAlias: CompatToolVersion = {
+      tagName: "GE-Proton Latest",
+      name: "GE-Proton10-34",
+      status: "available",
+      publishedAt: "2026-03-23T04:27:46Z",
+      sourceName: null,
+    };
+    const versions = [latestAlias, ...mergeVersions(mockReleases, mockInstalled, null)];
+    const groups = groupVersions(versions);
+
+    // Should be in the first (highest) group, not its own group
+    expect(groups[0].category).toBe("GE-Proton10");
+    expect(groups[0].versions[0].tagName).toBe("GE-Proton Latest");
+
+    // Should not create a separate group for it
+    const latestGroup = groups.find((g) => g.category === "GE-Proton Latest");
+    expect(latestGroup).toBeUndefined();
   });
 });

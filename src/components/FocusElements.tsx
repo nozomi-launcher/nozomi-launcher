@@ -13,7 +13,6 @@ interface FocusButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export function FocusButton({ focusKey, children, disabled, onClick, ...rest }: FocusButtonProps) {
   const { ref } = useFocusable({
     focusKey,
-    focusable: !disabled,
     onEnterPress: () => {
       if (!disabled) ref.current?.click();
     },

@@ -11,7 +11,7 @@ vi.mock("../lib/tauri");
 const mockedApi = vi.mocked(api);
 
 function baseSettings(sources: AppSettings["compatToolSources"] = []): AppSettings {
-  return { activeCompatTool: null, compatToolSources: sources };
+  return { activeCompatTool: null, compatToolSources: sources, compatToolsDir: null };
 }
 
 describe("SettingsView", () => {

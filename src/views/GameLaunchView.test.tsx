@@ -24,6 +24,7 @@ describe("GameLaunchView", () => {
     mockedApi.getSettings.mockResolvedValue({
       activeCompatTool: null,
       compatToolSources: [],
+      compatToolsDir: null,
     });
     mockedApi.launchGame.mockResolvedValue(undefined);
     mockedApi.abortLaunch.mockResolvedValue(undefined);

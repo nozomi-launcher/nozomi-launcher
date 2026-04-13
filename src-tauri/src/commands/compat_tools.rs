@@ -322,15 +322,33 @@ pub async fn fetch_compat_tools(force: Option<bool>) -> Result<FetchCompatToolsR
     Ok(merged)
 }
 
-/// Get or create the compatibility tools directory under Steam root.
+/// Get or create the compatibility tools directory.
+/// Uses the user-configured override from settings if set, otherwise falls
+/// back to `<steam_root>/compatibilitytools.d`.
 fn get_or_create_compat_tools_dir() -> Result<PathBuf, String> {
-    let root = env::steam_root().ok_or("Could not find Steam root directory")?;
-    let dir = root.join("compatibilitytools.d");
+    let dir = if let Ok(settings) = get_settings() {
+        if let Some(ref custom) = settings.compat_tools_dir {
+            if !custom.is_empty() {
+                PathBuf::from(custom)
+            } else {
+                default_compat_tools_dir()?
+            }
+        } else {
+            default_compat_tools_dir()?
+        }
+    } else {
+        default_compat_tools_dir()?
+    };
     if !dir.exists() {
         std::fs::create_dir_all(&dir)
-            .map_err(|e| format!("Failed to create compatibilitytools.d: {e}"))?;
+            .map_err(|e| format!("Failed to create compat tools directory: {e}"))?;
     }
     Ok(dir)
+}
+
+fn default_compat_tools_dir() -> Result<PathBuf, String> {
+    let root = env::steam_root().ok_or("Could not find Steam root directory")?;
+    Ok(root.join("compatibilitytools.d"))
 }
 
 /// Validate a tag name to prevent path traversal attacks.
@@ -347,16 +365,20 @@ pub async fn install_compat_tool(
     app_handle: tauri::AppHandle,
     download_url: String,
     tag_name: String,
+    name: Option<String>,
     asset_size: u64,
 ) -> Result<(), String> {
-    if !is_safe_tag_name(&tag_name) {
-        return Err(format!("Invalid tag name: {tag_name}"));
+    // The directory name is the `name` (actual folder on disk) if provided,
+    // otherwise fall back to the tag name.
+    let dir_name = name.as_deref().unwrap_or(&tag_name);
+    if !is_safe_tag_name(dir_name) {
+        return Err(format!("Invalid tool name: {dir_name}"));
     }
 
     let compat_dir = get_or_create_compat_tools_dir()?;
-    let target_dir = compat_dir.join(&tag_name);
+    let target_dir = compat_dir.join(dir_name);
     if target_dir.exists() {
-        return Err(format!("{tag_name} is already installed"));
+        return Err(format!("{dir_name} is already installed"));
     }
 
     let emit_progress = |stage: &str, bytes: u64| {
@@ -537,6 +559,7 @@ mod tests {
     fn make_release(tag: &str) -> CompatToolRelease {
         CompatToolRelease {
             tag_name: tag.to_string(),
+            name: Some(tag.to_string()),
             published_at: "2026-04-01T12:00:00Z".to_string(),
             download_url: format!("https://example.com/{tag}.tar.gz"),
             asset_size: 1000,
@@ -621,6 +644,7 @@ mod tests {
     fn compat_tool_release_serde_roundtrip() {
         let release = CompatToolRelease {
             tag_name: "GE-Proton9-27".to_string(),
+            name: Some("GE-Proton9-27".to_string()),
             published_at: "2026-04-01T12:00:00Z".to_string(),
             download_url: "https://example.com/GE-Proton9-27.tar.gz".to_string(),
             asset_size: 400000000,

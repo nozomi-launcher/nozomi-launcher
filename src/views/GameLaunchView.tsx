@@ -1,12 +1,14 @@
 import { FocusContext, setFocus, useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ButtonPrompt from "../components/ButtonPrompt";
 import EnvVarEditor from "../components/EnvVarEditor";
+import ErrorToast from "../components/ErrorToast";
 import { FocusButton, FocusInput } from "../components/FocusElements";
 import GamepadSelect from "../components/GamepadSelect";
 import * as api from "../lib/tauri";
 import { useAppStore } from "../stores/appStore";
 import { resolveCompatTool, useCompatStore } from "../stores/compatStore";
+import { useCompatToolsStore } from "../stores/compatToolsStore";
 import { useProfileStore } from "../stores/profileStore";
 import type { Profile } from "../types/profile";
 import type { LaunchContext, ProtonVersion } from "../types/steam";
@@ -31,6 +33,11 @@ export default function GameLaunchView() {
   const loadSettings = useCompatStore((s) => s.loadSettings);
   const autoSelectLatest = useCompatStore((s) => s.autoSelectLatest);
   const setActiveTab = useAppStore((s) => s.setActiveTab);
+
+  const releases = useCompatToolsStore((s) => s.releases);
+  const fetchInstalled = useCompatToolsStore((s) => s.fetchInstalled);
+
+  const [launchError, setLaunchError] = useState<string | null>(null);
 
   const effectiveCompatTool = resolveCompatTool(globalCompatTool, profileProtonOverride);
 
@@ -70,23 +77,62 @@ export default function GameLaunchView() {
   const gamePath = launchContext?.gamePath ?? null;
   const isStandalone = !launchContext;
 
-  // Resolve the proton path from the effective compat tool name
-  const resolvedProtonPath =
-    protonVersions.find((v) => v.name === effectiveCompatTool)?.path ?? null;
+  // Resolve the actual directory name from releases (handles aliases like "GE-Proton Latest")
+  const matchingRelease = releases.find((r) => r.tagName === effectiveCompatTool);
+  const resolvedName = matchingRelease?.name ?? matchingRelease?.tagName ?? effectiveCompatTool;
 
-  const canLaunch = Boolean(gamePath && effectiveCompatTool && resolvedProtonPath && !launching);
+  // Resolve the proton path from the resolved directory name
+  const resolvedProtonPath =
+    protonVersions.find((v) => v.name === resolvedName)?.path ?? null;
+
+  const toolNotInstalled = Boolean(effectiveCompatTool && !resolvedProtonPath);
+  const canLaunch = Boolean(gamePath && effectiveCompatTool && !launching);
+
+  const handleDismissError = useCallback(() => setLaunchError(null), []);
 
   const handleLaunch = async () => {
-    if (!gamePath || !resolvedProtonPath) return;
+    if (!gamePath || !effectiveCompatTool) return;
     setLaunching(true);
+    setLaunchError(null);
+
+    let protonPath = resolvedProtonPath;
+
+    // Auto-download if the tool is not installed
+    if (!protonPath && matchingRelease) {
+      try {
+        await api.installCompatTool({
+          downloadUrl: matchingRelease.downloadUrl,
+          tagName: matchingRelease.tagName,
+          name: matchingRelease.name ?? null,
+          assetSize: matchingRelease.assetSize,
+        });
+        // Refresh installed versions and resolve the path
+        const freshVersions = await api.listProtonVersions();
+        setProtonVersions(freshVersions);
+        await fetchInstalled();
+        const dirName = matchingRelease.name ?? matchingRelease.tagName;
+        protonPath = freshVersions.find((v) => v.name === dirName)?.path ?? null;
+      } catch (err) {
+        setLaunchError(String(err));
+        setLaunching(false);
+        return;
+      }
+    }
+
+    if (!protonPath) {
+      setLaunchError(`Compatibility tool "${effectiveCompatTool}" could not be resolved`);
+      setLaunching(false);
+      return;
+    }
+
     try {
       await api.launchGame({
         gamePath,
         envVars,
-        protonPath: resolvedProtonPath,
+        protonPath,
       });
     } catch (err) {
-      console.error("Launch failed:", err);
+      setLaunchError(String(err));
       setLaunching(false);
     }
   };
@@ -153,6 +199,10 @@ export default function GameLaunchView() {
   return (
     <FocusContext.Provider value={focusKey}>
       <div ref={viewRef} className="flex flex-col h-full overflow-hidden">
+        {/* Error toast */}
+        {launchError && (
+          <ErrorToast message={launchError} onDismiss={handleDismissError} />
+        )}
         <div className="flex-1 min-h-0 overflow-y-auto p-6">
         <div className="max-w-3xl mx-auto space-y-4">
         {/* Game Info */}
@@ -278,9 +328,19 @@ export default function GameLaunchView() {
               {effectiveCompatTool ? (
                 <div>
                   <p className="text-sm text-steam-text font-medium">{effectiveCompatTool}</p>
+                  {resolvedName !== effectiveCompatTool && (
+                    <p className="text-xs text-steam-text-dim mt-0.5">
+                      Resolves to: {resolvedName}
+                    </p>
+                  )}
                   {profileProtonOverride && (
                     <p className="text-xs text-steam-text-dim mt-0.5">
                       Profile override (global: {globalCompatTool ?? "none"})
+                    </p>
+                  )}
+                  {toolNotInstalled && (
+                    <p className="text-xs text-steam-accent mt-0.5">
+                      Not installed — will download on launch
                     </p>
                   )}
                 </div>
@@ -321,7 +381,9 @@ export default function GameLaunchView() {
               ? "Launching..."
               : !effectiveCompatTool
                 ? "No Compatibility Tool"
-                : "Launch Game"}
+                : toolNotInstalled
+                  ? "Install & Launch"
+                  : "Launch Game"}
           </FocusButton>
 
           {!isStandalone && (

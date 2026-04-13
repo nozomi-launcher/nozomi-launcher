@@ -70,17 +70,18 @@ describe("CompatToolsView", () => {
   it("clicking a sidebar item shows that group's versions", () => {
     render(<CompatToolsView />);
     fireEvent.click(screen.getByText("GE-Proton9"));
-    expect(screen.getByText("GE-Proton9-27")).toBeInTheDocument();
+    // GE-Proton9-27 appears in both header (active tool) and version list
+    expect(screen.getAllByText("GE-Proton9-27").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("GE-Proton9-26")).toBeInTheDocument();
   });
 
-  it("shows Active badge for the globally active version", () => {
+  it("shows checkmark for the globally active version", () => {
     render(<CompatToolsView />);
     fireEvent.click(screen.getByText("GE-Proton9"));
-    expect(screen.getByText("Active")).toBeInTheDocument();
+    expect(screen.getByTitle("Active")).toBeInTheDocument();
   });
 
-  it("shows Activate button for installed but non-active versions", () => {
+  it("shows Select button for installed but non-active versions", () => {
     useCompatStore.setState({ globalCompatTool: "GE-Proton10-1" });
     useCompatToolsStore.setState({
       installedVersions: [
@@ -90,7 +91,7 @@ describe("CompatToolsView", () => {
     });
     render(<CompatToolsView />);
     fireEvent.click(screen.getByText("GE-Proton9"));
-    expect(screen.getByText("Activate")).toBeInTheDocument();
+    expect(screen.getByText("Select", { selector: "button" })).toBeInTheDocument();
   });
 
   it("refresh button is rendered", () => {
@@ -148,19 +149,19 @@ describe("CompatToolsView", () => {
     expect(screen.getByText("No versions found.")).toBeInTheDocument();
   });
 
-  it("shows Install button for available versions", () => {
+  it("shows Download button for available versions", () => {
     render(<CompatToolsView />);
     // GE-Proton10-1 is available (not installed)
-    expect(screen.getByText("Install")).toBeInTheDocument();
+    expect(screen.getByText("Download")).toBeInTheDocument();
   });
 
-  it("shows Uninstall button for installed versions", () => {
+  it("shows Delete button for installed versions", () => {
     render(<CompatToolsView />);
     fireEvent.click(screen.getByText("GE-Proton9"));
-    expect(screen.getByText("Uninstall")).toBeInTheDocument();
+    expect(screen.getByText("Delete")).toBeInTheDocument();
   });
 
-  it("shows Installing badge for versions being installed", () => {
+  it("shows progress bar for versions being installed", () => {
     useCompatToolsStore.setState({
       installing: new Map([
         [
@@ -176,8 +177,8 @@ describe("CompatToolsView", () => {
       ]),
     });
     render(<CompatToolsView />);
-    expect(screen.getByText("Installing")).toBeInTheDocument();
     expect(screen.getByText("Downloading...")).toBeInTheDocument();
+    expect(screen.getByText("24%")).toBeInTheDocument();
   });
 
   it("error toast can be dismissed", () => {
@@ -191,7 +192,7 @@ describe("CompatToolsView", () => {
     });
     render(<CompatToolsView />);
     expect(screen.getByText("Some error")).toBeInTheDocument();
-    fireEvent.click(screen.getByLabelText("Dismiss error"));
+    fireEvent.click(screen.getByRole("alertdialog", { name: "Error" }));
     expect(screen.queryByText("Some error")).not.toBeInTheDocument();
   });
 

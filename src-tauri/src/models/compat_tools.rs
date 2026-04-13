@@ -4,6 +4,9 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct CompatToolRelease {
     pub tag_name: String,
+    /// The actual directory name on disk. Falls back to `tag_name` when absent.
+    #[serde(default)]
+    pub name: Option<String>,
     pub published_at: String,
     pub download_url: String,
     pub asset_size: u64,

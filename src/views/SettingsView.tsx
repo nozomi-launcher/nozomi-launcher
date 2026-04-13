@@ -91,6 +91,8 @@ function SourceRow({
 
 export default function SettingsView() {
   const sources = useSettingsStore((s) => s.sources);
+  const compatToolsDir = useSettingsStore((s) => s.compatToolsDir);
+  const setCompatToolsDir = useSettingsStore((s) => s.setCompatToolsDir);
   const initialized = useSettingsStore((s) => s.initialized);
   const loadSources = useSettingsStore((s) => s.loadSources);
   const addSource = useSettingsStore((s) => s.addSource);
@@ -102,12 +104,17 @@ export default function SettingsView() {
   const [isAdding, setIsAdding] = useState(false);
   const [newName, setNewName] = useState("");
   const [newUrl, setNewUrl] = useState("");
+  const [localCompatDir, setLocalCompatDir] = useState("");
 
   useEffect(() => {
     if (!initialized) {
       loadSources();
     }
   }, [initialized, loadSources]);
+
+  useEffect(() => {
+    setLocalCompatDir(compatToolsDir ?? "");
+  }, [compatToolsDir]);
 
   const defaultStatus = sourceStatus.find((s) => s.sourceName === DEFAULT_MANIFEST_NAME);
 
@@ -145,6 +152,54 @@ export default function SettingsView() {
       <div ref={viewRef} className="flex flex-col h-full overflow-hidden">
         <div className="flex-1 min-h-0 overflow-y-auto p-6">
         <div className="max-w-3xl mx-auto space-y-4">
+        <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
+          <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-3">
+            Compatibility Tools Directory
+          </h2>
+          <p className="text-xs text-steam-text-dim/60 mb-3">
+            Override where compatibility tools are installed. Leave empty to use the default
+            Steam directory (<code className="text-steam-text-dim">compatibilitytools.d</code>).
+          </p>
+          <div className="flex gap-2">
+            <FocusInput
+              type="text"
+              placeholder="e.g. /home/user/.steam/root/compatibilitytools.d"
+              value={localCompatDir}
+              onChange={(e) => setLocalCompatDir(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setCompatToolsDir(localCompatDir.trim() || null);
+                }
+              }}
+              className="flex-1 bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
+                placeholder:text-steam-text-dim/50
+                focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
+                hover:border-steam-accent/50 transition-colors"
+            />
+            <FocusButton
+              onClick={() => setCompatToolsDir(localCompatDir.trim() || null)}
+              className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
+                hover:bg-steam-accent/30 hover:border-steam-accent transition-all
+                focus:outline-none focus:ring-2 focus:ring-steam-accent"
+            >
+              Apply
+            </FocusButton>
+            {compatToolsDir && (
+              <FocusButton
+                onClick={() => {
+                  setLocalCompatDir("");
+                  setCompatToolsDir(null);
+                }}
+                className="px-4 py-2 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-sm font-medium uppercase tracking-wider
+                  hover:bg-steam-mid/50 hover:border-steam-accent/50 transition-all
+                  focus:outline-none focus:ring-2 focus:ring-steam-accent"
+              >
+                Reset
+              </FocusButton>
+            )}
+          </div>
+        </section>
+
         <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
           <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-3">
             Compatibility Tool Sources

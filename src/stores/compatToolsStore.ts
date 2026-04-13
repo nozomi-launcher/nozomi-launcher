@@ -63,6 +63,7 @@ export const useCompatToolsStore = create<CompatToolsStore>((set, get) => ({
   installTool: async (release: CompatToolRelease) => {
     const { installing, fetchInstalled } = get();
     if (installing.has(release.tagName)) return;
+    set({ error: null });
 
     const initial: InstallProgress = {
       tagName: release.tagName,
@@ -105,6 +106,7 @@ export const useCompatToolsStore = create<CompatToolsStore>((set, get) => ({
       await api.installCompatTool({
         downloadUrl: release.downloadUrl,
         tagName: release.tagName,
+        name: release.name ?? null,
         assetSize: release.assetSize,
       });
     } catch (e) {
@@ -116,6 +118,7 @@ export const useCompatToolsStore = create<CompatToolsStore>((set, get) => ({
   },
 
   uninstallTool: async (tagName: string) => {
+    set({ error: null });
     try {
       await api.uninstallCompatTool(tagName);
       await get().fetchInstalled();
@@ -155,16 +158,18 @@ export function mergeVersions(
   const installedNames = new Set(installedVersions.map((v) => v.name));
 
   const versions: CompatToolVersion[] = releases.map((r) => {
+    const name = r.name ?? r.tagName;
     let status: CompatToolStatus = "available";
     if (installingSet?.has(r.tagName)) {
       status = "installing";
-    } else if (r.tagName === selectedVersion) {
+    } else if (r.tagName === selectedVersion || name === selectedVersion) {
       status = "selected";
-    } else if (installedNames.has(r.tagName)) {
+    } else if (installedNames.has(name)) {
       status = "installed";
     }
     return {
       tagName: r.tagName,
+      name,
       publishedAt: r.publishedAt,
       status,
       sourceName: r.sourceName ?? null,
@@ -172,11 +177,12 @@ export function mergeVersions(
     };
   });
 
-  const remoteNames = new Set(releases.map((r) => r.tagName));
+  const remoteNames = new Set(releases.map((r) => r.name ?? r.tagName));
   for (const installed of installedVersions) {
     if (!remoteNames.has(installed.name)) {
       versions.push({
         tagName: installed.name,
+        name: installed.name,
         publishedAt: null,
         status: installed.name === selectedVersion ? "selected" : "installed",
       });
@@ -189,8 +195,15 @@ export function mergeVersions(
 
 export function groupVersions(versions: CompatToolVersion[]): CompatToolGroup[] {
   const groupMap = new Map<string, CompatToolVersion[]>();
+  const latestAliases: CompatToolVersion[] = [];
 
   for (const v of versions) {
+    // "GE-Proton Latest" doesn't match a numeric major version;
+    // collect it separately and insert into the top group later.
+    if (v.tagName === "GE-Proton Latest") {
+      latestAliases.push(v);
+      continue;
+    }
     const major = getMajorVersion(v.tagName);
     const group = groupMap.get(major);
     if (group) {
@@ -210,6 +223,11 @@ export function groupVersions(versions: CompatToolVersion[]): CompatToolGroup[] 
     const bNum = Number(b.category.match(/\d+/)?.[0] ?? 0);
     return bNum - aNum;
   });
+
+  // Prepend "GE-Proton Latest" to the highest major version group
+  if (latestAliases.length > 0 && groups.length > 0) {
+    groups[0].versions = [...latestAliases, ...groups[0].versions];
+  }
 
   return groups;
 }

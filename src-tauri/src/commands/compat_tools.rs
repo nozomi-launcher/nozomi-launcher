@@ -441,7 +441,9 @@ pub async fn install_compat_tool(
         downloaded += chunk.len() as u64;
         emit_progress("downloading", downloaded);
     }
-    file.flush().await.map_err(|e| format!("Flush failed: {e}"))?;
+    file.flush()
+        .await
+        .map_err(|e| format!("Flush failed: {e}"))?;
     drop(file);
 
     emit_progress("extracting", downloaded);

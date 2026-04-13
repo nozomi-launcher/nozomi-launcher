@@ -68,94 +68,94 @@ export default function ProfilesView() {
     <FocusContext.Provider value={focusKey}>
       <div ref={viewRef} className="flex flex-col h-full overflow-hidden">
         <div className="flex-1 min-h-0 overflow-y-auto p-6">
-        <div className="max-w-3xl mx-auto space-y-4">
-        {/* Save Current Config as Profile */}
-        <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
-          <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-3">
-            Save Current Configuration
-          </h2>
-          <div className="flex gap-2">
-            {isEditingName ? (
-              <>
-                <FocusInput
-                  type="text"
-                  autoFocus
-                  placeholder="Profile name..."
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleSave();
-                    if (e.key === "Escape") {
-                      setNewName("");
-                      setIsEditingName(false);
-                    }
-                  }}
-                  className="flex-1 bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
+          <div className="max-w-3xl mx-auto space-y-4">
+            {/* Save Current Config as Profile */}
+            <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
+              <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-3">
+                Save Current Configuration
+              </h2>
+              <div className="flex gap-2">
+                {isEditingName ? (
+                  <>
+                    <FocusInput
+                      type="text"
+                      autoFocus
+                      placeholder="Profile name..."
+                      value={newName}
+                      onChange={(e) => setNewName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") handleSave();
+                        if (e.key === "Escape") {
+                          setNewName("");
+                          setIsEditingName(false);
+                        }
+                      }}
+                      className="flex-1 bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
                     placeholder:text-steam-text-dim/50
                     focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
                     hover:border-steam-accent/50 transition-colors"
-                />
-                <FocusButton
-                  onClick={handleSave}
-                  disabled={!newName.trim()}
-                  className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
+                    />
+                    <FocusButton
+                      onClick={handleSave}
+                      disabled={!newName.trim()}
+                      className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
                     hover:bg-steam-accent/30 hover:border-steam-accent transition-all
                     focus:outline-none focus:ring-2 focus:ring-steam-accent
                     disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
-                >
-                  Save
-                </FocusButton>
-                <FocusButton
-                  onClick={() => {
-                    setNewName("");
-                    setIsEditingName(false);
-                  }}
-                  className="px-4 py-2 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-sm font-medium uppercase tracking-wider
+                    >
+                      Save
+                    </FocusButton>
+                    <FocusButton
+                      onClick={() => {
+                        setNewName("");
+                        setIsEditingName(false);
+                      }}
+                      className="px-4 py-2 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-sm font-medium uppercase tracking-wider
                     hover:bg-steam-mid/50 hover:border-steam-accent/50 transition-all
                     focus:outline-none focus:ring-2 focus:ring-steam-accent"
-                >
-                  Cancel
-                </FocusButton>
-              </>
-            ) : (
-              <FocusButton
-                onClick={() => setIsEditingName(true)}
-                className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
+                    >
+                      Cancel
+                    </FocusButton>
+                  </>
+                ) : (
+                  <FocusButton
+                    onClick={() => setIsEditingName(true)}
+                    className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
                   hover:bg-steam-accent/30 hover:border-steam-accent transition-all
                   focus:outline-none focus:ring-2 focus:ring-steam-accent"
-              >
-                New Profile
-              </FocusButton>
-            )}
-          </div>
-          <p className="text-xs text-steam-text-dim/60 mt-2">
-            Saves the current environment variables as a reusable profile. Unset fields fall back to
-            global defaults.
-          </p>
-        </section>
+                  >
+                    New Profile
+                  </FocusButton>
+                )}
+              </div>
+              <p className="text-xs text-steam-text-dim/60 mt-2">
+                Saves the current environment variables as a reusable profile. Unset fields fall
+                back to global defaults.
+              </p>
+            </section>
 
-        {/* Existing Profiles */}
-        <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
-          <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-3">
-            Saved Profiles
-          </h2>
-          {profiles.length === 0 ? (
-            <p className="text-steam-text-dim text-sm">No profiles saved yet.</p>
-          ) : (
-            <div className="space-y-2">
-              {profiles.map((profile) => (
-                <ProfileRow
-                  key={profile.id}
-                  profile={profile}
-                  onDelete={handleDelete}
-                  installedVersions={installedVersions}
-                  onUpdateCompatTool={handleUpdateCompatTool}
-                />
-              ))}
-            </div>
-          )}
-        </section>
-      </div>
+            {/* Existing Profiles */}
+            <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
+              <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-3">
+                Saved Profiles
+              </h2>
+              {profiles.length === 0 ? (
+                <p className="text-steam-text-dim text-sm">No profiles saved yet.</p>
+              ) : (
+                <div className="space-y-2">
+                  {profiles.map((profile) => (
+                    <ProfileRow
+                      key={profile.id}
+                      profile={profile}
+                      onDelete={handleDelete}
+                      installedVersions={installedVersions}
+                      onUpdateCompatTool={handleUpdateCompatTool}
+                    />
+                  ))}
+                </div>
+              )}
+            </section>
+          </div>
         </div>
 
         {/* Footer: button prompts */}

@@ -78,28 +78,25 @@ export const useCompatToolsStore = create<CompatToolsStore>((set, get) => ({
 
     // Listen for progress events
     if (!progressUnlisten) {
-      progressUnlisten = await listen<InstallProgress>(
-        "compat-tool-install-progress",
-        (event) => {
-          const progress = event.payload;
-          const current = get().installing;
-          if (progress.stage === "done" || progress.stage === "error") {
-            const updated = new Map(current);
-            updated.delete(progress.tagName);
-            set({ installing: updated });
-            if (progress.stage === "done") {
-              fetchInstalled();
-            }
-            if (progress.stage === "error") {
-              set({ error: `Install failed for ${progress.tagName}` });
-            }
-          } else {
-            const updated = new Map(current);
-            updated.set(progress.tagName, progress);
-            set({ installing: updated });
+      progressUnlisten = await listen<InstallProgress>("compat-tool-install-progress", (event) => {
+        const progress = event.payload;
+        const current = get().installing;
+        if (progress.stage === "done" || progress.stage === "error") {
+          const updated = new Map(current);
+          updated.delete(progress.tagName);
+          set({ installing: updated });
+          if (progress.stage === "done") {
+            fetchInstalled();
           }
-        },
-      );
+          if (progress.stage === "error") {
+            set({ error: `Install failed for ${progress.tagName}` });
+          }
+        } else {
+          const updated = new Map(current);
+          updated.set(progress.tagName, progress);
+          set({ installing: updated });
+        }
+      });
     }
 
     try {

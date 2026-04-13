@@ -105,7 +105,9 @@ function VersionRow({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 min-w-0">
           {version.status === "selected" && (
-            <span className="text-steam-green-bright shrink-0" title="Active">✓</span>
+            <span className="text-steam-green-bright shrink-0" title="Active">
+              ✓
+            </span>
           )}
           <div className="min-w-0">
             <div className="flex items-center gap-2">
@@ -273,9 +275,7 @@ export default function CompatToolsView() {
     <FocusContext.Provider value={focusKey}>
       <div ref={viewRef} className="flex flex-col h-full overflow-hidden">
         {/* Error toast popup */}
-        {error && (
-          <ErrorToast message={error} onDismiss={handleDismissError} />
-        )}
+        {error && <ErrorToast message={error} onDismiss={handleDismissError} />}
 
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 shrink-0">
@@ -285,7 +285,8 @@ export default function CompatToolsView() {
             </h2>
             {globalCompatTool && (
               <p className="text-xs text-steam-text-dim mt-0.5">
-                Active: <span className="text-steam-green-bright font-medium">{globalCompatTool}</span>
+                Active:{" "}
+                <span className="text-steam-green-bright font-medium">{globalCompatTool}</span>
               </p>
             )}
           </div>

@@ -75,10 +75,7 @@ function App() {
           </TabPanel>
         </Layout>
         {showQuitConfirm && (
-          <QuitConfirmDialog
-            onConfirm={handleQuit}
-            onCancel={() => setShowQuitConfirm(false)}
-          />
+          <QuitConfirmDialog onConfirm={handleQuit} onCancel={() => setShowQuitConfirm(false)} />
         )}
       </div>
     </FocusContext.Provider>

@@ -87,10 +87,8 @@ pub async fn launch_game(options: LaunchOptions) -> Result<(), String> {
     let script = build_wrapper_script(&options)?;
 
     // Write wrapper script to a temporary file unique to this process
-    let wrapper_path = std::env::temp_dir().join(format!(
-        "nozomi-wrapper-{}.sh",
-        std::process::id()
-    ));
+    let wrapper_path =
+        std::env::temp_dir().join(format!("nozomi-wrapper-{}.sh", std::process::id()));
     {
         let mut file = std::fs::File::create(&wrapper_path).map_err(|e| e.to_string())?;
         file.write_all(script.as_bytes())
@@ -178,7 +176,9 @@ mod tests {
                     enabled: false,
                 },
             ],
-            proton_path: Some("/home/user/.steam/root/compatibilitytools.d/GE-Proton9-1".to_string()),
+            proton_path: Some(
+                "/home/user/.steam/root/compatibilitytools.d/GE-Proton9-1".to_string(),
+            ),
         };
         let script = build_wrapper_script(&options).unwrap();
         assert!(script.contains("#!/bin/bash"));
@@ -216,6 +216,8 @@ mod tests {
         };
         let result = build_wrapper_script(&options);
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("Invalid environment variable key"));
+        assert!(result
+            .unwrap_err()
+            .contains("Invalid environment variable key"));
     }
 }

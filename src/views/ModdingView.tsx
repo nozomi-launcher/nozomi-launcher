@@ -6,10 +6,7 @@ export default function ModdingView() {
 
   return (
     <FocusContext.Provider value={focusKey}>
-      <div
-        ref={ref}
-        className="flex flex-col h-full overflow-hidden"
-      >
+      <div ref={ref} className="flex flex-col h-full overflow-hidden">
         <div className="flex-1 min-h-0 overflow-y-auto flex items-center justify-center text-steam-text-dim">
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-4 text-steam-accent">Modding</h2>

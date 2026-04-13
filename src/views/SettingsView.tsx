@@ -151,164 +151,164 @@ export default function SettingsView() {
     <FocusContext.Provider value={focusKey}>
       <div ref={viewRef} className="flex flex-col h-full overflow-hidden">
         <div className="flex-1 min-h-0 overflow-y-auto p-6">
-        <div className="max-w-3xl mx-auto space-y-4">
-        <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
-          <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-3">
-            Compatibility Tools Directory
-          </h2>
-          <p className="text-xs text-steam-text-dim/60 mb-3">
-            Override where compatibility tools are installed. Leave empty to use the default
-            Steam directory (<code className="text-steam-text-dim">compatibilitytools.d</code>).
-          </p>
-          <div className="flex gap-2">
-            <FocusInput
-              type="text"
-              placeholder="e.g. /home/user/.steam/root/compatibilitytools.d"
-              value={localCompatDir}
-              onChange={(e) => setLocalCompatDir(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  setCompatToolsDir(localCompatDir.trim() || null);
-                }
-              }}
-              className="flex-1 bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
+          <div className="max-w-3xl mx-auto space-y-4">
+            <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
+              <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-3">
+                Compatibility Tools Directory
+              </h2>
+              <p className="text-xs text-steam-text-dim/60 mb-3">
+                Override where compatibility tools are installed. Leave empty to use the default
+                Steam directory (<code className="text-steam-text-dim">compatibilitytools.d</code>).
+              </p>
+              <div className="flex gap-2">
+                <FocusInput
+                  type="text"
+                  placeholder="e.g. /home/user/.steam/root/compatibilitytools.d"
+                  value={localCompatDir}
+                  onChange={(e) => setLocalCompatDir(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      setCompatToolsDir(localCompatDir.trim() || null);
+                    }
+                  }}
+                  className="flex-1 bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
                 placeholder:text-steam-text-dim/50
                 focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
                 hover:border-steam-accent/50 transition-colors"
-            />
-            <FocusButton
-              onClick={() => setCompatToolsDir(localCompatDir.trim() || null)}
-              className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
+                />
+                <FocusButton
+                  onClick={() => setCompatToolsDir(localCompatDir.trim() || null)}
+                  className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
                 hover:bg-steam-accent/30 hover:border-steam-accent transition-all
                 focus:outline-none focus:ring-2 focus:ring-steam-accent"
-            >
-              Apply
-            </FocusButton>
-            {compatToolsDir && (
-              <FocusButton
-                onClick={() => {
-                  setLocalCompatDir("");
-                  setCompatToolsDir(null);
-                }}
-                className="px-4 py-2 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-sm font-medium uppercase tracking-wider
+                >
+                  Apply
+                </FocusButton>
+                {compatToolsDir && (
+                  <FocusButton
+                    onClick={() => {
+                      setLocalCompatDir("");
+                      setCompatToolsDir(null);
+                    }}
+                    className="px-4 py-2 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-sm font-medium uppercase tracking-wider
                   hover:bg-steam-mid/50 hover:border-steam-accent/50 transition-all
                   focus:outline-none focus:ring-2 focus:ring-steam-accent"
+                  >
+                    Reset
+                  </FocusButton>
+                )}
+              </div>
+            </section>
+
+            <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
+              <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-3">
+                Compatibility Tool Sources
+              </h2>
+              <p className="text-xs text-steam-text-dim/60 mb-4">
+                The launcher fetches compatibility tool releases from pre-processed manifests. You
+                can add additional sources to support custom builds.
+              </p>
+
+              {/* Default source — locked */}
+              <div
+                className="bg-steam-mid/30 border border-steam-border/50 rounded p-3 mb-2"
+                data-testid="default-source"
               >
-                Reset
-              </FocusButton>
-            )}
-          </div>
-        </section>
-
-        <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
-          <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-3">
-            Compatibility Tool Sources
-          </h2>
-          <p className="text-xs text-steam-text-dim/60 mb-4">
-            The launcher fetches compatibility tool releases from pre-processed manifests. You can
-            add additional sources to support custom builds.
-          </p>
-
-          {/* Default source — locked */}
-          <div
-            className="bg-steam-mid/30 border border-steam-border/50 rounded p-3 mb-2"
-            data-testid="default-source"
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <p className="font-medium text-steam-text">{DEFAULT_MANIFEST_NAME}</p>
-                  <span className="text-[10px] px-1.5 py-0.5 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded uppercase tracking-wider">
-                    Default
-                  </span>
-                </div>
-                <p
-                  className="text-xs text-steam-text-dim/70 break-all"
-                  title={DEFAULT_MANIFEST_URL}
-                >
-                  {DEFAULT_MANIFEST_URL}
-                </p>
-                <div className="mt-1">
-                  <StatusLine status={defaultStatus} />
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-medium text-steam-text">{DEFAULT_MANIFEST_NAME}</p>
+                      <span className="text-[10px] px-1.5 py-0.5 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded uppercase tracking-wider">
+                        Default
+                      </span>
+                    </div>
+                    <p
+                      className="text-xs text-steam-text-dim/70 break-all"
+                      title={DEFAULT_MANIFEST_URL}
+                    >
+                      {DEFAULT_MANIFEST_URL}
+                    </p>
+                    <div className="mt-1">
+                      <StatusLine status={defaultStatus} />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Extra sources */}
-          {sources.map((source) => (
-            <SourceRow
-              key={source.id}
-              source={source}
-              status={sourceStatus.find((s) => s.sourceName === source.name)}
-              onToggle={handleToggle}
-              onRemove={handleRemove}
-            />
-          ))}
+              {/* Extra sources */}
+              {sources.map((source) => (
+                <SourceRow
+                  key={source.id}
+                  source={source}
+                  status={sourceStatus.find((s) => s.sourceName === source.name)}
+                  onToggle={handleToggle}
+                  onRemove={handleRemove}
+                />
+              ))}
 
-          {/* Add source */}
-          <div className="mt-3">
-            {isAdding ? (
-              <div className="bg-steam-mid/30 border border-steam-border/50 rounded p-3 space-y-2">
-                <FocusInput
-                  type="text"
-                  autoFocus
-                  placeholder="Source name (e.g. CachyOS Proton)"
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  className="w-full bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
+              {/* Add source */}
+              <div className="mt-3">
+                {isAdding ? (
+                  <div className="bg-steam-mid/30 border border-steam-border/50 rounded p-3 space-y-2">
+                    <FocusInput
+                      type="text"
+                      autoFocus
+                      placeholder="Source name (e.g. CachyOS Proton)"
+                      value={newName}
+                      onChange={(e) => setNewName(e.target.value)}
+                      className="w-full bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
                   placeholder:text-steam-text-dim/50
                   focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
                   hover:border-steam-accent/50 transition-colors"
-                />
-                <FocusInput
-                  type="text"
-                  placeholder="Manifest URL (https://...)"
-                  value={newUrl}
-                  onChange={(e) => setNewUrl(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleAdd();
-                    if (e.key === "Escape") handleCancelAdd();
-                  }}
-                  className="w-full bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
+                    />
+                    <FocusInput
+                      type="text"
+                      placeholder="Manifest URL (https://...)"
+                      value={newUrl}
+                      onChange={(e) => setNewUrl(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") handleAdd();
+                        if (e.key === "Escape") handleCancelAdd();
+                      }}
+                      className="w-full bg-steam-mid/50 border border-steam-border rounded px-3 py-2 text-sm text-steam-text
                   placeholder:text-steam-text-dim/50
                   focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
                   hover:border-steam-accent/50 transition-colors"
-                />
-                <div className="flex gap-2">
-                  <FocusButton
-                    onClick={handleAdd}
-                    disabled={!newName.trim() || !newUrl.trim()}
-                    className="px-4 py-1.5 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
+                    />
+                    <div className="flex gap-2">
+                      <FocusButton
+                        onClick={handleAdd}
+                        disabled={!newName.trim() || !newUrl.trim()}
+                        className="px-4 py-1.5 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
                     hover:bg-steam-accent/30 hover:border-steam-accent transition-all
                     focus:outline-none focus:ring-2 focus:ring-steam-accent
                     disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
-                  >
-                    Save
-                  </FocusButton>
-                  <FocusButton
-                    onClick={handleCancelAdd}
-                    className="px-4 py-1.5 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-sm font-medium uppercase tracking-wider
+                      >
+                        Save
+                      </FocusButton>
+                      <FocusButton
+                        onClick={handleCancelAdd}
+                        className="px-4 py-1.5 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-sm font-medium uppercase tracking-wider
                     hover:bg-steam-mid/50 hover:border-steam-accent/50 transition-all
                     focus:outline-none focus:ring-2 focus:ring-steam-accent"
-                  >
-                    Cancel
-                  </FocusButton>
-                </div>
-              </div>
-            ) : (
-              <FocusButton
-                onClick={() => setIsAdding(true)}
-                className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
+                      >
+                        Cancel
+                      </FocusButton>
+                    </div>
+                  </div>
+                ) : (
+                  <FocusButton
+                    onClick={() => setIsAdding(true)}
+                    className="px-4 py-2 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
                 hover:bg-steam-accent/30 hover:border-steam-accent transition-all
                 focus:outline-none focus:ring-2 focus:ring-steam-accent"
-              >
-                + Add Manifest Source
-              </FocusButton>
-            )}
+                  >
+                    + Add Manifest Source
+                  </FocusButton>
+                )}
+              </div>
+            </section>
           </div>
-        </section>
-      </div>
         </div>
 
         {/* Footer: button prompts */}

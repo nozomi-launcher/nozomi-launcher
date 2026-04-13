@@ -14,7 +14,10 @@ pub struct ProtonVersion {
 /// Resolve the custom compat tools directory from settings, if any.
 fn custom_compat_dir() -> Option<PathBuf> {
     let settings = get_settings().ok()?;
-    let dir_str = settings.compat_tools_dir.as_deref().filter(|s| !s.is_empty())?;
+    let dir_str = settings
+        .compat_tools_dir
+        .as_deref()
+        .filter(|s| !s.is_empty())?;
     let path = PathBuf::from(dir_str);
     if path.is_dir() {
         Some(path)

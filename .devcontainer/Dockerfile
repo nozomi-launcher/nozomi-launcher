@@ -21,6 +21,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     gnupg \
     sudo \
+    # OpenSSL (required by openssl-sys crate)
+    libssl-dev \
     # Tauri v2 Linux dependencies (WebKitGTK + related)
     libwebkit2gtk-4.1-dev \
     libappindicator3-dev \
@@ -51,7 +53,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xdg-utils \
     # Wayland support
     libwayland-client0 \
+    # OpenGL / Vulkan (Mesa software renderers for headless / container use)
+    libgl1-mesa-dri \
+    libegl1-mesa \
+    libgles2-mesa \
+    mesa-vulkan-drivers \
+    mesa-utils \
+    vulkan-tools \
+    # Locale support
+    locales \
     && rm -rf /var/lib/apt/lists/*
+
+# ── Locale ───────────────────────────────────────────────────────────────────
+RUN sed -i '/en_US.UTF-8/s/^# //' /etc/locale.gen && locale-gen
+ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
 # ── Non-root user ────────────────────────────────────────────────────────────
 RUN groupadd --gid ${USER_GID} ${USERNAME} \

@@ -59,3 +59,7 @@ export async function launchGame(options: {
 }): Promise<void> {
   return invoke("launch_game", { options });
 }
+
+export async function abortLaunch(): Promise<void> {
+  return invoke("abort_launch");
+}

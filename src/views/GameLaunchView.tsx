@@ -86,8 +86,15 @@ export default function GameLaunchView() {
       });
     } catch (err) {
       console.error("Launch failed:", err);
-    } finally {
       setLaunching(false);
+    }
+  };
+
+  const handleAbort = async () => {
+    try {
+      await api.abortLaunch();
+    } catch (err) {
+      console.error("Abort failed:", err);
     }
   };
 
@@ -294,24 +301,40 @@ export default function GameLaunchView() {
           <EnvVarEditor />
         </section>
 
-        {/* Launch Button */}
-        <FocusButton
-          onClick={handleLaunch}
-          disabled={!canLaunch}
-          className={`w-full py-3 rounded text-lg font-bold uppercase tracking-wider transition-all
-          focus:outline-none focus:ring-2 focus:ring-steam-green-bright
-          ${
-            canLaunch
-              ? "bg-gradient-to-r from-steam-green to-steam-green-bright text-white shadow-lg shadow-steam-green/20 hover:shadow-steam-green-bright/30 hover:brightness-110"
-              : "bg-steam-mid/40 text-steam-text-dim cursor-not-allowed border border-steam-border"
-          }`}
-        >
-          {launching
-            ? "Launching..."
-            : !effectiveCompatTool
-              ? "No Compatibility Tool"
-              : "Launch Game"}
-        </FocusButton>
+        {/* Launch / Abort Buttons */}
+        <div className="flex gap-3">
+          <FocusButton
+            onClick={handleLaunch}
+            disabled={!canLaunch}
+            className={`flex-1 py-3 rounded text-lg font-bold uppercase tracking-wider transition-all
+            focus:outline-none focus:ring-2 focus:ring-steam-green-bright
+            ${
+              canLaunch
+                ? "bg-gradient-to-r from-steam-green to-steam-green-bright text-white shadow-lg shadow-steam-green/20 hover:shadow-steam-green-bright/30 hover:brightness-110"
+                : "bg-steam-mid/40 text-steam-text-dim cursor-not-allowed border border-steam-border"
+            }`}
+          >
+            {launching
+              ? "Launching..."
+              : !effectiveCompatTool
+                ? "No Compatibility Tool"
+                : "Launch Game"}
+          </FocusButton>
+
+          {!isStandalone && (
+            <FocusButton
+              onClick={handleAbort}
+              disabled={launching}
+              className="px-6 py-3 rounded text-lg font-bold uppercase tracking-wider transition-all
+              bg-steam-red/20 border border-steam-red/40 text-steam-red-bright
+              hover:bg-steam-red/30 hover:border-steam-red transition-all
+              focus:outline-none focus:ring-2 focus:ring-steam-red-bright
+              disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
+            >
+              Abort
+            </FocusButton>
+          )}
+        </div>
       </div>
     </FocusContext.Provider>
   );

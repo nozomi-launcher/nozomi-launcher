@@ -146,170 +146,172 @@ export default function GameLaunchView() {
     <FocusContext.Provider value={focusKey}>
       <div ref={viewRef} className="max-w-3xl mx-auto space-y-4">
         {/* Game Info */}
-      <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-2">
-          Game
-        </h2>
-        {isStandalone ? (
-          <div>
-            <p className="text-sm text-steam-text-dim">Standalone mode — no game selected</p>
-            <p className="text-xs mt-1 text-steam-text-dim/60">
-              Launch from Steam as a compatibility tool to select a game.
-            </p>
-          </div>
-        ) : (
-          <div>
-            <p className="text-sm text-steam-text font-mono break-all">{gamePath}</p>
-            {launchContext?.steamAppId && (
-              <p className="text-xs text-steam-text-dim mt-1">App ID: {launchContext.steamAppId}</p>
-            )}
-          </div>
-        )}
-      </section>
-
-      {/* Profile Selector */}
-      <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
-        <h3 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-2">
-          Profile
-        </h3>
-        <GamepadSelect
-          options={[
-            { value: "", label: "No profile" },
-            ...profiles.map((p) => ({ value: p.id, label: p.name })),
-          ]}
-          value={selectedProfileId}
-          onChange={handleProfileChange}
-          placeholder="No profile"
-        />
-
-        {/* Per-game profile association */}
-        {launchContext?.steamAppId && (
-          <div className="mt-3 pt-3 border-t border-steam-border/50">
-            {gameProfile ? (
-              <div className="flex items-center justify-between">
-                <p className="text-xs text-steam-text-dim">
-                  Profile for this game:{" "}
-                  <span className="text-steam-accent">{gameProfile.name}</span>
+        <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
+          <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-2">
+            Game
+          </h2>
+          {isStandalone ? (
+            <div>
+              <p className="text-sm text-steam-text-dim">Standalone mode — no game selected</p>
+              <p className="text-xs mt-1 text-steam-text-dim/60">
+                Launch from Steam as a compatibility tool to select a game.
+              </p>
+            </div>
+          ) : (
+            <div>
+              <p className="text-sm text-steam-text font-mono break-all">{gamePath}</p>
+              {launchContext?.steamAppId && (
+                <p className="text-xs text-steam-text-dim mt-1">
+                  App ID: {launchContext.steamAppId}
                 </p>
-                <FocusButton
-                  onClick={handleSaveGameProfile}
-                  className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
+              )}
+            </div>
+          )}
+        </section>
+
+        {/* Profile Selector */}
+        <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
+          <h3 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-2">
+            Profile
+          </h3>
+          <GamepadSelect
+            options={[
+              { value: "", label: "No profile" },
+              ...profiles.map((p) => ({ value: p.id, label: p.name })),
+            ]}
+            value={selectedProfileId}
+            onChange={handleProfileChange}
+            placeholder="No profile"
+          />
+
+          {/* Per-game profile association */}
+          {launchContext?.steamAppId && (
+            <div className="mt-3 pt-3 border-t border-steam-border/50">
+              {gameProfile ? (
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-steam-text-dim">
+                    Profile for this game:{" "}
+                    <span className="text-steam-accent">{gameProfile.name}</span>
+                  </p>
+                  <FocusButton
+                    onClick={handleSaveGameProfile}
+                    className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
                     hover:bg-steam-accent/30 hover:border-steam-accent transition-all
                     focus:outline-none focus:ring-2 focus:ring-steam-accent"
-                >
-                  Update
-                </FocusButton>
-              </div>
-            ) : isNamingGameProfile ? (
-              <div className="flex gap-2">
-                <FocusInput
-                  type="text"
-                  autoFocus
-                  placeholder="Profile name..."
-                  value={newGameProfileName}
-                  onChange={(e) => setNewGameProfileName(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleSaveGameProfile();
-                    if (e.key === "Escape") {
-                      setNewGameProfileName("");
-                      setIsNamingGameProfile(false);
-                    }
-                  }}
-                  className="flex-1 bg-steam-mid/50 border border-steam-border rounded px-3 py-1.5 text-sm text-steam-text
+                  >
+                    Update
+                  </FocusButton>
+                </div>
+              ) : isNamingGameProfile ? (
+                <div className="flex gap-2">
+                  <FocusInput
+                    type="text"
+                    autoFocus
+                    placeholder="Profile name..."
+                    value={newGameProfileName}
+                    onChange={(e) => setNewGameProfileName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleSaveGameProfile();
+                      if (e.key === "Escape") {
+                        setNewGameProfileName("");
+                        setIsNamingGameProfile(false);
+                      }
+                    }}
+                    className="flex-1 bg-steam-mid/50 border border-steam-border rounded px-3 py-1.5 text-sm text-steam-text
                     placeholder:text-steam-text-dim/50
                     focus:outline-none focus:ring-2 focus:ring-steam-accent focus:border-steam-accent
                     hover:border-steam-accent/50 transition-colors"
-                />
-                <FocusButton
-                  onClick={handleSaveGameProfile}
-                  disabled={!newGameProfileName.trim()}
-                  className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
+                  />
+                  <FocusButton
+                    onClick={handleSaveGameProfile}
+                    disabled={!newGameProfileName.trim()}
+                    className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
                     hover:bg-steam-accent/30 hover:border-steam-accent transition-all
                     focus:outline-none focus:ring-2 focus:ring-steam-accent
                     disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
-                >
-                  Save
-                </FocusButton>
-                <FocusButton
-                  onClick={() => {
-                    setNewGameProfileName("");
-                    setIsNamingGameProfile(false);
-                  }}
-                  className="px-3 py-1 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-xs font-medium uppercase tracking-wider
+                  >
+                    Save
+                  </FocusButton>
+                  <FocusButton
+                    onClick={() => {
+                      setNewGameProfileName("");
+                      setIsNamingGameProfile(false);
+                    }}
+                    className="px-3 py-1 bg-steam-mid/30 border border-steam-border text-steam-text-dim rounded text-xs font-medium uppercase tracking-wider
                     hover:bg-steam-mid/50 hover:border-steam-accent/50 transition-all
                     focus:outline-none focus:ring-2 focus:ring-steam-accent"
-                >
-                  Cancel
-                </FocusButton>
-              </div>
-            ) : (
-              <FocusButton
-                onClick={() => setIsNamingGameProfile(true)}
-                className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
+                  >
+                    Cancel
+                  </FocusButton>
+                </div>
+              ) : (
+                <FocusButton
+                  onClick={() => setIsNamingGameProfile(true)}
+                  className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-xs font-medium uppercase tracking-wider
                   hover:bg-steam-accent/30 hover:border-steam-accent transition-all
                   focus:outline-none focus:ring-2 focus:ring-steam-accent"
-              >
-                Save for this game
-              </FocusButton>
-            )}
-          </div>
-        )}
-      </section>
+                >
+                  Save for this game
+                </FocusButton>
+              )}
+            </div>
+          )}
+        </section>
 
-      {/* Compatibility Tool */}
-      <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
-        <h3 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-2">
-          Compatibility Tool
-        </h3>
-        <div className="flex items-center justify-between">
-          <div>
-            {effectiveCompatTool ? (
-              <div>
-                <p className="text-sm text-steam-text font-medium">{effectiveCompatTool}</p>
-                {profileProtonOverride && (
-                  <p className="text-xs text-steam-text-dim mt-0.5">
-                    Profile override (global: {globalCompatTool ?? "none"})
-                  </p>
-                )}
-              </div>
-            ) : (
-              <p className="text-sm text-steam-red-bright">No compatibility tool selected</p>
-            )}
-          </div>
-          <FocusButton
-            onClick={handleChangeCompatTool}
-            className="px-3 py-1.5 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
+        {/* Compatibility Tool */}
+        <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
+          <h3 className="text-sm font-medium uppercase tracking-wider text-steam-accent mb-2">
+            Compatibility Tool
+          </h3>
+          <div className="flex items-center justify-between">
+            <div>
+              {effectiveCompatTool ? (
+                <div>
+                  <p className="text-sm text-steam-text font-medium">{effectiveCompatTool}</p>
+                  {profileProtonOverride && (
+                    <p className="text-xs text-steam-text-dim mt-0.5">
+                      Profile override (global: {globalCompatTool ?? "none"})
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <p className="text-sm text-steam-red-bright">No compatibility tool selected</p>
+              )}
+            </div>
+            <FocusButton
+              onClick={handleChangeCompatTool}
+              className="px-3 py-1.5 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
               hover:bg-steam-accent/30 hover:border-steam-accent transition-all
               focus:outline-none focus:ring-2 focus:ring-steam-accent"
-          >
-            Change
-          </FocusButton>
-        </div>
-      </section>
+            >
+              Change
+            </FocusButton>
+          </div>
+        </section>
 
-      {/* Environment Variables */}
-      <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
-        <EnvVarEditor />
-      </section>
+        {/* Environment Variables */}
+        <section className="bg-steam-dark/80 border border-steam-border rounded p-4">
+          <EnvVarEditor />
+        </section>
 
-      {/* Launch Button */}
-      <FocusButton
-        onClick={handleLaunch}
-        disabled={!canLaunch}
-        className={`w-full py-3 rounded text-lg font-bold uppercase tracking-wider transition-all
+        {/* Launch Button */}
+        <FocusButton
+          onClick={handleLaunch}
+          disabled={!canLaunch}
+          className={`w-full py-3 rounded text-lg font-bold uppercase tracking-wider transition-all
           focus:outline-none focus:ring-2 focus:ring-steam-green-bright
           ${
             canLaunch
               ? "bg-gradient-to-r from-steam-green to-steam-green-bright text-white shadow-lg shadow-steam-green/20 hover:shadow-steam-green-bright/30 hover:brightness-110"
               : "bg-steam-mid/40 text-steam-text-dim cursor-not-allowed border border-steam-border"
           }`}
-      >
-        {launching
-          ? "Launching..."
-          : !effectiveCompatTool
-            ? "No Compatibility Tool"
-            : "Launch Game"}
-      </FocusButton>
+        >
+          {launching
+            ? "Launching..."
+            : !effectiveCompatTool
+              ? "No Compatibility Tool"
+              : "Launch Game"}
+        </FocusButton>
       </div>
     </FocusContext.Provider>
   );

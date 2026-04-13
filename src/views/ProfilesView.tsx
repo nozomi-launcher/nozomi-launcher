@@ -134,13 +134,7 @@ export default function ProfilesView() {
   );
 }
 
-function ProfileRow({
-  profile,
-  onDelete,
-}: {
-  profile: Profile;
-  onDelete: (id: string) => void;
-}) {
+function ProfileRow({ profile, onDelete }: { profile: Profile; onDelete: (id: string) => void }) {
   return (
     <div
       className="flex items-center justify-between bg-steam-mid/30 border border-steam-border/50 rounded p-3

@@ -34,7 +34,11 @@ export default function GamepadSelect({
   const inputMode = useInputStore((s) => s.inputMode);
   const listboxId = useId();
 
-  const { ref: focusRef, focusKey, focused } = useFocusable({
+  const {
+    ref: focusRef,
+    focusKey,
+    focused,
+  } = useFocusable({
     onEnterPress: () => {
       if (!isOpen) open();
     },

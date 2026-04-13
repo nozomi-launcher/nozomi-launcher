@@ -100,19 +100,14 @@ function VersionRow({
   onActivate: (tagName: string) => void;
 }) {
   const { ref, focused } = useFocusable({
-    onEnterPress:
-      version.status === "installed" ? () => onActivate(version.tagName) : undefined,
+    onEnterPress: version.status === "installed" ? () => onActivate(version.tagName) : undefined,
   });
 
   return (
     <div
       ref={ref}
       tabIndex={0}
-      onClick={
-        version.status === "installed"
-          ? () => onActivate(version.tagName)
-          : undefined
-      }
+      onClick={version.status === "installed" ? () => onActivate(version.tagName) : undefined}
       className={`flex items-center justify-between px-4 py-2.5
         border-b border-steam-border/20 last:border-b-0
         hover:bg-steam-mid/20 transition-colors
@@ -130,9 +125,7 @@ function VersionRow({
           )}
         </div>
         {version.publishedAt && (
-          <p className="text-xs text-steam-text-dim">
-            {formatDate(version.publishedAt)}
-          </p>
+          <p className="text-xs text-steam-text-dim">{formatDate(version.publishedAt)}</p>
         )}
       </div>
       <div className="flex items-center gap-2">
@@ -204,7 +197,6 @@ export default function CompatToolsView() {
     fetchInstalled();
   };
 
-
   const handleActivate = async (tagName: string) => {
     await setGlobalCompatTool(tagName);
     setActiveTab("launch");
@@ -219,69 +211,69 @@ export default function CompatToolsView() {
 
   return (
     <FocusContext.Provider value={focusKey}>
-    <div ref={viewRef} className="flex flex-col h-full">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3">
-        <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent">
-          Compatibility Tools
-        </h2>
-        <div className="flex items-center gap-3">
-          <span className="text-xs text-steam-text-dim">
-            Last checked: {formatLastChecked(lastCheckedEpochSecs)}
-          </span>
-          <div className="flex items-center gap-1.5">
-            <ButtonGlyph action="REFRESH" />
-            <FocusButton
-              onClick={handleRefresh}
-              disabled={isLoading}
-              className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
+      <div ref={viewRef} className="flex flex-col h-full">
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 py-3">
+          <h2 className="text-sm font-medium uppercase tracking-wider text-steam-accent">
+            Compatibility Tools
+          </h2>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-steam-text-dim">
+              Last checked: {formatLastChecked(lastCheckedEpochSecs)}
+            </span>
+            <div className="flex items-center gap-1.5">
+              <ButtonGlyph action="REFRESH" />
+              <FocusButton
+                onClick={handleRefresh}
+                disabled={isLoading}
+                className="px-3 py-1 bg-steam-accent/20 border border-steam-accent/40 text-steam-accent rounded text-sm font-medium uppercase tracking-wider
                 hover:bg-steam-accent/30 hover:border-steam-accent transition-all
                 focus:outline-none focus:ring-2 focus:ring-steam-accent
                 disabled:bg-steam-mid/20 disabled:border-steam-border disabled:text-steam-text-dim"
-            >
-              {isLoading ? "Loading..." : "Refresh"}
-            </FocusButton>
+              >
+                {isLoading ? "Loading..." : "Refresh"}
+              </FocusButton>
+            </div>
           </div>
         </div>
+
+        {error && (
+          <div className="mx-4 mb-3 bg-steam-red/10 border border-steam-red/40 rounded p-3">
+            <p className="text-sm text-steam-red-bright">{error}</p>
+          </div>
+        )}
+
+        {/* Main content: sidebar + panel */}
+        {isLoading && groups.length === 0 ? (
+          <div className="px-4">
+            <p className="text-steam-text-dim text-sm">Loading releases...</p>
+          </div>
+        ) : groups.length === 0 ? (
+          <div className="px-4">
+            <p className="text-steam-text-dim text-sm">No versions found.</p>
+          </div>
+        ) : (
+          <div
+            className="flex mx-4 mb-4 border border-steam-border rounded overflow-hidden"
+            style={{ height: "calc(100vh - 10rem)" }}
+          >
+            {/* Sidebar: categories */}
+            <SidebarNav
+              groups={groups}
+              activeCategory={activeCategory}
+              onSelect={setActiveCategory}
+            />
+
+            {/* Right panel: versions */}
+            <VersionPanel
+              versionPanelRef={versionPanelRef}
+              activeGroup={activeGroup}
+              hasMultipleSources={hasMultipleSources}
+              onActivate={handleActivate}
+            />
+          </div>
+        )}
       </div>
-
-      {error && (
-        <div className="mx-4 mb-3 bg-steam-red/10 border border-steam-red/40 rounded p-3">
-          <p className="text-sm text-steam-red-bright">{error}</p>
-        </div>
-      )}
-
-      {/* Main content: sidebar + panel */}
-      {isLoading && groups.length === 0 ? (
-        <div className="px-4">
-          <p className="text-steam-text-dim text-sm">Loading releases...</p>
-        </div>
-      ) : groups.length === 0 ? (
-        <div className="px-4">
-          <p className="text-steam-text-dim text-sm">No versions found.</p>
-        </div>
-      ) : (
-        <div
-          className="flex mx-4 mb-4 border border-steam-border rounded overflow-hidden"
-          style={{ height: "calc(100vh - 10rem)" }}
-        >
-          {/* Sidebar: categories */}
-          <SidebarNav
-            groups={groups}
-            activeCategory={activeCategory}
-            onSelect={setActiveCategory}
-          />
-
-          {/* Right panel: versions */}
-          <VersionPanel
-            versionPanelRef={versionPanelRef}
-            activeGroup={activeGroup}
-            hasMultipleSources={hasMultipleSources}
-            onActivate={handleActivate}
-          />
-        </div>
-      )}
-    </div>
     </FocusContext.Provider>
   );
 }
@@ -303,7 +295,10 @@ function SidebarNav({
 
   return (
     <FocusContext.Provider value={focusKey}>
-      <nav ref={ref} className="w-48 flex-shrink-0 bg-steam-darkest border-r border-steam-border overflow-y-auto">
+      <nav
+        ref={ref}
+        className="w-48 flex-shrink-0 bg-steam-darkest border-r border-steam-border overflow-y-auto"
+      >
         {groups.map((group) => (
           <CategoryButton
             key={group.category}
